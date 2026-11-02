@@ -27,8 +27,8 @@ Misma marca del grupo (logo con brújula, Unbounded / Hanken Grotesk / JetBrains
 
 ## Estructura
 
-1. **Hero** (oscuro). Logo + "agency", título, dos CTA (Armá tu pedido / Ver proyectos). A la derecha, un **panel de terminal que mide la propia página en vivo** con la Performance API: carga completa, LCP (si el navegador lo soporta), peso comprimido y cantidad de pedidos. Detrás, un anillo de brújula que gira con el scroll (CSS `animation-timeline: scroll()`).
-2. **Servicios: Construir / Crecer.** Dos columnas (Webs, Sistemas a medida, IA | Google Ads, Meta Ads, Medición) con una **brújula en el medio cuya aguja apunta a la tarjeta que tenés bajo el cursor o con foco**. En mobile se apilan y la brújula se oculta.
+1. **Hero** (oscuro). Logo + "agency", título, dos CTA (Armá tu pedido / Ver proyectos). A la derecha, un **panel de terminal que mide la propia página en vivo** con la Performance API: carga completa, LCP (si el navegador lo soporta), peso y cantidad de pedidos de la carga inicial. Detrás, la brújula 3D (ver "Fondo 3D").
+2. **Servicios: Construir / Crecer.** Dos columnas (Webs, Sistemas a medida, IA | Google Ads, Meta Ads, Medición) con una **brújula en el medio cuya aguja apunta a la tarjeta que tenés bajo el cursor o con foco**. En mobile se apilan y la brújula pasa al centro, detrás del contenido.
 3. **Proyectos.** Tarjetas en **marco de navegador** con URL; la captura (alta, de página completa) se desplaza al pasar el mouse. Entran con animación ligada al scroll (`animation-timeline: view()`). Arranca con plantillas marcadas para completar.
 4. **Cómo trabajamos.** Los 4 pasos actuales con el recorrido que avanza con el scroll (reutiliza `.route` / `initRoute` de `main.js`).
 5. **Preguntas frecuentes.** `<details>` nativos; respuestas basadas en lo que la página ya afirma.
