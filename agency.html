@@ -3,30 +3,32 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>nowmad agency · Desarrollo digital</title>
-  <meta name="description" content="nowmad agency es la agencia de desarrollo digital de nowmad group. Hacemos webs y marketing desde Buenos Aires." />
+  <title>nowmad agency · Desarrollo y growth</title>
+  <meta name="description" content="nowmad agency es la agencia de desarrollo y growth de nowmad group: webs, sistemas a medida, inteligencia artificial, Google Ads y Meta Ads desde Buenos Aires." />
   <meta name="theme-color" content="#0E1430" />
   <meta property="og:title" content="nowmad agency" />
-  <meta property="og:description" content="nowmad agency es la agencia de desarrollo digital de nowmad group. Hacemos webs y marketing desde Buenos Aires." />
+  <meta property="og:description" content="Lo construimos y lo hacemos crecer. Desarrollo web, IA y publicidad digital desde Buenos Aires." />
   <meta property="og:type" content="website" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261102" />
   <link rel="preload" href="assets/fonts/unbounded-be36af.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="styles.css?v=20261102" />
+  <link rel="stylesheet" href="agency.css?v=20261102" />
   <script>document.documentElement.classList.add("js");</script>
   <script defer src="main.js?v=20261102"></script>
+  <script defer src="agency.js?v=20261102"></script>
 </head>
 <body class="page-agency">
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <defs>
       <g id="o">
         <circle cx="44" cy="56" r="31" fill="none" stroke="currentColor" stroke-width="14" />
-        <circle cx="44" cy="56" r="9" fill="currentColor" />
-        <line x1="44" y1="56" x2="94" y2="6" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
+        <circle cx="44" cy="56" r="9" style="fill:var(--needle,currentColor)" />
+        <line x1="44" y1="56" x2="94" y2="6" stroke-width="6" stroke-linecap="round" style="stroke:var(--needle,currentColor)" />
       </g>
     </defs>
   </svg>
 
-  <a class="skip" href="#propuesta">Ir al contenido</a>
+  <a class="skip" href="#servicios">Ir al contenido</a>
 
   <header class="nav" data-nav>
     <a class="nav-logo" href="index.html" aria-label="nowmad group, inicio">
@@ -40,55 +42,205 @@
   </header>
 
   <main>
-    <section class="hero hero-detail">
+    <!-- 1. Hero -->
+    <section class="hero hero-detail ag-hero">
+      <svg class="ag-rose" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
+        <circle cx="100" cy="100" r="92" fill="none" stroke="currentColor" stroke-width="1.5" />
+        <circle cx="100" cy="100" r="84" fill="none" stroke="currentColor" stroke-width="6" stroke-dasharray="1.5 7.3" />
+        <circle cx="100" cy="100" r="60" fill="none" stroke="currentColor" stroke-width="1" />
+        <path d="M100 4v16M100 180v16M4 100h16M180 100h16" stroke="currentColor" stroke-width="3" />
+      </svg>
+
       <div class="hero-meta">
-        <span>Agencia de desarrollo digital</span>
+        <span>Desarrollo y growth</span>
         <span>Buenos Aires · 34°36′S · 58°22′O</span>
       </div>
-      <div class="hero-brand">
-        <div class="hero-logo">
-          <span class="logo" role="img" aria-label="nowmad agency"><span>n</span><svg class="logo-o" viewBox="6 18 76 76" data-compass aria-hidden="true">
-            <circle cx="44" cy="56" r="31" fill="none" stroke="currentColor" stroke-width="14" />
-            <circle cx="44" cy="56" r="9" fill="currentColor" />
-            <line data-needle x1="44" y1="56" x2="94" y2="6" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
-          </svg><span>wmad</span></span>
-          <span class="hero-group" aria-hidden="true">agency</span>
+
+      <div class="ag-hero-grid">
+        <div class="hero-brand">
+          <div class="hero-logo">
+            <span class="logo" role="img" aria-label="nowmad agency"><span>n</span><svg class="logo-o" viewBox="6 18 76 76" data-compass aria-hidden="true">
+              <circle cx="44" cy="56" r="31" fill="none" stroke="currentColor" stroke-width="14" />
+              <circle cx="44" cy="56" r="9" style="fill:var(--needle,currentColor)" />
+              <line data-needle x1="44" y1="56" x2="94" y2="6" stroke-width="6" stroke-linecap="round" style="stroke:var(--needle,currentColor)" />
+            </svg><span>wmad</span></span>
+            <span class="hero-group" aria-hidden="true">agency</span>
+          </div>
+          <h1 class="detail-title">Construimos tu producto digital y lo hacemos crecer.</h1>
+          <div class="ag-ctas">
+            <a class="btn" href="#contacto">Armá tu pedido <span aria-hidden="true">→</span></a>
+            <a class="ag-link" href="#proyectos">Ver proyectos</a>
+          </div>
         </div>
-        <h1 class="detail-title">Hacemos webs y marketing desde Buenos Aires.</h1>
+
+        <figure class="ag-term">
+          <div class="ag-term-bar" aria-hidden="true"><i></i><i></i><i></i><span>nowmad ~ agency</span></div>
+          <pre class="ag-term-body" data-perf>$ medir agency.html
+› esta página se mide en tu navegador con JavaScript.</pre>
+          <figcaption class="ag-term-cap">Medido en vivo en tu navegador, no es una captura.</figcaption>
+        </figure>
       </div>
     </section>
 
-    <section class="detail wrap" id="propuesta">
-      <p class="label reveal">La propuesta</p>
-      <h2 class="reveal">Tu marca, funcionando en internet.</h2>
-      <ol class="value-list">
-        <li class="reveal"><span class="value-n">A</span><h3>Webs</h3><p>Diseñamos y programamos sitios rápidos, que se leen bien en el celular.</p></li>
-        <li class="reveal"><span class="value-n">B</span><h3>Desarrollo</h3><p>Construimos las herramientas digitales que tu negocio necesita.</p></li>
-        <li class="reveal"><span class="value-n">C</span><h3>Marketing</h3><p>Hacemos que la gente indicada encuentre lo que hacés.</p></li>
-      </ol>
+    <!-- 2. Servicios: Construir / Crecer -->
+    <section class="ag-services wrap" id="servicios">
+      <p class="label reveal">Servicios</p>
+      <h2 class="reveal">Lo construimos. <span class="ag-accent">Lo hacemos crecer.</span></h2>
+
+      <div class="ag-split" data-guide>
+        <div class="ag-col">
+          <p class="ag-col-title"><span>01</span> Construir</p>
+          <ol class="ag-cards">
+            <li class="ag-card" tabindex="0" data-guide-target><span class="value-n">A</span><h3>Webs</h3><p>Sitios y landing pages rápidos, que se leen bien en el celular y están hechos para convertir.</p></li>
+            <li class="ag-card" tabindex="0" data-guide-target><span class="value-n">B</span><h3>Sistemas a medida</h3><p>Paneles, APIs, bases de datos e integraciones: el backend que tu negocio necesita.</p></li>
+            <li class="ag-card" tabindex="0" data-guide-target><span class="value-n">C</span><h3>Inteligencia artificial</h3><p>Chatbots, automatizaciones y asistentes conectados a tus datos y tus procesos.</p></li>
+          </ol>
+        </div>
+
+        <div class="ag-guide" aria-hidden="true">
+          <svg viewBox="6 18 76 76" class="ag-guide-o">
+            <circle cx="44" cy="56" r="31" fill="none" stroke="currentColor" stroke-width="14" />
+            <circle cx="44" cy="56" r="9" fill="var(--cobalt)" />
+            <line data-guide-needle x1="44" y1="56" x2="94" y2="6" stroke="var(--cobalt)" stroke-width="6" stroke-linecap="round" />
+          </svg>
+        </div>
+
+        <div class="ag-col">
+          <p class="ag-col-title"><span>02</span> Crecer</p>
+          <ol class="ag-cards">
+            <li class="ag-card" tabindex="0" data-guide-target><span class="value-n">D</span><h3>Google Ads</h3><p>Campañas de búsqueda, display y YouTube para aparecer cuando te están buscando.</p></li>
+            <li class="ag-card" tabindex="0" data-guide-target><span class="value-n">E</span><h3>Meta Ads</h3><p>Anuncios en Instagram y Facebook para llegar a la gente indicada.</p></li>
+            <li class="ag-card" tabindex="0" data-guide-target><span class="value-n">F</span><h3>Medición</h3><p>Píxeles, conversiones y analítica para saber qué funciona y dónde poner la plata.</p></li>
+          </ol>
+        </div>
+      </div>
     </section>
 
+    <!-- 3. Proyectos
+         Para sumar uno: copiá un <li class="ag-project">, completá los textos y la URL,
+         y poné una captura de página completa (alta, ~1440px de ancho) en assets/work/.
+         Reemplazá <div class="ag-shot-empty"> por <img src="assets/work/nombre.webp" alt="" loading="lazy" width="1440" height="4000">. -->
+    <section class="ag-work wrap" id="proyectos">
+      <p class="label reveal">Proyectos</p>
+      <h2 class="reveal">Hecho por nosotros.</h2>
+      <ul class="ag-work-list">
+        <li class="ag-project">
+          <a class="ag-frame" href="#proyectos">
+            <span class="ag-frame-bar" aria-hidden="true"><i></i><i></i><i></i><span class="ag-frame-url">completar.com</span></span>
+            <span class="ag-shot"><span class="ag-shot-empty">[ Captura del proyecto ]</span></span>
+          </a>
+          <div class="ag-project-info">
+            <p class="tag">[Rubro] · [Web + Meta Ads]</p>
+            <h3>[Nombre del proyecto]</h3>
+            <p>[Qué hicimos y qué cambió para el cliente.]</p>
+          </div>
+        </li>
+        <li class="ag-project">
+          <a class="ag-frame" href="#proyectos">
+            <span class="ag-frame-bar" aria-hidden="true"><i></i><i></i><i></i><span class="ag-frame-url">completar.com</span></span>
+            <span class="ag-shot"><span class="ag-shot-empty">[ Captura del proyecto ]</span></span>
+          </a>
+          <div class="ag-project-info">
+            <p class="tag">[Rubro] · [Sistema a medida]</p>
+            <h3>[Nombre del proyecto]</h3>
+            <p>[Qué hicimos y qué cambió para el cliente.]</p>
+          </div>
+        </li>
+      </ul>
+    </section>
+
+    <!-- 4. Cómo trabajamos -->
     <section class="detail wrap">
-      <p class="label reveal">Cómo funciona</p>
+      <p class="label reveal">Cómo trabajamos</p>
       <h2 class="reveal">Del brief a estar online.</h2>
-      <ol class="steps">
-        <li class="reveal"><span>01</span><h3>Escuchamos</h3><p>Qué hacés, a quién le vendés y qué necesitás.</p></li>
-        <li class="reveal"><span>02</span><h3>Proponemos</h3><p>Te decimos qué hacemos, en qué plazo y cuánto sale.</p></li>
-        <li class="reveal"><span>03</span><h3>Construimos</h3><p>Diseño y desarrollo, con avances que podés ver.</p></li>
-        <li class="reveal"><span>04</span><h3>Lanzamos</h3><p>Lo publicamos y lo ponemos a andar.</p></li>
-      </ol>
+      <div class="route" data-route>
+        <span class="route-fill" aria-hidden="true"></span>
+        <svg class="route-marker" viewBox="0 0 100 100" aria-hidden="true"><use href="#o" /></svg>
+        <ol class="route-stops">
+          <li><span>01</span><h3>Escuchamos</h3><p>Qué hacés, a quién le vendés y qué necesitás.</p></li>
+          <li><span>02</span><h3>Proponemos</h3><p>Te decimos qué hacemos, en qué plazo y cuánto sale.</p></li>
+          <li><span>03</span><h3>Construimos</h3><p>Diseño y desarrollo, con avances que podés ver.</p></li>
+          <li><span>04</span><h3>Lanzamos</h3><p>Lo publicamos y lo ponemos a andar.</p></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- 5. Preguntas frecuentes (revisar respuestas) -->
+    <section class="ag-faq wrap">
+      <p class="label reveal">Preguntas frecuentes</p>
+      <h2 class="reveal">Lo que nos suelen preguntar.</h2>
+      <div class="ag-faq-list">
+        <details>
+          <summary>¿Cuánto sale?</summary>
+          <p>Depende de lo que necesites. Primero te escuchamos y después te pasamos una propuesta con qué hacemos, en qué plazo y cuánto sale, antes de arrancar.</p>
+        </details>
+        <details>
+          <summary>¿Puedo contratar solo la web o solo los anuncios?</summary>
+          <p>Sí. Podés pedir un servicio solo o combinarlos: muchas veces conviene hacer la web y las campañas juntas para medir todo de punta a punta.</p>
+        </details>
+        <details>
+          <summary>¿Qué puedo automatizar con inteligencia artificial?</summary>
+          <p>Tareas repetitivas como responder consultas, ordenar datos o generar reportes. Te decimos qué tiene sentido automatizar en tu caso y qué no.</p>
+        </details>
+        <details>
+          <summary>¿Cómo veo cómo va el proyecto?</summary>
+          <p>Mientras construimos te mostramos avances que podés ver y probar, no solo al final.</p>
+        </details>
+      </div>
     </section>
 
     <section class="cross wrap">
       <a class="cross-link reveal" href="explorers.html"><span class="tag">La otra rama</span><strong>nowmad explorers <span aria-hidden="true">→</span></strong><span>Agencia de turismo</span></a>
     </section>
 
+    <!-- 6. Contacto: armador de pedido
+         data-wa: número de WhatsApp en formato internacional sin + ni espacios (ej. 5491112345678).
+         Vacío = el mensaje sale por mail a data-mail. -->
     <section class="contact" id="contacto">
       <div class="contact-rings" aria-hidden="true"><span class="ring ring-c"></span></div>
       <div class="wrap contact-in">
         <p class="label">Contacto</p>
         <h2>Contanos qué necesitás.</h2>
-        <a class="btn" href="mailto:hola@nowmad.travel">hola@nowmad.travel <span aria-hidden="true">→</span></a>
+
+        <form class="ag-builder" data-builder data-wa="" data-mail="hola@nowmad.travel" novalidate>
+          <fieldset>
+            <legend>¿Qué necesitás?</legend>
+            <div class="ag-chips">
+              <label class="ag-chip"><input type="checkbox" name="s" value="una web" /><span>Web</span></label>
+              <label class="ag-chip"><input type="checkbox" name="s" value="un sistema a medida" /><span>Sistema a medida</span></label>
+              <label class="ag-chip"><input type="checkbox" name="s" value="algo con inteligencia artificial" /><span>IA</span></label>
+              <label class="ag-chip"><input type="checkbox" name="s" value="campañas en Google Ads" /><span>Google Ads</span></label>
+              <label class="ag-chip"><input type="checkbox" name="s" value="campañas en Meta Ads" /><span>Meta Ads</span></label>
+              <label class="ag-chip"><input type="checkbox" name="s" value="medir mis resultados" /><span>Medición</span></label>
+            </div>
+          </fieldset>
+
+          <label class="ag-field">
+            <span>¿Cuál es tu rubro?</span>
+            <input type="text" name="rubro" maxlength="80" autocomplete="organization-title" placeholder="Ej.: inmobiliaria, gastronomía" />
+          </label>
+
+          <fieldset>
+            <legend>¿Para cuándo?</legend>
+            <div class="ag-chips">
+              <label class="ag-chip"><input type="radio" name="plazo" value="lo antes posible" /><span>Lo antes posible</span></label>
+              <label class="ag-chip"><input type="radio" name="plazo" value="para este mes" /><span>Este mes</span></label>
+              <label class="ag-chip"><input type="radio" name="plazo" value="sin apuro" /><span>Sin apuro</span></label>
+            </div>
+          </fieldset>
+
+          <div class="ag-preview">
+            <p class="tag">Tu mensaje</p>
+            <p class="ag-msg" data-msg aria-live="polite">Hola nowmad agency! Quiero contarles un proyecto.</p>
+          </div>
+
+          <div class="ag-send">
+            <a class="btn" data-send href="mailto:hola@nowmad.travel?subject=Consulta%20nowmad%20agency">
+              <b data-send-label>Enviar por mail</b> <span aria-hidden="true">→</span>
+            </a>
+            <a class="ag-link" data-mail-link href="mailto:hola@nowmad.travel">hola@nowmad.travel</a>
+          </div>
+        </form>
       </div>
     </section>
   </main>
