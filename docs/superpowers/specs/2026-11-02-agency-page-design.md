@@ -8,14 +8,22 @@ Que `agency.html` venda a nowmad agency: desarrollo full stack (web, sistemas a 
 
 ## Límites
 
-- Solo trabajamos `agency.html` y archivos nuevos propios: `agency.css` y `agency.js`.
+- Solo trabajamos `agency.html` y archivos nuevos propios: `agency.css`, `agency.js` y `agency-3d.js`.
 - `styles.css`, `main.js`, `index.html` y `explorers.html` son compartidos o de Facu: no se modifican.
-- Sitio estático en Apache/Hostinger. Sin backend, sin build, sin librerías externas.
+- Sitio estático en Apache/Hostinger. Sin backend ni build. Única librería: Three.js por CDN, solo en agency.
 - Nada de datos inventados: proyectos, número de WhatsApp y mail quedan como campos a completar.
 
 ## Dirección visual
 
-Misma marca del grupo (logo con brújula, Unbounded / Hanken Grotesk / JetBrains Mono, tokens de `styles.css`) con tono propio: base oscura `--ink`, acento celeste y detalles técnicos en mono. Referencias: Awwwards 2025 (un objeto de marca que actúa, paleta corta con un acento, moderación).
+Misma marca del grupo (logo con brújula, Unbounded / Hanken Grotesk / JetBrains Mono) con tono propio: **toda la página oscura** (paleta redefinida bajo `.page-agency`), acento celeste, superficies de vidrio y detalles técnicos en mono. Tiene que diferenciarse claramente de explorers (cálida y clara). Referencias: Awwwards 2025 (un objeto de marca que actúa, paleta corta con un acento).
+
+## Fondo 3D (agency-3d.js)
+
+- Escena WebGL fija detrás de toda la página, con Three.js 0.170 desde jsDelivr (import map). Se descarga **después del evento load**: el panel de rendimiento mide solo la carga inicial.
+- Objeto: la "o" del logo en cromo iridiscente con entorno de estudio para reflejos, núcleo luminoso en esfera de vidrio, aguja que sigue al cursor (o a la tarjeta de servicios activa), giroscopio de tres anillos con 144 marcas de grado, satélites, galaxia espiral de partículas, estrellas, polvo desenfocado y bloom.
+- Coreografía por anclas `[data-anchor]`: la brújula viaja al ancla de la sección que está en el centro de la pantalla. Poses: hero (a un costado), servicios (en la columna central), proyectos (la cámara atraviesa el anillo y el núcleo se apaga para que se lea el texto), proceso/FAQ (costados), contacto.
+- Rendimiento: DPR limitado, menos partículas en celular o equipos de pocos núcleos, calidad adaptativa (si no llega a 30 fps baja resolución y saca bloom; con menos de 20 deja de animar), y redibujo solo ante cambios con `prefers-reduced-motion`.
+- Sin WebGL o si falla la carga: fondo con degradés, nunca vacío.
 
 ## Estructura
 
@@ -42,4 +50,4 @@ Misma marca del grupo (logo con brújula, Unbounded / Hanken Grotesk / JetBrains
 
 ## Fuera de alcance (después)
 
-Demo de chatbot con IA en vivo (necesita backend y API key), WebGL/3D, View Transitions entre páginas (toca archivos compartidos: coordinar con Facu).
+Demo de chatbot con IA en vivo (necesita backend y API key), View Transitions entre páginas (toca archivos compartidos: coordinar con Facu).

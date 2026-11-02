@@ -32,14 +32,16 @@
 
     function measure() {
       var nav = performance.getEntriesByType("navigation")[0];
-      var res = performance.getEntriesByType("resource");
+      // Solo lo que se descargó hasta el evento load: el 3D llega después, a propósito
+      var end = nav && nav.loadEventEnd > 0 ? nav.loadEventEnd : performance.now();
+      var res = performance.getEntriesByType("resource").filter(function (r) { return r.startTime <= end; });
       var bytes = nav ? (nav.encodedBodySize || 0) : 0;
       res.forEach(function (r) { bytes += r.encodedBodySize || 0; });
 
       var lines = ["$ medir agency.html"];
       if (nav && nav.loadEventEnd > 0) lines.push(dots("carga completa", Math.round(nav.loadEventEnd - nav.startTime) + " ms"));
       if (lcp !== null) lines.push(dots("contenido principal", Math.round(lcp) + " ms"));
-      if (bytes > 0) lines.push(dots("peso comprimido", (bytes / 1024).toFixed(0) + " KB"));
+      if (bytes > 0) lines.push(dots("peso al cargar", (bytes / 1024).toFixed(0) + " KB"));
       lines.push(dots("pedidos", String(res.length + 1)));
       lines.push("› listo. medido ahora, en tu navegador.");
       render(lines);
@@ -110,7 +112,11 @@
     function point(card) {
       if (current) current.classList.remove("is-target");
       current = card;
-      if (!card) { aimAt(REST); return; }
+      if (!card) {
+        aimAt(REST);
+        window.dispatchEvent(new CustomEvent("agency:aim", { detail: null }));
+        return;
+      }
       card.classList.add("is-target");
       var s = svg.getBoundingClientRect();
       var c = card.getBoundingClientRect();
@@ -119,10 +125,19 @@
       var cy = s.top + s.height * 0.5;
       var tx = c.left + c.width / 2;
       var ty = c.top + c.height / 2;
-      aimAt(Math.atan2(ty - cy, tx - cx) * 180 / Math.PI + 45);
+      var rad = Math.atan2(ty - cy, tx - cx);
+      aimAt(rad * 180 / Math.PI + 45);
+      // la brújula 3D del fondo (agency-3d.js) apunta a la misma tarjeta
+      window.dispatchEvent(new CustomEvent("agency:aim", { detail: rad }));
     }
 
     cards.forEach(function (card) {
+      // luz que sigue al cursor dentro de la tarjeta
+      card.addEventListener("pointermove", function (e) {
+        var r = card.getBoundingClientRect();
+        card.style.setProperty("--mx", (e.clientX - r.left) + "px");
+        card.style.setProperty("--my", (e.clientY - r.top) + "px");
+      });
       card.addEventListener("mouseenter", function () { point(card); });
       card.addEventListener("focus", function () { point(card); });
     });

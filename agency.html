@@ -9,15 +9,26 @@
   <meta property="og:title" content="nowmad agency" />
   <meta property="og:description" content="Lo construimos y lo hacemos crecer. Desarrollo web, IA y publicidad digital desde Buenos Aires." />
   <meta property="og:type" content="website" />
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261102" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261102f" />
   <link rel="preload" href="assets/fonts/unbounded-be36af.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=20261102" />
-  <link rel="stylesheet" href="agency.css?v=20261102" />
+  <link rel="stylesheet" href="styles.css?v=20261102f" />
+  <link rel="stylesheet" href="agency.css?v=20261102f" />
   <script>document.documentElement.classList.add("js");</script>
-  <script defer src="main.js?v=20261102"></script>
-  <script defer src="agency.js?v=20261102"></script>
+  <script defer src="main.js?v=20261102f"></script>
+  <script defer src="agency.js?v=20261102f"></script>
+  <!-- Fondo 3D: Three.js se descarga recién después del evento load (ver agency-3d.js) -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+  <script type="module" src="agency-3d.js?v=20261102f"></script>
 </head>
 <body class="page-agency">
+  <canvas class="ag-scene" data-scene aria-hidden="true"></canvas>
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <defs>
       <g id="o">
@@ -44,12 +55,8 @@
   <main>
     <!-- 1. Hero -->
     <section class="hero hero-detail ag-hero">
-      <svg class="ag-rose" viewBox="0 0 200 200" aria-hidden="true" focusable="false">
-        <circle cx="100" cy="100" r="92" fill="none" stroke="currentColor" stroke-width="1.5" />
-        <circle cx="100" cy="100" r="84" fill="none" stroke="currentColor" stroke-width="6" stroke-dasharray="1.5 7.3" />
-        <circle cx="100" cy="100" r="60" fill="none" stroke="currentColor" stroke-width="1" />
-        <path d="M100 4v16M100 180v16M4 100h16M180 100h16" stroke="currentColor" stroke-width="3" />
-      </svg>
+      <!-- Anclas del fondo 3D: la brújula viaja a la de la sección que está en pantalla -->
+      <div class="ag-anchor ag-anchor-hero" data-anchor data-pose="hero" aria-hidden="true"></div>
 
       <div class="hero-meta">
         <span>Desarrollo y growth</span>
@@ -97,7 +104,7 @@
           </ol>
         </div>
 
-        <div class="ag-guide" aria-hidden="true">
+        <div class="ag-guide" data-anchor data-pose="face" aria-hidden="true">
           <svg viewBox="6 18 76 76" class="ag-guide-o">
             <circle cx="44" cy="56" r="31" fill="none" stroke="currentColor" stroke-width="14" />
             <circle cx="44" cy="56" r="9" fill="var(--cobalt)" />
@@ -120,7 +127,7 @@
          Para sumar uno: copiá un <li class="ag-project">, completá los textos y la URL,
          y poné una captura de página completa (alta, ~1440px de ancho) en assets/work/.
          Reemplazá <div class="ag-shot-empty"> por <img src="assets/work/nombre.webp" alt="" loading="lazy" width="1440" height="4000">. -->
-    <section class="ag-work wrap" id="proyectos">
+    <section class="ag-work wrap" id="proyectos" data-anchor data-pose="fly">
       <p class="label reveal">Proyectos</p>
       <h2 class="reveal">Hecho por nosotros.</h2>
       <ul class="ag-work-list">
@@ -150,7 +157,8 @@
     </section>
 
     <!-- 4. Cómo trabajamos -->
-    <section class="detail wrap">
+    <section class="detail wrap ag-process">
+      <div class="ag-anchor ag-anchor-side" data-anchor data-pose="side" aria-hidden="true"></div>
       <p class="label reveal">Cómo trabajamos</p>
       <h2 class="reveal">Del brief a estar online.</h2>
       <div class="route" data-route>
@@ -167,6 +175,7 @@
 
     <!-- 5. Preguntas frecuentes (revisar respuestas) -->
     <section class="ag-faq wrap">
+      <div class="ag-anchor ag-anchor-side" data-anchor data-pose="side2" aria-hidden="true"></div>
       <p class="label reveal">Preguntas frecuentes</p>
       <h2 class="reveal">Lo que nos suelen preguntar.</h2>
       <div class="ag-faq-list">
@@ -197,7 +206,7 @@
          data-wa: número de WhatsApp en formato internacional sin + ni espacios (ej. 5491112345678).
          Vacío = el mensaje sale por mail a data-mail. -->
     <section class="contact" id="contacto">
-      <div class="contact-rings" aria-hidden="true"><span class="ring ring-c"></span></div>
+      <div class="ag-anchor ag-anchor-contact" data-anchor data-pose="rest" aria-hidden="true"></div>
       <div class="wrap contact-in">
         <p class="label">Contacto</p>
         <h2>Contanos qué necesitás.</h2>
