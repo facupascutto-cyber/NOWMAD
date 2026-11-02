@@ -9,23 +9,28 @@
   <meta property="og:title" content="nowmad agency" />
   <meta property="og:description" content="Lo construimos y lo hacemos crecer. Desarrollo web, IA y publicidad digital desde Buenos Aires." />
   <meta property="og:type" content="website" />
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261102o" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261102u" />
   <link rel="preload" href="assets/fonts/unbounded-be36af.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=20261102o" />
-  <link rel="stylesheet" href="agency.css?v=20261102o" />
+  <link rel="stylesheet" href="styles.css?v=20261102u" />
+  <link rel="stylesheet" href="agency.css?v=20261102u" />
   <script>document.documentElement.classList.add("js");</script>
-  <script defer src="main.js?v=20261102o"></script>
-  <script defer src="agency.js?v=20261102o"></script>
+  <script defer src="main.js?v=20261102u"></script>
+  <script defer src="agency.js?v=20261102u"></script>
   <!-- Fondo 3D: Three.js se descarga recién después del evento load (ver agency-3d.js) -->
+  <!-- API key de Google Maps Platform (Map Tiles API) para el Buenos Aires 3D real.
+       Restringila a tu dominio en Google Cloud y ponele tope diario. Vacía = respaldo satelital. -->
+  <meta name="nowmad-google-key" content="" />
   <script type="importmap">
     {
       "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
+        "3d-tiles-renderer": "https://cdn.jsdelivr.net/npm/3d-tiles-renderer@0.5.3/build/index.js",
+        "3d-tiles-renderer/plugins": "https://cdn.jsdelivr.net/npm/3d-tiles-renderer@0.5.3/build/index.plugins.js"
       }
     }
   </script>
-  <script type="module" src="agency-3d.js?v=20261102o"></script>
+  <script type="module" src="agency-3d.js?v=20261102u"></script>
 </head>
 <body class="page-agency">
   <canvas class="ag-scene" data-scene aria-hidden="true"></canvas>
@@ -89,6 +94,21 @@
       </div>
     </section>
 
+    <!-- Viaje: de la órbita al Obelisco. El fondo 3D baja hasta Buenos Aires mientras scrolleás -->
+    <section class="ag-journey" id="buenos-aires" data-anchor data-pose="journey" data-journey aria-label="Desde Buenos Aires">
+      <div class="ag-journey-sticky">
+        <ol class="ag-journey-steps">
+          <li class="ag-step" data-step="0"><p class="label">Coordenadas</p><h2>34°36′S <span class="ag-accent">58°22′O</span></h2></li>
+          <li class="ag-step" data-step="1"><p class="label">Bajando</p><h2>Buenos Aires, Argentina.</h2></li>
+          <li class="ag-step" data-step="2"><p class="label">Microcentro</p><h2>Avenida 9 de Julio.</h2></li>
+          <li class="ag-step" data-step="3"><p class="label">67,5 metros · 1936</p><h2>El Obelisco.</h2></li>
+          <li class="ag-step" data-step="4"><p class="label">nowmad agency</p><h2>Acá estamos. <span class="ag-accent">Desde acá, para todo el mundo.</span></h2><a class="btn" href="#contacto">Hablemos <span aria-hidden="true">→</span></a></li>
+        </ol>
+        <div class="ag-journey-meter" aria-hidden="true"><span>Altura</span><b data-altitude>—</b></div>
+        <p class="ag-journey-credit"><span class="ag-city-credit" data-city-credit></span><span>Tierra: NASA Blue Marble y Black Marble</span></p>
+      </div>
+    </section>
+
     <!-- 2. Servicios: Construir / Crecer -->
     <section class="ag-services wrap" id="servicios">
       <p class="label reveal">Servicios</p>
@@ -127,7 +147,7 @@
          Para sumar uno: copiá un <li class="ag-project">, completá los textos y la URL,
          y poné una captura de página completa (alta, ~1440px de ancho) en assets/work/.
          Reemplazá <div class="ag-shot-empty"> por <img src="assets/work/nombre.webp" alt="" loading="lazy" width="1440" height="4000">. -->
-    <section class="ag-work wrap" id="proyectos" data-anchor data-pose="fly">
+    <section class="ag-work wrap" id="proyectos" data-anchor data-pose="side">
       <p class="label reveal">Proyectos</p>
       <h2 class="reveal">Hecho por nosotros.</h2>
       <ul class="ag-work-list">

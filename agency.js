@@ -199,10 +199,33 @@
     update();
   }
 
+  // 4. Viaje a Buenos Aires: qué texto se ve según cuánto bajaste
+  function initJourney() {
+    var sec = document.querySelector("[data-journey]");
+    if (!sec) return;
+    var steps = Array.prototype.slice.call(sec.querySelectorAll(".ag-step"));
+    var CUTS = [0, 0.16, 0.42, 0.66, 0.86];
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var r = sec.getBoundingClientRect();
+      var p = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - innerHeight)));
+      var idx = 0;
+      for (var i = 0; i < CUTS.length; i++) if (p >= CUTS[i]) idx = i;
+      steps.forEach(function (el, i) { el.classList.toggle("is-on", i === idx); });
+      sec.classList.toggle("is-city", p > 0.3 && p < 1);
+    }
+    function request() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+    update();
+    window.addEventListener("scroll", request, { passive: true });
+    window.addEventListener("resize", request);
+  }
+
   function boot() {
     safe(initPerf, "perf");
     safe(initGuide, "guide");
     safe(initBuilder, "builder");
+    safe(initJourney, "journey");
   }
 
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", boot);

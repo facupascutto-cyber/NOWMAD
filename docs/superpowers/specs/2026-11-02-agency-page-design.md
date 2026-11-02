@@ -29,6 +29,15 @@ Misma marca del grupo (logo con brújula, Unbounded / Hanken Grotesk / JetBrains
 - Rendimiento: DPR limitado, texturas y geometría más livianas en celular, calidad adaptativa (menos de 30 fps → sin post-proceso; menos de 20 → sin animación continua), redibujo solo ante cambios con `prefers-reduced-motion`.
 - Sin WebGL o si falla la carga: fondo con degradés, nunca vacío.
 
+## Viaje a Buenos Aires (sección `#buenos-aires`)
+
+- Sección de 600vh con texto fijo que cambia por tramos: coordenadas → Buenos Aires → 9 de Julio → El Obelisco → "Acá estamos". Indicador de altura calculado con la cámara real.
+- Tramo 1: zoom a la Tierra de la NASA hasta casi tocar Buenos Aires. Cambio de escena "atravesando las nubes" (fundido en el post-proceso).
+- Tramo 2, con API key (`<meta name="nowmad-google-key">`): Google Photorealistic 3D Tiles (`agency-google.js`, 3DTilesRendererJS 0.5.3). La cámara baja de ~9 km a dar la vuelta al Obelisco real. Se muestran logo y atribución de Google mientras se ven las teselas. La key debe estar restringida por dominio y con tope diario.
+- Tramo 2, sin key o si Google falla: respaldo con la foto satelital Sentinel-2 cloudless 2016 de EOX (`agency-satellite.js`), bajando solo hasta ~5 km para que siga nítida.
+- `?hora=HH` (hora de Buenos Aires) fuerza la posición del sol para probar de día o de noche.
+- Se descartó una ciudad generada con OpenStreetMap: no era real.
+
 ## Estructura
 
 1. **Hero** (oscuro). Logo + "agency", título, dos CTA (Armá tu pedido / Ver proyectos). A la derecha, un **panel de terminal que mide la propia página en vivo** con la Performance API: carga completa, LCP (si el navegador lo soporta), peso y cantidad de pedidos de la carga inicial. Detrás, la Tierra en vivo (ver "Fondo 3D").

@@ -47,7 +47,13 @@ async function boot() {
   };
 
   // Posición real del sol: declinación por día del año + ecuación del tiempo
+  // ?hora=HH (hora de Buenos Aires) permite ver el viaje de día o de noche sin esperar
+  const forcedHour = new URLSearchParams(location.search).get("hora");
   function sunNow(date = new Date()) {
+    if (forcedHour !== null && forcedHour !== "" && !isNaN(+forcedHour)) {
+      date = new Date(date);
+      date.setUTCHours(Math.floor(+forcedHour) + 3, Math.round((+forcedHour % 1) * 60), 0, 0);
+    }
     const day = (date - Date.UTC(date.getUTCFullYear(), 0, 0)) / 864e5;
     const decl = -23.44 * Math.cos(((2 * Math.PI) / 365) * (day + 10));
     const B = (2 * Math.PI * (day - 81)) / 364;
@@ -74,20 +80,22 @@ async function boot() {
   const composer = new EffectComposer(renderer, rt);
   composer.setPixelRatio(DPR);
   composer.setSize(innerWidth, innerHeight);
-  composer.addPass(new RenderPass(scene, camera));
+  const renderPass = new RenderPass(scene, camera);
+  composer.addPass(renderPass);
   const bloom = new UnrealBloomPass(new THREE.Vector2(innerWidth, innerHeight), 0.45, 0.55, 0.85);
   composer.addPass(bloom);
   composer.addPass(new OutputPass());
   const lens = new ShaderPass({
-    uniforms: { tDiffuse: { value: null }, uTime: { value: 0 }, uRes: { value: new THREE.Vector2(innerWidth, innerHeight) }, uCA: { value: lowPower ? 0 : 0.004 } },
+    uniforms: { tDiffuse: { value: null }, uTime: { value: 0 }, uRes: { value: new THREE.Vector2(innerWidth, innerHeight) }, uCA: { value: lowPower ? 0 : 0.004 }, uFade: { value: 0 }, uFadeCol: { value: new THREE.Vector3(0.82, 0.86, 0.93) } },
     vertexShader: /* glsl */`varying vec2 vUv; void main() { vUv = uv; gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0); }`,
     fragmentShader: /* glsl */`
-      uniform sampler2D tDiffuse; uniform float uTime; uniform vec2 uRes; uniform float uCA; varying vec2 vUv;
+      uniform sampler2D tDiffuse; uniform float uTime; uniform vec2 uRes; uniform float uCA; uniform float uFade; uniform vec3 uFadeCol; varying vec2 vUv;
       float hash(vec2 p) { return fract(sin(dot(p, vec2(12.9898, 78.233))) * 43758.5453); }
       void main() {
         vec2 c = vUv - 0.5; float d = length(c); vec2 off = c * uCA * d;
         vec3 col = vec3(texture2D(tDiffuse, vUv + off).r, texture2D(tDiffuse, vUv).g, texture2D(tDiffuse, vUv - off).b);
         col *= mix(1.0, smoothstep(0.95, 0.3, d), 0.45);
+        col = mix(col, uFadeCol * (0.9 + 0.1 * smoothstep(0.7, 0.0, d)), uFade);
         col += (hash(vUv * uRes + fract(uTime * 7.13) * 91.7) - 0.5) * 0.035;
         gl_FragColor = vec4(col, 1.0);
       }`,
@@ -333,6 +341,7 @@ async function boot() {
     hero: { lat: BA.lat + 9, lon: BA.lon + 22, tx: 0, tz: 0.32, size: 1, drift: 0 },
     face: { lat: BA.lat, lon: BA.lon - 10, tx: -1.32, tz: 0.08, size: 1, drift: 1.4, horizon: true },
     fly: { lat: BA.lat, lon: BA.lon, tx: 0, tz: 0.2, size: 1, drift: 0 },
+    journey: { lat: BA.lat, lon: BA.lon, tx: 0, tz: 0, size: 1, drift: 0, journey: true },
     side: { lat: 12, lon: -20, tx: 0, tz: 0.4, size: 1.05, drift: 2.2 },
     side2: { lat: 30, lon: 60, tx: 0, tz: -0.3, size: 1.05, drift: 2.2 },
     rest: { lat: BA.lat + 6, lon: BA.lon + 8, tx: 0, tz: 0.3, size: 1.1, drift: 0 },
@@ -342,6 +351,8 @@ async function boot() {
   const visibleH = () => 2 * D * Math.tan((FOV * Math.PI) / 360);
   let current = anchors[0];
   let driftLon = 0;
+  let journeyP = 0;
+  const CITY_AT = 0.3; // a partir de acá del viaje se pasa a la ciudad
 
   function pickAnchor() {
     const mid = innerHeight * 0.5;
@@ -361,6 +372,16 @@ async function boot() {
     const pxToWorld = vh / innerHeight;
     goal.lat = pose.lat; goal.lon = pose.lon + driftLon * pose.drift; goal.tx = pose.tx; goal.tz = pose.tz;
 
+    if (pose.journey) {
+      // Viaje a Buenos Aires, primera parte: zoom a la Tierra hasta casi tocarla
+      const r = current.section.getBoundingClientRect();
+      journeyP = Math.min(1, Math.max(0, -r.top / Math.max(1, r.height - innerHeight)));
+      const e = Math.min(1, journeyP / CITY_AT);
+      const s0 = Math.min(vw, vh) * 0.42;
+      goal.x = 0; goal.y = 0;
+      goal.s = s0 * Math.pow((D - 1.1) / s0, e * e);
+      return;
+    }
     if (pose.horizon) {
       // Vista desde órbita: la Tierra es un horizonte curvo abajo de todo
       goal.s = Math.max(vw, vh) * 0.95;
@@ -438,6 +459,49 @@ async function boot() {
     caption.textContent = "La Tierra ahora mismo · en Buenos Aires " + state;
   }
   updateCaption();
+
+  /* ================= Buenos Aires real (se carga cuando hace falta) =================
+     Con API key: Google Photorealistic 3D Tiles (agency-google.js), hasta el pie del Obelisco.
+     Sin key o si Google falla: respaldo con la foto satelital Sentinel-2 (agency-satellite.js). */
+  const VER = new URL(import.meta.url).search;
+  const googleKey = ((document.querySelector('meta[name="nowmad-google-key"]') || {}).content || "").trim();
+  const creditEl = document.querySelector("[data-city-credit]");
+  let city = null;
+  let cityLoading = false;
+  const mod = (name) => import(new URL(name + VER, import.meta.url).href);
+  function loadSatellite() {
+    return mod("agency-satellite.js")
+      .then((m) => m.createSatellite(THREE, { renderer, lowPower, creditEl }))
+      .then((c) => { city = c; root.classList.add("city-satellite"); wake(); });
+  }
+  function ensureCity() {
+    if (cityLoading) return;
+    cityLoading = true;
+    const fallback = () => {
+      root.classList.remove("city-google");
+      loadSatellite().catch((err) => console.warn("[nowmad agency] satélite", err));
+    };
+    if (!googleKey) { fallback(); return; }
+    mod("agency-google.js")
+      .then((m) => m.createGoogleCity(THREE, { renderer, lowPower, apiKey: googleKey, creditEl, onFail: () => { city = null; fallback(); } }))
+      .then((c) => { if (!c.failed) { city = c; root.classList.add("city-google"); wake(); } })
+      .catch((err) => { console.warn("[nowmad agency] Google 3D", err); fallback(); });
+  }
+  const journeyEl = document.querySelector('[data-pose="journey"]');
+  if (journeyEl) {
+    new IntersectionObserver((entries) => { if (entries.some((e) => e.isIntersecting)) ensureCity(); }, { rootMargin: "150% 0px" }).observe(journeyEl);
+  }
+  // Marco local en Buenos Aires: este, arriba, norte (para pasar el sol real a la ciudad)
+  const up = latLon(BA.lat, BA.lon).normalize();
+  const east = new THREE.Vector3(0, 1, 0).cross(up).normalize();
+  const north = up.clone().cross(east).normalize();
+  const sunCity = new THREE.Vector3();
+  let mode = "earth";
+  let swapping = false;
+  let fadeT = 0;
+  let cityQ = 0;
+  const altEl = document.querySelector("[data-altitude]");
+  let altTxt = "";
 
   /* ================= Bucle ================= */
   const clock = new THREE.Clock();
@@ -560,12 +624,49 @@ async function boot() {
     stars.material.uniforms.uTime.value = time;
     lens.uniforms.uTime.value = time;
 
+    // ¿Tierra o ciudad? El cambio se hace "atravesando las nubes"
+    const inJourney = current && current.pose === "journey";
+    const desired = city && inJourney && journeyP > CITY_AT ? "city" : "earth";
+    if (desired !== mode) swapping = true;
+    if (swapping) {
+      fadeT = Math.min(1, fadeT + dt / 0.3);
+      if (fadeT >= 1) {
+        mode = desired;
+        swapping = false;
+        if (mode === "earth") { renderer.toneMapping = THREE.AgXToneMapping; renderer.toneMappingExposure = 1.25; }
+      }
+    } else fadeT = Math.max(0, fadeT - dt / 0.5);
+    const haze = inJourney ? Math.exp(-Math.pow((journeyP - CITY_AT) / 0.045, 2)) : 0;
+    lens.uniforms.uFade.value = Math.max(fadeT, haze * 0.92);
+    sunCity.set(sunObj.dot(east), sunObj.dot(up), -sunObj.dot(north));
+    const dayBA = Math.min(1, Math.max(0, (sunCity.y + 0.08) / 0.2));
+    lens.uniforms.uFadeCol.value.set(0.03 + 0.8 * dayBA, 0.04 + 0.83 * dayBA, 0.08 + 0.85 * dayBA);
+
+    if (mode === "city" && city) {
+      if (inJourney) cityQ = Math.min(1, Math.max(0, (journeyP - CITY_AT) / (0.9 - CITY_AT)));
+      city.update({ q: cityQ, time, dt, sun: sunCity, mouse, wide: innerWidth > 900 });
+      renderPass.scene = city.scene;
+      renderPass.camera = city.camera;
+      bloom.strength = 0.12;
+    } else {
+      renderPass.scene = scene;
+      renderPass.camera = camera;
+      bloom.strength = 0.45;
+    }
+
+    // Altura real de la cámara sobre la superficie
+    if (altEl && inJourney) {
+      const m = mode === "city" && city ? city.altitude() : ((D - rig.scale.x) / rig.scale.x) * 6371000;
+      const txt = m >= 10000 ? Math.round(m / 1000).toLocaleString("es-AR") + " km" : m >= 1000 ? (m / 1000).toFixed(1).replace(".", ",") + " km" : Math.round(m) + " m";
+      if (txt !== altTxt) { altEl.textContent = txt; altTxt = txt; }
+    }
+
     if (quality > 0) composer.render();
-    else renderer.render(scene, camera);
+    else renderer.render(renderPass.scene, renderPass.camera);
     adapt(dt);
 
     if (first) { first = false; root.classList.add("has-3d"); }
-    const busy = intro < 1 || drag.on || Math.abs(drag.v) > 2;
+    const busy = intro < 1 || drag.on || Math.abs(drag.v) > 2 || swapping || fadeT > 0;
     if ((reduced || quality < 0) && !busy && ++idleFrames > 30) { running = false; return; }
     requestAnimationFrame(frame);
   }
@@ -605,6 +706,7 @@ async function boot() {
     composer.setSize(innerWidth, innerHeight);
     bloom.setSize(innerWidth, innerHeight);
     lens.uniforms.uRes.value.set(innerWidth, innerHeight);
+    if (city) city.resize();
     wake();
   });
   document.addEventListener("visibilitychange", () => { if (!document.hidden) wake(); });
