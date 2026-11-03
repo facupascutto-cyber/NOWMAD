@@ -5,278 +5,500 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>nowmad agency · Desarrollo y growth</title>
   <meta name="description" content="nowmad agency es la agencia de desarrollo y growth de nowmad group: webs, sistemas a medida, inteligencia artificial, Google Ads y Meta Ads desde Buenos Aires." />
-  <meta name="theme-color" content="#0E1430" />
+  <meta name="theme-color" content="#1B2690" />
   <meta property="og:title" content="nowmad agency" />
   <meta property="og:description" content="Lo construimos y lo hacemos crecer. Desarrollo web, IA y publicidad digital desde Buenos Aires." />
   <meta property="og:type" content="website" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261103m" />
   <link rel="preload" href="assets/fonts/unbounded-be36af.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=20261103m" />
-  <link rel="stylesheet" href="nm-cta.css?v=20261103a" />
-  <link rel="stylesheet" href="agency.css?v=20261103e" />
+  <link rel="stylesheet" href="agency.css?v=20261104g" />
   <script>document.documentElement.classList.add("js");</script>
-  <script defer src="main.js?v=20261103m"></script>
-  <script defer src="agency.js?v=20261103e"></script>
-  <!-- Fondo 3D: Three.js se descarga recién después del evento load (ver agency-3d.js) -->
-  <script type="importmap">
-    {
-      "imports": {
-        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
-      }
-    }
-  </script>
-  <script type="module" src="agency-3d.js?v=20261103e"></script>
+  <script defer src="agency.js?v=20261104f"></script>
 </head>
-<body class="page-agency">
-  <canvas class="ag-scene" data-scene aria-hidden="true"></canvas>
+<body>
+  <!-- agency como un sistema operativo: fondo de pantalla vivo (la brújula del logo en píxeles),
+       barra de menú, ventanas que se arrastran, dock fijo y cada sección es una aplicación. -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <defs>
-      <g id="o">
+      <symbol id="o" viewBox="6 18 76 76">
         <circle cx="44" cy="56" r="31" fill="none" stroke="currentColor" stroke-width="14" />
-        <circle cx="44" cy="56" r="9" style="fill:var(--needle,currentColor)" />
-        <line x1="44" y1="56" x2="94" y2="6" stroke-width="6" stroke-linecap="round" style="stroke:var(--needle,currentColor)" />
-      </g>
+        <circle cx="44" cy="56" r="9" fill="currentColor" />
+        <line x1="44" y1="56" x2="94" y2="6" stroke="currentColor" stroke-width="6" stroke-linecap="round" />
+      </symbol>
+      <symbol id="folder" viewBox="0 0 64 52"><path d="M4 8a4 4 0 0 1 4-4h16l6 6h26a4 4 0 0 1 4 4v30a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4Z" fill="currentColor" /><path d="M4 18h56v26a4 4 0 0 1-4 4H8a4 4 0 0 1-4-4Z" fill="#fff" fill-opacity=".22" /></symbol>
+      <symbol id="doc" viewBox="0 0 48 60"><path d="M6 2h26l14 14v38a4 4 0 0 1-4 4H6a4 4 0 0 1-4-4V6a4 4 0 0 1 4-4Z" fill="#F8F9FD" /><path d="M32 2v10a4 4 0 0 0 4 4h10" fill="#DFE4FB" /><path d="M10 28h26M10 36h26M10 44h16" stroke="#9AA8F5" stroke-width="3" stroke-linecap="round" /></symbol>
+      <symbol id="chat" viewBox="0 0 24 24"><path d="M12 3.2a8.8 8.8 0 0 0-7.6 13.2L3.2 20.8l4.5-1.2A8.8 8.8 0 1 0 12 3.2Z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" /><path d="M9.2 7.6c.3 0 .5.1.6.4l.8 1.8c.1.2 0 .5-.1.7l-.6.7c.5 1.1 1.7 2.3 2.9 2.9l.7-.6c.2-.2.5-.2.7-.1l1.8.8c.3.1.4.4.4.6-.1 1.3-1.1 2.1-2.3 2-3.4-.3-6.5-3.4-6.8-6.8-.1-1.2.7-2.3 1.9-2.4Z" fill="currentColor" /></symbol>
+      <symbol id="send" viewBox="0 0 24 24"><path d="M4 12 20 4l-6 16-3-7Z" fill="currentColor" /></symbol>
+      <symbol id="search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2" /><path d="m16 16 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></symbol>
     </defs>
   </svg>
 
-  <a class="skip" href="#servicios">Ir al contenido</a>
+  <!-- Fondo de pantalla del escritorio: cintas con los colores de la marca (estático) -->
+  <div class="wall" data-wall aria-hidden="true">
+    <svg class="wp" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+      <defs>
+        <linearGradient id="wp1a" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#1B2690" /><stop offset=".55" stop-color="#2B3BD8" /><stop offset="1" stop-color="#7486FF" /></linearGradient>
+        <linearGradient id="wp1b" x1="0" y1="0" x2="1" y2=".6"><stop offset="0" stop-color="#3C4DE6" /><stop offset=".5" stop-color="#9AA8F5" /><stop offset="1" stop-color="#EEF1FD" /></linearGradient>
+        <linearGradient id="wp1c" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#E89A1E" /><stop offset="1" stop-color="#FFD98A" /></linearGradient>
+        <filter id="wp1s" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="28" /></filter>
+      </defs>
+      <path d="M-100 1000C300 800 500 520 900 520S1400 300 1700 120V400C1450 540 1300 780 950 780S400 920 200 1100Z" fill="#03061C" opacity=".55" filter="url(#wp1s)" transform="translate(0 50)" />
+      <path d="M-100 1000C300 800 500 520 900 520S1400 300 1700 120V400C1450 540 1300 780 950 780S400 920 200 1100Z" fill="url(#wp1a)" />
+      <path d="M-100 1000C300 800 500 520 900 520S1400 300 1700 120" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2" />
+      <path d="M-100 1130C250 930 540 740 920 740S1420 590 1700 400V500C1450 660 1290 820 930 830S330 1000 100 1180Z" fill="#03061C" opacity=".5" filter="url(#wp1s)" transform="translate(0 40)" />
+      <path d="M-100 1130C250 930 540 740 920 740S1420 590 1700 400V500C1450 660 1290 820 930 830S330 1000 100 1180Z" fill="url(#wp1b)" />
+      <path d="M1060 1100C1220 900 1440 820 1700 770V815C1480 870 1300 960 1150 1100Z" fill="url(#wp1c)" />
+    </svg>
+  </div>
 
-  <header class="nav" data-nav>
-    <a class="nav-logo" href="index.html" aria-label="nowmad group, inicio">
-      <span class="logo" aria-hidden="true"><span>n</span><svg class="logo-o" viewBox="6 18 76 76"><use href="#o" /></svg><span>wmad</span></span>
-    </a>
-    <nav aria-label="Principal">
-      <a href="agency.html" aria-current="page">Agency</a>
-      <a href="explorers-glass.html">Explorers</a>
+  <header class="menubar">
+    <a class="mb-logo" href="index.html" aria-label="nowmad group, inicio"><svg aria-hidden="true"><use href="#o" /></svg></a>
+    <b class="mb-app">nowmad agency</b>
+    <nav class="mb-menu" aria-label="Principal">
+      <a href="#nosotros">Nosotros</a>
+      <a href="#como">Cómo trabajamos</a>
+      <a href="#competencia">Competencia</a>
+      <a href="#propuesta">Tu propuesta</a>
+      <a href="#servicios">Servicios</a>
+      <a href="#preguntas">Ayuda</a>
       <a href="#contacto">Contacto</a>
     </nav>
+    <span class="mb-sp"></span>
+    <a class="mb-other" href="explorers-glass.html">nowmad explorers ↗</a>
+    <span class="mb-status"><i aria-hidden="true"></i>En línea</span>
+    <button type="button" class="mb-trophy" data-trophy aria-expanded="false" aria-controls="logros">Logros <b data-trophy-n>0</b>/<span data-trophy-t>8</span></button>
+    <span class="mb-clock">BUE <b data-clock>--:--</b></span>
   </header>
 
-  <main>
-    <!-- 1. Hero -->
-    <section class="hero hero-detail ag-hero">
-      <!-- Anclas del fondo 3D: la brújula viaja a la de la sección que está en pantalla -->
-      <div class="ag-anchor ag-anchor-hero" data-anchor data-pose="hero" aria-hidden="true"><span class="ag-earth-caption"><i class="ag-live" aria-hidden="true"></i><span data-earth-caption>La Tierra ahora mismo</span><span class="ag-drag-hint">· arrastrala para girarla</span></span></div>
+  <!-- Escritorio (portada) -->
+  <section class="desk" data-desk data-phase="0">
+    <div class="desk-copy">
+      <p class="desk-kicker">Desarrollo y growth · Buenos Aires</p>
+      <h1 class="desk-title" data-words>Lo construimos. <em>Lo hacemos crecer.</em></h1>
+      <p class="desk-sub"><b>Pegá tu web en el navegador</b> y la escaneamos en vivo: qué le pasa y cómo quedaría rehecha. ¿No tenés? Escribí qué querés construir.</p>
+      <p class="desk-try">Probá con: <button type="button" data-try="mercadolibre.com.ar">mercadolibre.com.ar</button> <button type="button" data-try="tu web">la tuya</button></p>
+    </div>
 
-      <div class="hero-meta">
-        <span>Desarrollo y growth</span>
-        <span>Buenos Aires · 34°36′S · 58°22′O</span>
-      </div>
+    <ul class="desk-icons" aria-label="Accesos">
+      <li><a href="#nosotros"><svg aria-hidden="true"><use href="#doc" /></svg><span>Nosotros.txt</span></a></li>
+      <li><a href="#como"><svg class="fold" aria-hidden="true"><use href="#folder" /></svg><span>Cómo trabajamos</span></a></li>
+      <li><a href="#competencia"><svg class="fold fold-map" aria-hidden="true"><use href="#folder" /></svg><span>Competencia</span></a></li>
+      <li><a href="#propuesta"><svg class="app-ico" aria-hidden="true"><use href="#o" /></svg><span>Propuesta.app</span></a></li>
+      <li><a href="#servicios"><svg class="fold" aria-hidden="true"><use href="#folder" /></svg><span>Servicios</span></a></li>
+      <li><a href="#contacto"><svg class="fold" aria-hidden="true"><use href="#folder" /></svg><span>Contacto</span></a></li>
+      <li><a href="explorers-glass.html"><svg class="fold fold-ex" aria-hidden="true"><use href="#folder" /></svg><span>explorers ↗</span></a></li>
+    </ul>
 
-      <div class="ag-hero-grid">
-        <div class="hero-brand">
-          <div class="hero-logo">
-            <span class="logo" role="img" aria-label="nowmad agency"><span>n</span><svg class="logo-o" viewBox="6 18 76 76" data-compass aria-hidden="true">
-              <circle cx="44" cy="56" r="31" fill="none" stroke="currentColor" stroke-width="14" />
-              <circle cx="44" cy="56" r="9" style="fill:var(--needle,currentColor)" />
-              <line data-needle x1="44" y1="56" x2="94" y2="6" stroke-width="6" stroke-linecap="round" style="stroke:var(--needle,currentColor)" />
-            </svg><span>wmad</span></span>
-            <span class="hero-group" aria-hidden="true">agency</span>
-          </div>
-          <h1 class="detail-title">Construimos tu producto digital y lo hacemos crecer.</h1>
-          <div class="ag-ctas">
-            <a class="btn" href="#contacto">Armá tu pedido <span aria-hidden="true">→</span></a>
-            <a class="ag-link" href="#servicios">Ver servicios</a>
-            <!-- Con proyectos cargados, volver a: <a class="ag-link" href="#proyectos">Ver proyectos</a> -->
-          </div>
-        </div>
-
-        <figure class="ag-term">
-          <div class="ag-term-bar" aria-hidden="true"><i></i><i></i><i></i><span>nowmad ~ agency</span></div>
-          <pre class="ag-term-body" data-perf>$ medir agency.html
-› esta página se mide en tu navegador con JavaScript.</pre>
-          <figcaption class="ag-term-cap">Medido en vivo en tu navegador, no es una captura.</figcaption>
-        </figure>
-      </div>
-    </section>
-
-    <!-- Viaje: de la órbita al Obelisco. El fondo 3D baja hasta Buenos Aires mientras scrolleás -->
-    <section class="ag-journey" id="buenos-aires" data-anchor data-pose="journey" data-journey aria-label="Desde Buenos Aires">
-      <div class="ag-journey-sticky">
-        <ol class="ag-journey-steps">
-          <li class="ag-step" data-step="0"><p class="label">Coordenadas</p><h2>34°36′S <span class="ag-accent">58°22′O</span></h2></li>
-          <li class="ag-step" data-step="1"><p class="label">Bajando</p><h2>Buenos Aires, Argentina.</h2></li>
-          <li class="ag-step" data-step="2"><p class="label">Microcentro</p><h2>Avenida 9 de Julio.</h2></li>
-          <li class="ag-step" data-step="3"><p class="label">67,5 metros · 1936</p><h2>El Obelisco.</h2></li>
-          <li class="ag-step" data-step="4"><p class="label">nowmad agency</p><h2>Acá estamos. <span class="ag-accent">Desde acá, para todo el mundo.</span></h2><a class="btn" href="#contacto">Hablemos <span aria-hidden="true">→</span></a></li>
-        </ol>
-        <div class="ag-journey-meter" aria-hidden="true"><span>Altura</span><b data-altitude>—</b></div>
-        <p class="ag-journey-credit"><span class="ag-city-credit" data-city-credit></span><span>Tierra: NASA Blue Marble y Black Marble</span></p>
-      </div>
-    </section>
-
-    <!-- 2. Servicios: Construir / Crecer -->
-    <section class="ag-services wrap" id="servicios">
-      <p class="label reveal">Servicios</p>
-      <h2 class="reveal">Lo construimos. <span class="ag-accent">Lo hacemos crecer.</span></h2>
-
-      <div class="ag-split" data-guide>
-        <div class="ag-col">
-          <p class="ag-col-title"><span>01</span> Construir</p>
-          <ol class="ag-cards">
-            <li class="ag-card" tabindex="0" data-guide-target><span class="value-n">A</span><h3>Webs</h3><p>Sitios y landing pages rápidos, que se leen bien en el celular y están hechos para convertir.</p></li>
-            <li class="ag-card" tabindex="0" data-guide-target><span class="value-n">B</span><h3>Sistemas a medida</h3><p>Paneles, APIs, bases de datos e integraciones: el backend que tu negocio necesita.</p></li>
-            <li class="ag-card" tabindex="0" data-guide-target><span class="value-n">C</span><h3>Inteligencia artificial</h3><p>Chatbots, automatizaciones y asistentes conectados a tus datos y tus procesos.</p></li>
-          </ol>
-        </div>
-
-        <div class="ag-guide" data-anchor data-pose="face" aria-hidden="true">
-          <svg viewBox="6 18 76 76" class="ag-guide-o">
-            <circle cx="44" cy="56" r="31" fill="none" stroke="currentColor" stroke-width="14" />
-            <circle cx="44" cy="56" r="9" fill="var(--cobalt)" />
-            <line data-guide-needle x1="44" y1="56" x2="94" y2="6" stroke="var(--cobalt)" stroke-width="6" stroke-linecap="round" />
-          </svg>
-        </div>
-
-        <div class="ag-col">
-          <p class="ag-col-title"><span>02</span> Crecer</p>
-          <ol class="ag-cards">
-            <li class="ag-card" tabindex="0" data-guide-target><span class="value-n">D</span><h3>Google Ads</h3><p>Campañas de búsqueda, display y YouTube para aparecer cuando te están buscando.</p></li>
-            <li class="ag-card" tabindex="0" data-guide-target><span class="value-n">E</span><h3>Meta Ads</h3><p>Anuncios en Instagram y Facebook para llegar a la gente indicada.</p></li>
-            <li class="ag-card" tabindex="0" data-guide-target><span class="value-n">F</span><h3>Medición</h3><p>Píxeles, conversiones y analítica para saber qué funciona y dónde poner la plata.</p></li>
-          </ol>
-        </div>
-      </div>
-    </section>
-
-    <!-- 3. Proyectos
-         Para sumar uno: copiá un <li class="ag-project">, completá los textos y la URL,
-         y poné una captura de página completa (alta, ~1440px de ancho) en assets/work/.
-         Reemplazá <div class="ag-shot-empty"> por <img src="assets/work/nombre.webp" alt="" loading="lazy" width="1440" height="4000">. -->
-    <!-- Oculta hasta tener proyectos reales: sacá el atributo hidden y volvé a apuntar el CTA del hero a #proyectos. -->
-    <section class="ag-work wrap" id="proyectos" data-anchor data-pose="side" hidden>
-      <p class="label reveal">Proyectos</p>
-      <h2 class="reveal">Hecho por nosotros.</h2>
-      <ul class="ag-work-list">
-        <li class="ag-project">
-          <a class="ag-frame" href="#proyectos">
-            <span class="ag-frame-bar" aria-hidden="true"><i></i><i></i><i></i><span class="ag-frame-url">completar.com</span></span>
-            <span class="ag-shot"><span class="ag-shot-empty">[ Captura del proyecto ]</span></span>
-          </a>
-          <div class="ag-project-info">
-            <p class="tag">[Rubro] · [Web + Meta Ads]</p>
-            <h3>[Nombre del proyecto]</h3>
-            <p>[Qué hicimos y qué cambió para el cliente.]</p>
-          </div>
-        </li>
-        <li class="ag-project">
-          <a class="ag-frame" href="#proyectos">
-            <span class="ag-frame-bar" aria-hidden="true"><i></i><i></i><i></i><span class="ag-frame-url">completar.com</span></span>
-            <span class="ag-shot"><span class="ag-shot-empty">[ Captura del proyecto ]</span></span>
-          </a>
-          <div class="ag-project-info">
-            <p class="tag">[Rubro] · [Sistema a medida]</p>
-            <h3>[Nombre del proyecto]</h3>
-            <p>[Qué hicimos y qué cambió para el cliente.]</p>
-          </div>
-        </li>
-      </ul>
-    </section>
-
-    <!-- 4. Cómo trabajamos -->
-    <section class="detail wrap ag-process">
-      <div class="ag-anchor ag-anchor-side" data-anchor data-pose="side" aria-hidden="true"></div>
-      <p class="label reveal">Cómo trabajamos</p>
-      <h2 class="reveal">Del brief a estar online.</h2>
-      <div class="route" data-route>
-        <span class="route-fill" aria-hidden="true"></span>
-        <svg class="route-marker" viewBox="0 0 100 100" aria-hidden="true"><use href="#o" /></svg>
-        <ol class="route-stops">
-          <li><span>01</span><h3>Escuchamos</h3><p>Qué hacés, a quién le vendés y qué necesitás.</p></li>
-          <li><span>02</span><h3>Proponemos</h3><p>Te decimos qué hacemos, en qué plazo y cuánto sale.</p></li>
-          <li><span>03</span><h3>Construimos</h3><p>Diseño y desarrollo, con avances que podés ver.</p></li>
-          <li><span>04</span><h3>Lanzamos</h3><p>Lo publicamos y lo ponemos a andar.</p></li>
-        </ol>
-      </div>
-    </section>
-
-    <!-- 5. Preguntas frecuentes (revisar respuestas) -->
-    <section class="ag-faq wrap">
-      <div class="ag-anchor ag-anchor-side" data-anchor data-pose="side2" aria-hidden="true"></div>
-      <p class="label reveal">Preguntas frecuentes</p>
-      <h2 class="reveal">Lo que nos suelen preguntar.</h2>
-      <div class="ag-faq-list">
-        <details>
-          <summary>¿Cuánto sale?</summary>
-          <p>Depende de lo que necesites. Primero te escuchamos y después te pasamos una propuesta con qué hacemos, en qué plazo y cuánto sale, antes de arrancar.</p>
-        </details>
-        <details>
-          <summary>¿Puedo contratar solo la web o solo los anuncios?</summary>
-          <p>Sí. Podés pedir un servicio solo o combinarlos: muchas veces conviene hacer la web y las campañas juntas para medir todo de punta a punta.</p>
-        </details>
-        <details>
-          <summary>¿Qué puedo automatizar con inteligencia artificial?</summary>
-          <p>Tareas repetitivas como responder consultas, ordenar datos o generar reportes. Te decimos qué tiene sentido automatizar en tu caso y qué no.</p>
-        </details>
-        <details>
-          <summary>¿Cómo veo cómo va el proyecto?</summary>
-          <p>Mientras construimos te mostramos avances que podés ver y probar, no solo al final.</p>
-        </details>
-      </div>
-    </section>
-
-    <section class="cross wrap">
-      <a class="cross-link reveal" href="explorers-glass.html"><span class="tag">La otra rama</span><strong>nowmad explorers <span aria-hidden="true">→</span></strong><span>Agencia de turismo</span></a>
-    </section>
-
-    <!-- 6. Contacto: armador de pedido
-         data-wa: número de WhatsApp en formato internacional sin + ni espacios (ej. 5491112345678).
-         Vacío = el mensaje sale por mail a data-mail. -->
-    <section class="contact" id="contacto">
-      <div class="ag-anchor ag-anchor-contact" data-anchor data-pose="rest" aria-hidden="true"></div>
-      <div class="wrap contact-in">
-        <p class="label">Contacto</p>
-        <h2>Contanos qué necesitás.</h2>
-
-        <form class="ag-builder" data-builder data-wa="" data-mail="hola@nowmad.travel" novalidate>
-          <fieldset>
-            <legend>¿Qué necesitás?</legend>
-            <div class="ag-chips">
-              <label class="ag-chip"><input type="checkbox" name="s" value="una web" /><span>Web</span></label>
-              <label class="ag-chip"><input type="checkbox" name="s" value="un sistema a medida" /><span>Sistema a medida</span></label>
-              <label class="ag-chip"><input type="checkbox" name="s" value="algo con inteligencia artificial" /><span>IA</span></label>
-              <label class="ag-chip"><input type="checkbox" name="s" value="campañas en Google Ads" /><span>Google Ads</span></label>
-              <label class="ag-chip"><input type="checkbox" name="s" value="campañas en Meta Ads" /><span>Meta Ads</span></label>
-              <label class="ag-chip"><input type="checkbox" name="s" value="medir mis resultados" /><span>Medición</span></label>
-            </div>
-          </fieldset>
-
-          <label class="ag-field">
-            <span>¿Cuál es tu rubro?</span>
-            <input type="text" name="rubro" maxlength="80" autocomplete="organization-title" placeholder="Ej.: inmobiliaria, gastronomía" />
-          </label>
-
-          <fieldset>
-            <legend>¿Para cuándo?</legend>
-            <div class="ag-chips">
-              <label class="ag-chip"><input type="radio" name="plazo" value="lo antes posible" /><span>Lo antes posible</span></label>
-              <label class="ag-chip"><input type="radio" name="plazo" value="para este mes" /><span>Este mes</span></label>
-              <label class="ag-chip"><input type="radio" name="plazo" value="sin apuro" /><span>Sin apuro</span></label>
-            </div>
-          </fieldset>
-
-          <div class="ag-preview">
-            <p class="tag">Tu mensaje</p>
-            <p class="ag-msg" data-msg aria-live="polite">¡Hola, nowmad agency! Quiero contarles un proyecto.</p>
-          </div>
-
-          <div class="ag-send">
-            <a class="btn" data-send href="mailto:hola@nowmad.travel?subject=Consulta%20nowmad%20agency">
-              <b data-send-label>Enviar por mail</b> <span aria-hidden="true">→</span>
-            </a>
-            <a class="ag-link" data-mail-link href="mailto:hola@nowmad.travel">hola@nowmad.travel</a>
-          </div>
+    <!-- Navegador: arma un sitio de ejemplo en cuatro etapas con lo que escribís en la barra -->
+    <div class="win w-browser" data-win data-stage>
+      <div class="win-bar" data-drag>
+        <span class="lights" aria-hidden="true"><i></i><i></i><i></i></span>
+        <form class="addr" data-hero-form>
+          <svg class="addr-lock" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 11V8a5 5 0 0 1 10 0v3M6 11h12v9H6z" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" /></svg>
+          <label class="sr" for="idea">Tu web o lo que querés construir</label>
+          <input id="idea" name="idea" type="text" placeholder="Pegá tu web (tunegocio.com) o escribí qué querés construir" autocomplete="off" maxlength="80" data-mock-input />
+          <span class="addr-url" data-m="url" aria-hidden="true">vista-previa</span>
+          <button type="submit" aria-label="Escanear o armar"><svg aria-hidden="true"><use href="#send" /></svg></button>
         </form>
       </div>
+      <div class="mock-body">
+        <div class="site" data-site aria-hidden="true">
+          <div class="site-nav" data-b="0"><span class="site-logo" data-m="name">Tu marca</span><span class="site-links"><i></i><i></i><i></i></span><span class="site-btn">Contacto</span></div>
+          <div class="site-hero">
+            <p class="site-kicker" data-b="1" data-m="kicker">Hecho a medida</p>
+            <p class="site-title" data-b="2" data-m="title">Tu idea, en línea</p>
+            <span class="site-cta" data-b="3" data-m="cta">Empezar</span>
+          </div>
+          <div class="site-cards" data-b="4"><span><i></i><b></b><b></b></span><span><i></i><b></b><b></b></span><span><i></i><b></b><b></b></span></div>
+        </div>
+        <pre class="mock-code" data-m-code aria-hidden="true"></pre>
+        <!-- Escáner: tu web real (captura de Microlink), el informe de Google PageSpeed y tu web rehecha -->
+        <div class="scan" data-scan hidden>
+          <div class="sv sv-shot is-on" data-sv="shot">
+            <div class="scan-load" data-scan-load><span class="ph-ring" aria-hidden="true"></span><p data-scan-msg>Abriendo tu web…</p></div>
+            <div class="scan-lock" data-scan-lock hidden>
+              <p class="scan-lock-k">Escaneo gratis usado</p>
+              <p data-scan-lock-msg></p>
+              <button type="button" class="scan-lock-btn" data-scan-lock-btn>Escribinos por WhatsApp →</button>
+            </div>
+            <img class="scan-img" data-scan-img alt="Captura de tu web" />
+            <span class="scan-beam" aria-hidden="true"></span>
+          </div>
+          <div class="sv sv-report" data-sv="report">
+            <div class="rings" data-rings></div>
+            <ul class="findings" data-findings></ul>
+          </div>
+          <div class="sv sv-new" data-sv="new">
+            <div class="nw" data-nw>
+              <div class="nw-nav"><img class="nw-logo" data-nw-logo alt="" /><b data-nw-name>Tu marca</b><span class="nw-links"><i></i><i></i><i></i></span><span class="nw-btn">Contacto</span></div>
+              <div class="nw-hero"><p class="nw-kicker">Tu web, rehecha por nowmad</p><p class="nw-title" data-nw-title>Tu negocio, más rápido</p><span class="nw-cta">Escribinos</span></div>
+              <div class="nw-cards"><span><i></i><b></b><b></b></span><span><i></i><b></b><b></b></span><span><i></i><b></b><b></b></span></div>
+            </div>
+            <span class="nw-badge">Boceto con tu logo y tus colores</span>
+          </div>
+        </div>
+      </div>
+      <nav class="tabs" aria-label="Etapas del ejemplo">
+        <button type="button" class="tab is-on" data-chapter="0"><i><b></b></i>01 Diseño</button>
+        <button type="button" class="tab" data-chapter="1"><i><b></b></i>02 Código</button>
+        <button type="button" class="tab" data-chapter="2"><i><b></b></i>03 Lanzamiento</button>
+        <button type="button" class="tab" data-chapter="3"><i><b></b></i>04 Crecimiento</button>
+      </nav>
+      <nav class="tabs scan-tabs" data-scan-tabs aria-label="Resultado del escaneo" hidden>
+        <button type="button" class="tab is-on" data-sv-btn="shot">Tu web hoy</button>
+        <button type="button" class="tab" data-sv-btn="report">Informe</button>
+        <button type="button" class="tab" data-sv-btn="new">Tu web nueva</button>
+        <button type="button" class="tab scan-cta" data-scan-cta>Mandame el informe →</button>
+      </nav>
+    </div>
+
+    <div class="win w-stats" data-win aria-hidden="true">
+      <div class="win-bar" data-drag><span class="lights"><i></i><i></i><i></i></span><span class="win-title">Métricas</span></div>
+      <p class="st-k" data-st-k>Consultas este mes</p>
+      <p class="st-v" data-m-count>0</p>
+      <svg class="st-spark" viewBox="0 0 200 50" preserveAspectRatio="none"><path pathLength="1" d="M0 46 L25 42 L50 44 L75 34 L100 36 L125 24 L150 26 L175 12 L200 6" /></svg>
+    </div>
+
+    <div class="win w-term" data-win>
+      <div class="win-bar" data-drag><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="win-title">terminal — esta página</span></div>
+      <pre class="term-body" data-perf>$ medir agency.html
+› esta página se mide en tu navegador con JavaScript.</pre>
+    </div>
+
+    <div class="win w-chat" data-win aria-hidden="true">
+      <div class="win-bar" data-drag><span class="lights"><i></i><i></i><i></i></span><span class="win-title">Asistente IA</span></div>
+      <div class="wc-body" data-chat-demo>
+        <p class="in">¿Tienen turno mañana?</p>
+        <p class="out">Sí: 10:00 o 15:30. ¿Te reservo uno?</p>
+        <p class="in">15:30</p>
+        <p class="out">Listo, quedó reservado.</p>
+      </div>
+    </div>
+
+    <!-- Notificaciones del sistema: salen cuando el sitio se publica y cuando entra una consulta -->
+    <div class="notif" data-notif aria-hidden="true">
+      <span class="notif-ico"><svg><use href="#o" /></svg></span>
+      <span class="notif-txt"><b data-notif-title>Publicado</b><span data-notif-body>Tu sitio está online.</span></span>
+      <small>ahora</small>
+    </div>
+  </section>
+
+  <main>
+    <!-- Nosotros: corto y al grano -->
+    <section class="app app-paper" id="nosotros">
+      <div class="win win-doc win-about reveal">
+        <div class="win-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="win-title">Nosotros.txt</span></div>
+        <div class="doc-page">
+          <p class="app-label">(01) Nosotros</p>
+          <h2 data-words data-scrub>Webs y sistemas que <em>venden.</em></h2>
+          <p class="doc-lead">La rama digital de <a href="index.html">nowmad group</a>. Te escuchamos, te proponemos algo a la medida de tu presupuesto y lo hacemos crecer<span class="doc-caret" aria-hidden="true"></span></p>
+          <ul class="about-tags"><li>Webs</li><li>Sistemas</li><li>Automatización</li><li>Anuncios</li><li>Todo a medida</li></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cómo trabajamos: vos arrastrás tu proyecto por el tablero hasta que queda online -->
+    <section class="app app-plan" id="como" data-board>
+      <div class="win win-board reveal">
+        <div class="win-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="win-title">Tablero — Tu proyecto</span></div>
+        <div class="board-head">
+          <p class="app-label">(02) Cómo trabajamos</p>
+          <h2>Del brief <em>a estar online</em>.</h2>
+          <p class="board-hint">Arrastrá tu proyecto de columna en columna (o tocá “Avanzar”) y mirá cómo sigue.</p>
+        </div>
+        <ol class="board" data-cols>
+          <li class="col is-on" data-col="0"><p class="col-h"><span>01</span> Analizamos</p><p class="col-d">Tu negocio, qué querés lograr, qué tenés hoy y con qué presupuesto contás.</p></li>
+          <li class="col" data-col="1"><p class="col-h"><span>02</span> Te proponemos</p><p class="col-d">Un proyecto según lo que necesitás y tu presupuesto: qué hacemos, en qué plazo y cuánto sale. Por escrito.</p></li>
+          <li class="col" data-col="2"><p class="col-h"><span>03</span> Construimos</p><p class="col-d">Diseño y desarrollo con avances que podés ver y probar.</p></li>
+          <li class="col" data-col="3"><p class="col-h"><span>04</span> Lanzamos</p><p class="col-d">Lo publicamos, lo medimos y lo ponemos a vender.</p></li>
+        </ol>
+        <div class="card" data-card>
+          <p class="card-tags" aria-hidden="true"><i>Web</i><i>Automatización</i></p>
+          <b>Tu proyecto</b>
+          <p class="card-meta"><span class="card-av" aria-hidden="true"><svg><use href="#o" /></svg></span><span data-card-state aria-live="polite">En análisis</span></p>
+          <button type="button" class="card-next" data-card-next>Avanzar →</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tu competencia: negocios reales cerca, con datos de OpenStreetMap (Nominatim + Overpass) en un mapa de Leaflet -->
+    <section class="app" id="competencia">
+      <div class="win win-map reveal">
+        <div class="win-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="win-title">Mapas — Tu competencia</span></div>
+        <div class="cmp">
+          <form class="cmp-side" data-cmp-form>
+            <p class="app-label">(03) Tu competencia</p>
+            <h2>¿Cuántos compiten <em>con vos</em>?</h2>
+            <p class="cmp-intro">Elegí tu rubro y tu zona: te mostramos los negocios reales que tenés cerca. Cuando alguien busca lo que vendés, ¿te encuentra a vos o a ellos?</p>
+            <label class="cmp-f"><span>Rubro</span><select name="rubro"><option value="gimnasio">Gimnasio</option><option value="restaurante">Restaurante</option><option value="cafe">Café</option><option value="bar">Bar</option><option value="inmobiliaria">Inmobiliaria</option><option value="odontologo">Odontólogo</option><option value="medico">Consultorio o clínica</option><option value="peluqueria">Peluquería o barbería</option><option value="estetica">Estética o spa</option><option value="ropa">Tienda de ropa</option><option value="veterinaria">Veterinaria</option><option value="farmacia">Farmacia</option><option value="hotel">Hotel u hospedaje</option><option value="panaderia">Panadería</option><option value="ferreteria">Ferretería</option><option value="autos">Taller mecánico</option><option value="optica">Óptica</option></select></label>
+            <label class="cmp-f"><span>Ciudad o barrio</span><input name="lugar" type="text" autocomplete="address-level2" maxlength="80" placeholder="Ej.: Corrientes, Palermo, Rosario" /></label>
+            <label class="cmp-f"><span>Radio</span><select name="radio"><option value="1000">1 km</option><option value="3000" selected>3 km</option><option value="5000">5 km</option></select></label>
+            <div class="cmp-actions"><button type="submit" class="cmp-go">Buscar mi competencia</button><button type="button" class="cmp-geo" data-cmp-geo>Usar mi ubicación</button></div>
+            <div class="cmp-result" data-cmp-result aria-live="polite"></div>
+          </form>
+          <div class="cmp-map" data-cmp-map><div class="cmp-empty" data-cmp-empty><svg aria-hidden="true"><use href="#o" /></svg><p>Tu mapa aparece acá.</p></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tu propuesta: asistente tipo instalador. Analiza qué necesitás, qué tenés y tu presupuesto,
+         y arma una propuesta inicial. "Pedir esta propuesta" la carga en el WhatsApp de contacto. -->
+    <section class="app" id="propuesta">
+      <form class="win win-wiz reveal" data-wiz novalidate>
+        <div class="win-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="win-title">Asistente de propuesta</span></div>
+        <div class="wiz">
+          <aside class="wiz-side">
+            <svg class="wiz-o" aria-hidden="true"><use href="#o" /></svg>
+            <ol class="wiz-steps" data-wiz-steps>
+              <li class="is-on">Objetivo</li>
+              <li>Situación</li>
+              <li>Presupuesto</li>
+              <li>Tu propuesta</li>
+            </ol>
+          </aside>
+          <div class="wiz-main">
+            <p class="app-label">(04) Tu propuesta</p>
+            <h2>Analizamos qué necesitás. <em>Te proponemos a tu medida.</em></h2>
+            <p class="wiz-intro">Antes de cotizar, entendemos tu negocio: qué querés lograr, qué tenés hoy y con qué presupuesto contás. Con eso armamos una propuesta pensada para vos, y si el presupuesto no alcanza para todo, te decimos por dónde conviene empezar.</p>
+
+            <fieldset class="wiz-step is-on" data-step="0">
+              <legend>¿Qué querés lograr? <small>Podés elegir varias.</small></legend>
+              <label class="opt"><input type="checkbox" name="goal" value="vender" /><span><b>Vender online</b>Que te compren desde la web.</span></label>
+              <label class="opt"><input type="checkbox" name="goal" value="consultas" /><span><b>Más consultas</b>Que te escriban más clientes.</span></label>
+              <label class="opt"><input type="checkbox" name="goal" value="google" /><span><b>Aparecer en Google</b>Que te encuentren cuando te buscan.</span></label>
+              <label class="opt"><input type="checkbox" name="goal" value="procesos" /><span><b>Automatizar y conectar todo</b>Que todo se vincule solo y lo manejes desde el celular.</span></label>
+              <label class="opt"><input type="checkbox" name="goal" value="ia" /><span><b>Automatizar con IA</b>Responder y agendar sin estar encima.</span></label>
+            </fieldset>
+
+            <fieldset class="wiz-step" data-step="1">
+              <legend>¿Qué tenés hoy?</legend>
+              <label class="opt"><input type="radio" name="now" value="nada" /><span><b>Nada todavía</b>Arrancamos de cero.</span></label>
+              <label class="opt"><input type="radio" name="now" value="redes" /><span><b>Solo redes</b>Instagram, Facebook o WhatsApp.</span></label>
+              <label class="opt"><input type="radio" name="now" value="vieja" /><span><b>Una web que no me convence</b>Lenta, vieja o que no vende.</span></label>
+              <label class="opt"><input type="radio" name="now" value="web" /><span><b>Una web que funciona</b>Quiero hacerla crecer.</span></label>
+            </fieldset>
+
+            <fieldset class="wiz-step" data-step="2">
+              <legend>¿Con qué presupuesto contás?</legend>
+              <label class="opt"><input type="radio" name="budget" value="ajustado" /><span><b>Ajustado</b>Arrancar con lo justo y crecer de a poco.</span></label>
+              <label class="opt"><input type="radio" name="budget" value="medio" /><span><b>Intermedio</b>Lo principal ahora, el resto después.</span></label>
+              <label class="opt"><input type="radio" name="budget" value="amplio" /><span><b>Amplio</b>Hacerlo completo de una.</span></label>
+              <label class="opt"><input type="radio" name="budget" value="nose" /><span><b>No sé</b>Quiero que me asesoren.</span></label>
+              <label class="wiz-amount"><span>Monto aproximado <small>(opcional)</small></span><input type="text" name="amount" inputmode="text" maxlength="40" placeholder="Ej.: $500.000 o USD 1.000" /></label>
+            </fieldset>
+
+            <div class="wiz-result" data-step="3" hidden>
+              <p class="wiz-r-h">Tu propuesta inicial</p>
+              <p class="wiz-r-sub" data-wiz-summary></p>
+              <ol class="wiz-plan" data-wiz-plan></ol>
+              <p class="wiz-note">Es una guía para arrancar la charla. La propuesta final, con plazos y precio, te la pasamos por escrito después de entender bien tu negocio.</p>
+              <a class="wiz-go" href="#contacto" data-wiz-send>Pedir esta propuesta <span aria-hidden="true">→</span></a>
+            </div>
+
+            <div class="wiz-nav">
+              <button type="button" class="wiz-back" data-wiz-back hidden>← Atrás</button>
+              <span class="wiz-count" data-wiz-count>Paso 1 de 3</span>
+              <button type="button" class="wiz-next" data-wiz-next>Siguiente</button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </section>
+
+    <!-- Servicios: un celular gigante; arrastrás una app adentro (o la tocás) y funciona -->
+    <section class="app app-stage" id="servicios">
+      <div class="stage2">
+        <div class="st-copy">
+          <p class="app-label">(05) Servicios</p>
+          <h2>Qué <em>hacemos</em>.</h2>
+          <p class="st-hint">Arrastrá una app al celular, o tocala, y mirá cómo funciona.</p>
+          <ul class="apps" data-apps></ul>
+        </div>
+        <div class="phone-wrap">
+          <div class="phone" data-phone>
+            <span class="phone-island" aria-hidden="true"></span>
+            <div class="phone-screen" data-phone-screen>
+              <div class="phone-home" data-phone-home><span class="ph-time" data-clock>--:--</span><p>Soltá una app acá</p><span class="ph-drop" aria-hidden="true"></span></div>
+              <div class="phone-install" data-phone-install hidden><span class="ph-ring" aria-hidden="true"></span><p>Instalando <b data-phone-name></b>…</p></div>
+              <div class="phone-app" data-phone-app hidden><p class="ph-bar"><b data-phone-title></b><button type="button" data-phone-close aria-label="Cerrar la app">✕</button></p><div class="ph-demo" data-phone-demo></div></div>
+            </div>
+          </div>
+          <div class="ph-info" data-phone-info aria-live="polite"><p class="ph-info-d">Hay siete apps para probar.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Preguntas: un asistente que responde. Las preguntas y respuestas de abajo son la fuente
+         (quedan para lectores de pantalla); revisar respuestas. -->
+    <section class="app app-lilac" id="preguntas">
+      <div class="win win-bot reveal">
+        <div class="win-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="win-title">Asistente — Preguntale a nowmad</span></div>
+        <div class="bot">
+          <div class="bot-head">
+            <p class="app-label">(06) Preguntas frecuentes</p>
+            <h2>Lo que nos <em>suelen preguntar</em>.</h2>
+          </div>
+          <div class="bot-log" data-bot-log aria-live="polite">
+            <p class="b-in">¡Hola! Soy el asistente de nowmad. Tocá una pregunta o escribí la tuya.</p>
+          </div>
+          <div class="bot-chips" data-bot-chips></div>
+          <form class="bot-form" data-bot-form>
+            <label class="sr" for="bot-q">Tu pregunta</label>
+            <input id="bot-q" type="text" autocomplete="off" maxlength="140" placeholder="Escribí tu pregunta: precio, celular, IA…" />
+            <button type="submit" aria-label="Preguntar"><svg aria-hidden="true"><use href="#send" /></svg></button>
+          </form>
+          <div class="sr" data-faq>
+            <details><summary>¿Cuánto sale?</summary><p>Depende de lo que necesites y del presupuesto que tengas. Primero analizamos tu caso y después te pasamos una propuesta por escrito con qué hacemos, en qué plazo y cuánto sale. Si el presupuesto es ajustado, armamos el proyecto por etapas: empezamos por lo que más impacto tiene.</p></details>
+            <details><summary>¿Puedo contratar solo la web o solo los anuncios?</summary><p>Sí. Podés pedir un servicio solo o combinarlos: muchas veces conviene hacer la web y las campañas juntas para medir todo de punta a punta.</p></details>
+            <details><summary>¿Necesito inteligencia artificial para automatizar?</summary><p>No. La mayoría de las automatizaciones no usan IA: conectamos tu web, los pagos, el stock, los turnos, la facturación y WhatsApp para que cuando pasa algo, lo demás se haga solo. La IA la sumamos únicamente cuando aporta, por ejemplo para responder consultas.</p></details>
+            <details><summary>¿Puedo manejar todo desde el celular?</summary><p>Sí. Lo armamos para que veas ventas, pedidos, turnos y avisos desde el celular, y para que te lleguen notificaciones cuando pasa algo importante. Todo a medida de cómo trabaja tu negocio.</p></details>
+            <details><summary>¿Qué puedo automatizar con inteligencia artificial?</summary><p>Tareas como responder consultas, agendar turnos, ordenar datos o generar reportes. Te decimos qué tiene sentido automatizar con IA en tu caso y qué conviene resolver sin ella.</p></details>
+            <details><summary>¿Cómo veo cómo va el proyecto?</summary><p>Mientras construimos te mostramos avances que podés ver y probar, no solo al final.</p></details>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Contacto: WhatsApp con respuestas rápidas.
+         data-wa: número en formato internacional sin + ni espacios (ej. 5491112345678). Vacío = sale por mail a data-mail. -->
+    <section class="app" id="contacto">
+      <form class="win win-wa reveal" data-builder data-wa="5493795054206" data-mail="joaquinnowmad@gmail.com" novalidate>
+        <div class="win-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="win-title">WhatsApp</span></div>
+        <div class="wa">
+          <aside class="wa-side">
+            <p class="wa-side-h">Chats</p>
+            <span class="wa-row is-on"><span class="wa-av"><svg aria-hidden="true"><use href="#o" /></svg></span><span><b>nowmad agency</b><small>en línea</small></span></span>
+            <a class="wa-row" href="explorers-glass.html"><span class="wa-av wa-av-ex"><svg aria-hidden="true"><use href="#o" /></svg></span><span><b>nowmad explorers</b><small>Viajes a medida ↗</small></span></a>
+          </aside>
+          <div class="wa-main">
+            <div class="wa-head"><span class="wa-av"><svg aria-hidden="true"><use href="#o" /></svg></span><span><b>nowmad agency</b><small>en línea</small></span><p class="app-label">(07) Contacto</p></div>
+            <div class="wa-body">
+              <p class="wa-day">Hoy</p>
+              <p class="wa-in">¡Hola! Contanos qué necesitás. Tocá lo que corresponda y armamos el mensaje.</p>
+              <fieldset class="wa-quick">
+                <legend>¿Qué necesitás?</legend>
+                <label class="chip"><input type="checkbox" name="s" value="una web" /><span>Web</span></label>
+                <label class="chip"><input type="checkbox" name="s" value="un sistema a medida" /><span>Sistema a medida</span></label>
+                <label class="chip"><input type="checkbox" name="s" value="automatizar mi negocio" /><span>Automatizar</span></label>
+                <label class="chip"><input type="checkbox" name="s" value="algo con inteligencia artificial" /><span>IA</span></label>
+                <label class="chip"><input type="checkbox" name="s" value="campañas en Google Ads" /><span>Google Ads</span></label>
+                <label class="chip"><input type="checkbox" name="s" value="campañas en Meta Ads" /><span>Meta Ads</span></label>
+                <label class="chip"><input type="checkbox" name="s" value="medir mis resultados" /><span>Medición</span></label>
+              </fieldset>
+              <fieldset class="wa-quick">
+                <legend>¿Con qué presupuesto contás?</legend>
+                <label class="chip"><input type="radio" name="budget" value="ajustado" /><span>Ajustado</span></label>
+                <label class="chip"><input type="radio" name="budget" value="medio" /><span>Intermedio</span></label>
+                <label class="chip"><input type="radio" name="budget" value="amplio" /><span>Amplio</span></label>
+                <label class="chip"><input type="radio" name="budget" value="nose" /><span>Quiero que me asesoren</span></label>
+                <input type="hidden" name="amount" value="" />
+              </fieldset>
+              <fieldset class="wa-quick">
+                <legend>¿Para cuándo?</legend>
+                <label class="chip"><input type="radio" name="plazo" value="lo antes posible" /><span>Lo antes posible</span></label>
+                <label class="chip"><input type="radio" name="plazo" value="para este mes" /><span>Este mes</span></label>
+                <label class="chip"><input type="radio" name="plazo" value="sin apuro" /><span>Sin apuro</span></label>
+              </fieldset>
+              <p class="wa-out"><span class="msg" data-msg aria-live="polite">¡Hola, nowmad agency! Quiero contarles un proyecto.</span><small><span data-now>12:00</span> ✓✓</small></p>
+            </div>
+            <div class="wa-compose">
+              <label class="sr" for="idea2">¿Qué querés construir?</label>
+              <input id="idea2" type="text" name="idea" maxlength="120" placeholder="Escribí qué querés construir…" />
+              <a class="wa-send" data-send href="https://wa.me/5493795054206" aria-label="Enviar"><svg aria-hidden="true"><use href="#send" /></svg><b data-send-label>Enviar por WhatsApp</b></a>
+            </div>
+          </div>
+        </div>
+      </form>
     </section>
   </main>
 
-  <footer class="footer wrap">
-    <a href="index.html" aria-label="nowmad group, inicio"><span class="logo" aria-hidden="true"><span>n</span><svg class="logo-o" viewBox="6 18 76 76"><use href="#o" /></svg><span>wmad</span></span></a>
-    <p>Buenos Aires · 34°36′S · 58°22′O</p>
-    <p>© <span data-year>2026</span> nowmad group</p>
+  <!-- Logros: se desbloquean jugando con la página -->
+  <div class="trophies" id="logros" data-trophies hidden>
+    <p class="tr-h">Logros</p>
+    <ul data-trophy-list></ul>
+    <p class="tr-foot">Seguí tocando cosas: hay más.</p>
+  </div>
+  <div class="toast" data-toast role="status" aria-live="polite"><span class="toast-ico" aria-hidden="true">★</span><span><b data-toast-title></b><span data-toast-body></span></span></div>
+  <div class="confetti" data-confetti aria-hidden="true"></div>
+
+  <footer class="foot">
+    <p><a href="mailto:joaquinnowmad@gmail.com">joaquinnowmad@gmail.com</a> · <a href="https://wa.me/5493795054206">WhatsApp +54 9 379 505-4206</a></p>
+    <p>© <span data-year>2026</span> nowmad group · Buenos Aires · 34°36′S · 58°22′O · Los ejemplos de esta página son ilustrativos.</p>
   </footer>
 
-  <a class="nm-cta" href="#contacto" data-chat onclick="window.open(this.getAttribute('data-go')||'https://'+'wa'+'.me/?text=Hola%20nowmad!%20Quiero%20hacer%20una%20consulta.','_blank','noopener');return false;" aria-label="Escribinos por mensaje"><span class="nm-cta-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2a8.8 8.8 0 0 0-7.6 13.2L3.2 20.8l4.5-1.2A8.8 8.8 0 1 0 12 3.2Z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" /><path d="M9.2 7.6c.3 0 .5.1.6.4l.8 1.8c.1.2 0 .5-.1.7l-.6.7c.5 1.1 1.7 2.3 2.9 2.9l.7-.6c.2-.2.5-.2.7-.1l1.8.8c.3.1.4.4.4.6-.1 1.3-1.1 2.1-2.3 2-3.4-.3-6.5-3.4-6.8-6.8-.1-1.2.7-2.3 1.9-2.4Z" fill="currentColor" /></svg><i class="nm-cta-dot" aria-hidden="true"></i></span><span class="nm-cta-text"><small>WhatsApp</small><span>Escribinos</span></span></a></body>
+  <!-- Vista previa: la demo en vivo de cada servicio -->
+  <div class="ql" data-ql role="dialog" aria-modal="false" aria-labelledby="ql-title" hidden>
+    <div class="win win-ql">
+      <div class="win-bar" data-drag><span class="lights"><button type="button" class="ql-close" data-ql-close aria-label="Cerrar"></button><i></i><i></i></span><span class="win-title" id="ql-title" data-ql-title>Vista previa</span></div>
+      <div class="ql-body">
+        <div class="demo demo-web" data-demo="web">
+          <div class="dw-page"><b class="dw-nav"></b><b class="dw-h1"></b><b class="dw-h2"></b><b class="dw-btn"></b><span class="dw-grid"><i></i><i></i><i></i></span></div>
+          <span class="dw-score">Velocidad <b>98</b> · Celular <b>OK</b></span>
+        </div>
+        <div class="demo demo-sys" data-demo="sys">
+          <p class="ds-kpi"><span>Pedidos hoy</span><b>128</b></p>
+          <ul class="ds-rows">
+            <li><span>#1042</span><em>Mercado Pago</em><i class="ok">Pagado</i></li>
+            <li><span>#1041</span><em>Retiro en local</em><i class="wait">Armando</i></li>
+            <li><span>#1040</span><em>Envío a domicilio</em><i class="ok">Pagado</i></li>
+            <li><span>#1039</span><em>Transferencia</em><i class="ok">Pagado</i></li>
+          </ul>
+        </div>
+        <div class="demo demo-ia" data-demo="ia">
+          <p class="di-msg di-in">¿Tienen turno mañana?</p>
+          <p class="di-typing"><i></i><i></i><i></i></p>
+          <p class="di-msg di-out">Sí: a las 10:00 o 15:30. ¿Te reservo uno?</p>
+          <p class="di-msg di-in di-2">15:30</p>
+          <p class="di-msg di-out di-2">Listo, quedó reservado. Te mando el recordatorio.</p>
+        </div>
+        <div class="demo demo-google" data-demo="google">
+          <p class="dg-search"><span>dentista en recoleta</span></p>
+          <div class="dg-result dg-ad"><small>Patrocinado · tuconsultorio.com.ar</small><b>Turnos hoy en Recoleta | Sacá turno online</b><em>Atención sin espera. Obras sociales.</em></div>
+          <div class="dg-result"><small>otrositio.com</small><b>Odontólogos en Recoleta</b><em>Listado de profesionales.</em></div>
+          <div class="dg-result"><small>directorio.com</small><b>Clínicas dentales</b><em>Opiniones y teléfonos.</em></div>
+        </div>
+        <div class="demo demo-meta" data-demo="meta">
+          <div class="dm-phone">
+            <p class="dm-bars"><i></i><i></i><i></i></p>
+            <p class="dm-who"><i></i>tumarca <small>Publicidad</small></p>
+            <div class="dm-media"><b>Nueva colección</b><span>Envíos a todo el país</span></div>
+            <span class="dm-cta">Comprar ahora</span>
+          </div>
+        </div>
+        <div class="demo demo-auto" data-demo="auto">
+          <p class="da-h">Una venta, y todo pasa solo:</p>
+          <ol class="da-flow">
+            <li><i>01</i><b>Venta en tu web</b><span>Pedido #2087 · $48.900</span></li>
+            <li><i>02</i><b>Pago aprobado</b><span>Mercado Pago</span></li>
+            <li><i>03</i><b>Stock actualizado</b><span>Quedan 12 unidades</span></li>
+            <li><i>04</i><b>Factura enviada</b><span>Al mail del cliente</span></li>
+            <li><i>05</i><b>Aviso a tu celular</b><span>"Nueva venta, ya está todo listo"</span></li>
+          </ol>
+          <p class="da-foot">Sin IA. Todo conectado y en tu celular.</p>
+        </div>
+        <div class="demo demo-data" data-demo="data">
+          <p class="dd-row"><span>Visitas</span><b style="--w:100%"></b><em>2.340</em></p>
+          <p class="dd-row"><span>Consultas</span><b style="--w:34%"></b><em>796</em></p>
+          <p class="dd-row"><span>Ventas</span><b style="--w:12%"></b><em>281</em></p>
+          <svg class="dd-spark" viewBox="0 0 200 50" preserveAspectRatio="none"><path pathLength="1" d="M0 44 L20 40 L40 42 L60 34 L80 36 L100 26 L120 28 L140 18 L160 20 L180 10 L200 6" /></svg>
+        </div>
+      </div>
+      <p class="ql-foot"><span>Ejemplo en vivo</span><a href="#contacto" data-ql-pick>Lo quiero →</a></p>
+    </div>
+  </div>
+
+  <!-- Dock: fijo en toda la página -->
+  <nav class="dock" aria-label="Demos de servicios y contacto">
+    <span class="dock-h" aria-hidden="true">Probá<br />una demo</span>
+    <button type="button" class="dock-app ic-web" data-open="web"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M3 9h18" stroke="currentColor" stroke-width="1.8" /><circle cx="6" cy="6.8" r=".9" fill="currentColor" /><circle cx="8.6" cy="6.8" r=".9" fill="currentColor" /><path d="M7 13h6M7 16h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg></span><span class="dock-l">Webs</span></button>
+    <button type="button" class="dock-app ic-sys" data-open="sys"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="2.8" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M5 6v6c0 1.6 3.1 2.8 7 2.8s7-1.2 7-2.8V6M5 12v6c0 1.6 3.1 2.8 7 2.8s7-1.2 7-2.8v-6" fill="none" stroke="currentColor" stroke-width="1.8" /></svg></span><span class="dock-l">Sistemas</span></button>
+    <button type="button" class="dock-app ic-auto" data-open="auto"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="6" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8" /><circle cx="19" cy="6" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8" /><circle cx="12" cy="18" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M7.4 6h9.2M6.3 8.1l4.4 7.7M17.7 8.1l-4.4 7.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg></span><span class="dock-l">Automatizar</span></button>
+    <button type="button" class="dock-app ic-ia" data-open="ia"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3.5c.6 3.6 2.4 5.4 6 6-3.6.6-5.4 2.4-6 6-.6-3.6-2.4-5.4-6-6 3.6-.6 5.4-2.4 6-6ZM17.5 13.5c.3 1.8 1.2 2.7 3 3-1.8.3-2.7 1.2-3 3-.3-1.8-1.2-2.7-3-3 1.8-.3 2.7-1.2 3-3Z" fill="currentColor" /></svg></span><span class="dock-l">IA</span></button>
+    <button type="button" class="dock-app ic-google" data-open="google"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="2" /><path d="m15 15 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" /><path d="M8 12.5 10 10l1.6 1.6 2-2.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span class="dock-l">Google Ads</span></button>
+    <button type="button" class="dock-app ic-meta" data-open="meta"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.8" width="10" height="18.4" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M9.5 6h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /><path d="M12 15.6s-2.6-1.6-2.6-3.3a1.4 1.4 0 0 1 2.6-.8 1.4 1.4 0 0 1 2.6.8c0 1.7-2.6 3.3-2.6 3.3Z" fill="currentColor" /></svg></span><span class="dock-l">Meta Ads</span></button>
+    <button type="button" class="dock-app ic-data" data-open="data"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19.5V13M10 19.5V9M15 19.5v-4M20 19.5V5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /><path d="M3.5 19.5h17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg></span><span class="dock-l">Medición</span></button>
+    <span class="dock-sep" aria-hidden="true"></span>
+    <a class="dock-app ic-wa" href="#contacto" data-chat><span class="ic"><svg aria-hidden="true"><use href="#chat" /></svg><i class="dock-badge" aria-hidden="true">1</i></span><span class="dock-l">Contacto</span></a>
+  </nav>
+</body>
 </html>
