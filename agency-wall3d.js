@@ -85,6 +85,13 @@ function cardTexture() {
   for (let i = 0; i < txt.length; i++) { ctx.save(); ctx.rotate(Math.PI + i * step); ctx.fillText(txt[i], 0, R); ctx.restore(); }
   return new THREE.CanvasTexture(cv);
 }
+function softDot(inner, outer) {
+  const S = 128, cv = document.createElement("canvas"); cv.width = cv.height = S;
+  const ctx = cv.getContext("2d"), g = ctx.createRadialGradient(S / 2, S / 2, 0, S / 2, S / 2, S / 2);
+  g.addColorStop(0, inner); g.addColorStop(1, outer);
+  ctx.fillStyle = g; ctx.fillRect(0, 0, S, S);
+  const t = new THREE.CanvasTexture(cv); t.colorSpace = THREE.SRGBColorSpace; return t;
+}
 function ring(ctx, r, w) { ctx.lineWidth = w; ctx.beginPath(); ctx.arc(0, 0, r, 0, Math.PI * 2); ctx.stroke(); }
 function line(ctx, deg, r1, r2) { const a = deg * Math.PI / 180, s = Math.sin(a), co = -Math.cos(a); ctx.beginPath(); ctx.moveTo(s * r1, co * r1); ctx.lineTo(s * r2, co * r2); ctx.stroke(); }
 
@@ -129,7 +136,7 @@ function start() {
   const gold = new THREE.MeshPhysicalMaterial({ color: 0xe0b862, metalness: 1, roughness: 0.16, clearcoat: 1 });
   const enamel = new THREE.MeshPhysicalMaterial({ color: 0xe8dcc5, metalness: 0, roughness: 0.35, clearcoat: 1, clearcoatRoughness: 0.1, flatShading: true });
   const bronzeFace = new THREE.MeshPhysicalMaterial({ color: 0x8a6a3f, metalness: 0.9, roughness: 0.3, clearcoat: 0.8, flatShading: true });
-  const glass = new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0, roughness: 0.02, transmission: 1, thickness: 0.25, ior: 1.5, clearcoat: 1, transparent: true });
+  const glass = new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0, roughness: 0.06, transmission: 1, thickness: 0.25, ior: 1.5, clearcoat: 1, clearcoatRoughness: 0.08, specularIntensity: 0.6, transparent: true });
   const dialTex = dialTexture(), cardTex = cardTexture();
   [dialTex, cardTex].forEach((t) => { t.colorSpace = THREE.SRGBColorSpace; t.anisotropy = aniso; });
   const dialMat = new THREE.MeshPhysicalMaterial({ map: dialTex, color: 0xc9b493, roughness: 0.62, clearcoat: 0.25, envMapIntensity: 0.5 });
@@ -210,8 +217,12 @@ function start() {
   const ringBg = new THREE.Group(); ringBg.add(ringB);
   gimbal.add(ringAg, ringBg);
 
+  // Halo cálido detrás, para que la brújula se despegue del fondo
+  const halo = new THREE.Sprite(new THREE.SpriteMaterial({ map: softDot("rgba(255,200,130,.55)", "rgba(255,200,130,0)"), depthWrite: false, transparent: true, blending: THREE.AdditiveBlending }));
+  halo.scale.set(10, 10, 1); halo.position.z = -1.6;
+
   const holder = new THREE.Group();
-  holder.add(compass, gimbal);
+  holder.add(halo, compass, gimbal);
   scene.add(holder);
 
   // Luces cálidas de estudio
@@ -219,7 +230,7 @@ function start() {
   const key = new THREE.DirectionalLight(0xffe2b0, 2.4); key.position.set(-3, 4, 6); scene.add(key);
   const rimTerra = new THREE.PointLight(0xd97757, 220, 40, 1.5); rimTerra.position.set(6, 3, 1); scene.add(rimTerra);
   const rimBrass = new THREE.PointLight(0xffc27a, 200, 40, 1.5); rimBrass.position.set(-5, -3, 2); scene.add(rimBrass);
-  const follow = new THREE.PointLight(0xfff1dc, 110, 22, 1.6); follow.position.set(0, 0, 5); scene.add(follow);
+  const follow = new THREE.PointLight(0xfff1dc, 70, 22, 1.6); follow.position.set(0, 0, 5); scene.add(follow);
 
   // Polvo dorado
   const N = 600, pos = new Float32Array(N * 3), speed = new Float32Array(N);
@@ -229,7 +240,13 @@ function start() {
   }
   const dustGeo = new THREE.BufferGeometry();
   dustGeo.setAttribute("position", new THREE.BufferAttribute(pos, 3));
-  scene.add(new THREE.Points(dustGeo, new THREE.PointsMaterial({ color: 0xffd9a0, size: 0.035, transparent: true, opacity: 0.65, depthWrite: false, blending: THREE.AdditiveBlending })));
+  const dotTex = softDot("rgba(255,230,190,1)", "rgba(255,230,190,0)");
+  scene.add(new THREE.Points(dustGeo, new THREE.PointsMaterial({ map: dotTex, color: 0xffd9a0, size: 0.07, transparent: true, opacity: 0.75, depthWrite: false, blending: THREE.AdditiveBlending })));
+  const BN = 40, bpos = new Float32Array(BN * 3);
+  for (let i = 0; i < BN; i++) { bpos[i * 3] = (Math.random() - 0.5) * 16; bpos[i * 3 + 1] = (Math.random() - 0.5) * 10; bpos[i * 3 + 2] = 3 + Math.random() * 4; }
+  const bokehGeo = new THREE.BufferGeometry(); bokehGeo.setAttribute("position", new THREE.BufferAttribute(bpos, 3));
+  const bokeh = new THREE.Points(bokehGeo, new THREE.PointsMaterial({ map: dotTex, color: 0xffc27a, size: 0.55, transparent: true, opacity: 0.12, depthWrite: false, blending: THREE.AdditiveBlending }));
+  scene.add(bokeh);
 
   // Ubicación según el scroll (portada: abajo a la izquierda; después: a la derecha)
   let wide = true, prog = 0;
@@ -264,6 +281,13 @@ function start() {
     cur.x += (ptr.x - cur.x) * 0.05; cur.y += (ptr.y - cur.y) * 0.05;
     prog += (Math.min(1, scrollY / (innerHeight * 0.9)) - prog) * 0.08;
     place();
+    // Entrada: la brújula sube y gira hasta su lugar en los primeros dos segundos
+    const e = Math.min(1, t / 2.2), ee = 1 - Math.pow(1 - e, 3);
+    holder.position.y -= (1 - ee) * 2.5;
+    holder.rotation.z += (1 - ee) * 1.2;
+    halo.material.opacity = 0.55 + Math.sin(t * 0.8) * 0.12;
+    key.position.set(-3 + Math.sin(t * 0.18) * 4, 4, 6);
+    bokeh.rotation.z = Math.sin(t * 0.05) * 0.1;
     compass.rotation.y = Math.sin(t * 0.25) * 0.1 + cur.x * 0.28;
     compass.rotation.x = 0.1 + Math.sin(t * 0.2) * 0.05 + cur.y * 0.2;
     compass.position.y = Math.sin(t * 0.6) * 0.08;
@@ -284,7 +308,21 @@ function start() {
   }
   canvas.classList.add("is-on");
   if (REDUCED) { frame(); return; }
-  renderer.setAnimationLoop(() => { if (!document.hidden) frame(); });
+  // Calidad adaptativa: si la compu no llega, baja la resolución y el vidrio pasa a ser un brillo simple
+  let last = performance.now(), slow = 0, checked = 0, lowered = false;
+  renderer.setAnimationLoop(() => {
+    if (document.hidden) { last = performance.now(); return; }
+    frame();
+    const now = performance.now(), dt = now - last; last = now;
+    if (!lowered && clock.elapsedTime > 2.5 && checked < 120) {
+      checked++; if (dt > 28) slow++;
+      if (checked === 120 && slow > 60) {
+        lowered = true;
+        renderer.setPixelRatio(1); layout();
+        glass.transmission = 0; glass.opacity = 0.12; glass.needsUpdate = true;
+      }
+    }
+  });
 }
 
 if (canvas) start();
