@@ -7,7 +7,6 @@
    la brújula se inclina hacia el cursor y viaja con el scroll.
    Si no hay WebGL o el visitante pidió menos movimiento, queda quieta o queda el fondo de CSS. */
 import * as THREE from "three";
-import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 const canvas = document.querySelector("[data-wall3d]");
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -35,6 +34,9 @@ function dialTexture() {
   const S = 2048, cv = document.createElement("canvas"); cv.width = cv.height = S;
   const ctx = cv.getContext("2d"), c = S / 2;
   paper(ctx, S);
+  const ao = ctx.createRadialGradient(c, c, c * 0.86, c, c, c);
+  ao.addColorStop(0, "rgba(46,33,22,0)"); ao.addColorStop(1, "rgba(46,33,22,.55)");
+  ctx.fillStyle = ao; ctx.fillRect(0, 0, S, S);
   ctx.translate(c, c);
   ctx.strokeStyle = C.ink; ctx.fillStyle = C.ink;
   ring(ctx, c * 0.985, 14); ring(ctx, c * 0.94, 3);
@@ -85,6 +87,43 @@ function cardTexture() {
   for (let i = 0; i < txt.length; i++) { ctx.save(); ctx.rotate(Math.PI + i * step); ctx.fillText(txt[i], 0, R); ctx.restore(); }
   return new THREE.CanvasTexture(cv);
 }
+// Estudio de fotografía para los reflejos: cuarto oscuro con un softbox grande, una tira lateral,
+// un rebote cálido abajo y un contraluz. Es lo que hace que el metal se vea como en una foto de producto.
+function studioScene() {
+  const s = new THREE.Scene();
+  s.add(new THREE.Mesh(new THREE.SphereGeometry(20, 32, 16), new THREE.MeshBasicMaterial({ color: new THREE.Color(0.05, 0.038, 0.03), side: THREE.BackSide })));
+  const panel = (w, h, c, x, y, z) => {
+    const m = new THREE.Mesh(new THREE.PlaneGeometry(w, h), new THREE.MeshBasicMaterial({ color: c, side: THREE.DoubleSide }));
+    m.position.set(x, y, z); m.lookAt(0, 0, 0); s.add(m);
+  };
+  panel(10, 6, new THREE.Color(6, 5, 3.8), -8, 8, 8);
+  panel(2, 14, new THREE.Color(3.4, 2.6, 1.8), 11, 0, 4);
+  panel(9, 2, new THREE.Color(1.5, 0.85, 0.55), 0, -10, 3);
+  panel(6, 6, new THREE.Color(1.3, 0.85, 0.5), 2, 5, -12);
+  return s;
+}
+// Desgaste del metal: grano, manchas y rayones finos (se usa para la rugosidad y el relieve)
+function wearTexture() {
+  const S = 1024, cv = document.createElement("canvas"); cv.width = cv.height = S;
+  const ctx = cv.getContext("2d");
+  ctx.fillStyle = "rgb(190,190,190)"; ctx.fillRect(0, 0, S, S);
+  for (let i = 0; i < 60; i++) {
+    const x = Math.random() * S, y = Math.random() * S, r = 20 + Math.random() * 90, g = ctx.createRadialGradient(x, y, 0, x, y, r);
+    g.addColorStop(0, Math.random() < 0.5 ? "rgba(120,120,120,.22)" : "rgba(235,235,235,.18)"); g.addColorStop(1, "rgba(0,0,0,0)");
+    ctx.fillStyle = g; ctx.fillRect(0, 0, S, S);
+  }
+  ctx.lineCap = "round";
+  for (let i = 0; i < 420; i++) {
+    const x = Math.random() * S, y = Math.random() * S, a = Math.random() * Math.PI, l = 8 + Math.random() * 70;
+    ctx.strokeStyle = "rgba(255,255,255," + (0.15 + Math.random() * 0.35) + ")"; ctx.lineWidth = 0.6 + Math.random() * 1.1;
+    ctx.beginPath(); ctx.moveTo(x, y); ctx.quadraticCurveTo(x + Math.cos(a) * l * 0.5 + (Math.random() - 0.5) * 6, y + Math.sin(a) * l * 0.5, x + Math.cos(a) * l, y + Math.sin(a) * l); ctx.stroke();
+  }
+  const img = ctx.getImageData(0, 0, S, S), d = img.data;
+  for (let i = 0; i < d.length; i += 4) { const n = (Math.random() - 0.5) * 30; d[i] += n; d[i + 1] += n; d[i + 2] += n; }
+  ctx.putImageData(img, 0, 0);
+  const t = new THREE.CanvasTexture(cv); t.wrapS = t.wrapT = THREE.RepeatWrapping; t.repeat.set(3, 1);
+  return t;
+}
 function softDot(inner, outer) {
   const S = 128, cv = document.createElement("canvas"); cv.width = cv.height = S;
   const ctx = cv.getContext("2d"), g = ctx.createRadialGradient(S / 2, S / 2, 0, S / 2, S / 2, S / 2);
@@ -124,16 +163,20 @@ function start() {
   const scene = new THREE.Scene();
   scene.fog = new THREE.FogExp2(0x120c07, 0.035);
   const pmrem = new THREE.PMREMGenerator(renderer);
-  scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
-  scene.environmentIntensity = 0.9;
+  scene.environment = pmrem.fromScene(studioScene(), 0.02).texture;
+  scene.environmentIntensity = 1;
+  renderer.shadowMap.enabled = true;
+  renderer.shadowMap.type = THREE.PCFSoftShadowMap;
 
   const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
   camera.position.set(0, 0, 11);
 
   // Materiales
-  const brass = new THREE.MeshPhysicalMaterial({ color: 0xd2ab6c, metalness: 1, roughness: 0.24, clearcoat: 0.5, clearcoatRoughness: 0.2 });
-  const darkBronze = new THREE.MeshPhysicalMaterial({ color: 0x3b2a1d, metalness: 0.8, roughness: 0.42, clearcoat: 0.6, clearcoatRoughness: 0.3 });
-  const gold = new THREE.MeshPhysicalMaterial({ color: 0xe0b862, metalness: 1, roughness: 0.16, clearcoat: 1 });
+  const wear = wearTexture();
+  const brass = new THREE.MeshPhysicalMaterial({ color: 0xd2ab6c, metalness: 1, roughness: 0.32, roughnessMap: wear, bumpMap: wear, bumpScale: 0.6, clearcoat: 0.35, clearcoatRoughness: 0.25 });
+  const darkBronze = new THREE.MeshPhysicalMaterial({ color: 0x3b2a1d, metalness: 0.85, roughness: 0.5, roughnessMap: wear, bumpMap: wear, bumpScale: 0.8, clearcoat: 0.5, clearcoatRoughness: 0.35 });
+  const gold = new THREE.MeshPhysicalMaterial({ color: 0xe0b862, metalness: 1, roughness: 0.2, roughnessMap: wear, clearcoat: 1, clearcoatRoughness: 0.1 });
+  const ruby = new THREE.MeshPhysicalMaterial({ color: 0xe0284a, emissive: 0x4a0012, metalness: 0, roughness: 0.04, transmission: 0.3, thickness: 0.1, ior: 1.77, clearcoat: 1 });
   const enamel = new THREE.MeshPhysicalMaterial({ color: 0xe8dcc5, metalness: 0, roughness: 0.35, clearcoat: 1, clearcoatRoughness: 0.1, flatShading: true });
   const bronzeFace = new THREE.MeshPhysicalMaterial({ color: 0x8a6a3f, metalness: 0.9, roughness: 0.3, clearcoat: 0.8, flatShading: true });
   const glass = new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0, roughness: 0.06, transmission: 1, thickness: 0.25, ior: 1.5, clearcoat: 1, clearcoatRoughness: 0.08, specularIntensity: 0.6, transparent: true });
@@ -150,16 +193,18 @@ function start() {
 
   const compass = new THREE.Group();
   // Caja: anillo grueso de bronce oscuro (el aro del logo) y fondo
-  const caseRing = new THREE.Mesh(new THREE.TorusGeometry(2.12, 0.3, 48, 240), darkBronze);
-  const back = new THREE.Mesh(new THREE.CylinderGeometry(2.2, 2.25, 0.5, 200), darkBronze); back.rotation.x = Math.PI / 2; back.position.z = -0.3;
-  compass.add(caseRing, back);
-  // Bisel de bronce estriado y aro de retención del vidrio
-  const bezel = new THREE.Mesh(new THREE.TorusGeometry(1.86, 0.075, 24, 220), brass); bezel.position.z = 0.2;
-  const knurl = new THREE.InstancedMesh(new THREE.BoxGeometry(0.035, 0.11, 0.07), brass, 180);
+  // Caja torneada con su perfil real: tapa trasera, canto, chaflanes y el escalón donde apoya el vidrio
+  const prof = [[0, -0.5], [2.0, -0.5], [2.18, -0.46], [2.32, -0.34], [2.4, -0.16], [2.42, 0.02], [2.38, 0.16], [2.28, 0.26], [2.14, 0.31], [2.0, 0.3], [1.93, 0.24], [1.9, 0.1], [1.86, 0.02], [1.84, 0]];
+  const caseBody = new THREE.Mesh(new THREE.LatheGeometry(prof.map((p) => new THREE.Vector2(p[0], p[1])), 240), darkBronze);
+  caseBody.rotation.x = Math.PI / 2;
+  compass.add(caseBody);
+  // Aro de latón que retiene el vidrio y moleteado en el canto, como una moneda
+  const bezel = new THREE.Mesh(new THREE.TorusGeometry(1.97, 0.06, 24, 240), brass); bezel.position.z = 0.29;
+  const knurl = new THREE.InstancedMesh(new THREE.BoxGeometry(0.032, 0.05, 0.2), brass, 220);
   const o = new THREE.Object3D();
-  for (let i = 0; i < 180; i++) {
-    const a = (i / 180) * Math.PI * 2;
-    o.position.set(Math.sin(a) * 2.42, Math.cos(a) * 2.42, 0.02); o.rotation.set(0, 0, -a); o.updateMatrix();
+  for (let i = 0; i < 220; i++) {
+    const a = (i / 220) * Math.PI * 2;
+    o.position.set(Math.sin(a) * 2.43, Math.cos(a) * 2.43, 0.0); o.rotation.set(0, 0, -a); o.updateMatrix();
     knurl.setMatrixAt(i, o.matrix);
   }
   compass.add(bezel, knurl);
@@ -190,10 +235,11 @@ function start() {
   const [gl, gd] = roseGeometry(P);
   const roseL = new THREE.Mesh(gl, enamel), roseD = new THREE.Mesh(gd, bronzeFace);
   roseL.position.z = roseD.position.z = 0.05;
-  const pin = new THREE.Mesh(new THREE.SphereGeometry(0.1, 32, 32), gold); pin.position.z = 0.32;
+  const pin = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.12, 0.1, 32), gold); pin.rotation.x = Math.PI / 2; pin.position.z = 0.31;
+  const jewel = new THREE.Mesh(new THREE.SphereGeometry(0.065, 32, 32), ruby); jewel.position.z = 0.37;
   const northTip = new THREE.Mesh(new THREE.ConeGeometry(0.06, 0.18, 24), new THREE.MeshPhysicalMaterial({ color: 0xd97757, roughness: 0.3, clearcoat: 1 }));
   northTip.position.set(0, 1.38, 0.08);
-  card.add(cardDisc, roseL, roseD, pin, northTip);
+  card.add(cardDisc, roseL, roseD, pin, jewel, northTip);
   compass.add(card);
   // Domo de vidrio
   const R = 4.6, th = Math.asin(1.86 / R);
@@ -224,10 +270,17 @@ function start() {
   const holder = new THREE.Group();
   holder.add(halo, compass, gimbal);
   scene.add(holder);
+  compass.traverse((m) => { if (m.isMesh) { m.castShadow = m !== dome && m !== dial && m !== cardDisc; m.receiveShadow = m !== dome; } });
+  gimbal.traverse((m) => { if (m.isMesh) m.castShadow = true; });
 
   // Luces cálidas de estudio
   scene.add(new THREE.AmbientLight(0x4a3524, 0.5));
-  const key = new THREE.DirectionalLight(0xffe2b0, 2.4); key.position.set(-3, 4, 6); scene.add(key);
+  const key = new THREE.DirectionalLight(0xffe2b0, 2.6); key.position.set(-3, 4, 6); scene.add(key, key.target);
+  key.castShadow = true;
+  key.shadow.mapSize.set(2048, 2048);
+  Object.assign(key.shadow.camera, { left: -4.5, right: 4.5, top: 4.5, bottom: -4.5, near: 1, far: 30 });
+  key.shadow.bias = -0.0005; key.shadow.normalBias = 0.02;
+  const hp = new THREE.Vector3();
   const rimTerra = new THREE.PointLight(0xd97757, 220, 40, 1.5); rimTerra.position.set(6, 3, 1); scene.add(rimTerra);
   const rimBrass = new THREE.PointLight(0xffc27a, 200, 40, 1.5); rimBrass.position.set(-5, -3, 2); scene.add(rimBrass);
   const follow = new THREE.PointLight(0xfff1dc, 70, 22, 1.6); follow.position.set(0, 0, 5); scene.add(follow);
@@ -286,7 +339,9 @@ function start() {
     holder.position.y -= (1 - ee) * 2.5;
     holder.rotation.z += (1 - ee) * 1.2;
     halo.material.opacity = 0.55 + Math.sin(t * 0.8) * 0.12;
-    key.position.set(-3 + Math.sin(t * 0.18) * 4, 4, 6);
+    holder.getWorldPosition(hp);
+    key.position.set(hp.x - 3 + Math.sin(t * 0.18) * 3, hp.y + 4, 7);
+    key.target.position.copy(hp);
     bokeh.rotation.z = Math.sin(t * 0.05) * 0.1;
     compass.rotation.y = Math.sin(t * 0.25) * 0.1 + cur.x * 0.28;
     compass.rotation.x = 0.1 + Math.sin(t * 0.2) * 0.05 + cur.y * 0.2;
@@ -320,6 +375,7 @@ function start() {
         lowered = true;
         renderer.setPixelRatio(1); layout();
         glass.transmission = 0; glass.opacity = 0.12; glass.needsUpdate = true;
+        key.castShadow = false; ruby.transmission = 0;
       }
     }
   });
