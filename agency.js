@@ -487,12 +487,14 @@
     }
     function place(k, celebrate) {
       cur = k;
+      // primero se marca la columna (en celular reserva lugar para la tarjeta) y después se mide
+      sec.style.setProperty("--card-h", card.offsetHeight + "px");
+      cols.forEach(function (c, i) { c.classList.toggle("is-on", i === k); c.classList.toggle("is-done", k === 3 && i <= 3); });
       var sp = spot(k);
       card.style.setProperty("--cw", sp.w + "px");
       card.style.setProperty("--cx", sp.x + "px");
       card.style.setProperty("--cy", sp.y + "px");
       card.style.setProperty("--cr", (k % 2 ? 1.5 : -1.5) + "deg");
-      cols.forEach(function (c, i) { c.classList.toggle("is-on", i === k); c.classList.toggle("is-done", k === 3 && i <= 3); });
       state.textContent = STATES[k];
       card.classList.toggle("is-online", k === 3);
       next.textContent = k === 3 ? "Otra vez ↺" : "Avanzar →";
@@ -780,7 +782,18 @@
     if (!form || !box) return;
     var go = $(".cmp-go", form), map = null, layer = null;
     if ("IntersectionObserver" in window) {
-      var io = new IntersectionObserver(function (e) { if (e[0].isIntersecting) { io.disconnect(); loadLeaflet().catch(function () {}); } }, { rootMargin: "600px" });
+      // Cuando la sección se acerca, el mapa ya se muestra (Buenos Aires) para que no quede un recuadro vacío
+      var io = new IntersectionObserver(function (e) {
+        if (!e[0].isIntersecting) return;
+        io.disconnect();
+        loadLeaflet().then(function (L) {
+          if (map) return;
+          var empty = $("[data-cmp-empty]", box); if (empty) empty.remove();
+          map = L.map(box, { scrollWheelZoom: false, attributionControl: true });
+          L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", { maxZoom: 19, attribution: "© OpenStreetMap" }).addTo(map);
+          map.setView([-34.6037, -58.3816], 12);
+        }).catch(function () {});
+      }, { rootMargin: "600px" });
       io.observe(box);
     }
     function say(text, cls) { out.innerHTML = ""; var p = document.createElement("p"); p.className = cls || "cmp-q"; p.textContent = text; out.appendChild(p); }
