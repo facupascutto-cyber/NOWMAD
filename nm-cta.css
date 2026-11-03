@@ -1,0 +1,13 @@
+/* Botón flotante de mensaje, con la paleta azul de nowmad group */
+.nm-cta { position: fixed; z-index: 50; right: clamp(16px, 2.4vw, 32px); bottom: clamp(16px, 2.4vw, 32px); display: flex; align-items: center; gap: 12px; padding: 7px 20px 7px 7px; border: 1px solid rgba(223, 228, 251, .18); border-radius: 999px; background: var(--ink); color: var(--white); text-decoration: none; box-shadow: 0 10px 28px rgba(14, 20, 48, .28); transition: transform .4s var(--ease), box-shadow .4s; }
+.nm-cta:hover { transform: translateY(-3px); box-shadow: 0 14px 34px rgba(14, 20, 48, .36); }
+.nm-cta-icon { position: relative; display: grid; place-items: center; width: 46px; height: 46px; flex: none; border-radius: 50%; background: var(--cobalt); color: var(--white); transition: transform .4s var(--ease), background .3s; }
+.nm-cta:hover .nm-cta-icon { transform: rotate(-12deg) scale(1.06); background: var(--cobalt-2); }
+.nm-cta-icon svg { display: block; width: 24px; height: 24px; }
+.nm-cta-dot { position: absolute; top: 2px; right: 2px; width: 11px; height: 11px; border: 2px solid var(--ink); border-radius: 50%; background: #3DDC84; }
+.nm-cta-dot::after { content: ""; position: absolute; inset: -2px; border-radius: 50%; background: #3DDC84; animation: nm-ping 2.4s ease-out infinite; }
+@keyframes nm-ping { 0% { opacity: .7; transform: scale(1); } 70%, 100% { opacity: 0; transform: scale(2.4); } }
+.nm-cta-text { display: grid; gap: 2px; white-space: nowrap; }
+.nm-cta-text small { color: var(--celeste); font: 500 10px/1 var(--mono); letter-spacing: .14em; text-transform: uppercase; }
+.nm-cta-text span { font: 600 15px/1.2 var(--sans); }
+@media (max-width: 760px) { .nm-cta { padding: 6px; } .nm-cta-text { display: none; } .nm-cta-icon { width: 50px; height: 50px; } }

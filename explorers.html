@@ -9,24 +9,25 @@
   <meta property="og:title" content="nowmad explorers" />
   <meta property="og:description" content="nowmad explorers es la agencia de turismo de nowmad group. Armamos viajes a medida desde Buenos Aires." />
   <meta property="og:type" content="website" />
-  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261102" />
+  <link rel="icon" type="image/svg+xml" href="assets/favicon-explorers.svg?v=20261102h" />
   <link rel="preload" href="assets/fonts/unbounded-be36af.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="styles.css?v=20261102" />
+  <link rel="stylesheet" href="styles.css?v=20261102h" />
+  <link rel="stylesheet" href="nm-cta.css?v=20261103a" />
   <script>document.documentElement.classList.add("js");</script>
-  <script defer src="main.js?v=20261102"></script>
+  <script defer src="main.js?v=20261102h"></script>
 </head>
 <body class="page-explorers">
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <defs>
       <g id="o">
-        <circle cx="44" cy="56" r="31" fill="none" stroke="currentColor" stroke-width="14" />
-        <circle cx="44" cy="56" r="9" style="fill:var(--needle,currentColor)" />
-        <line x1="44" y1="56" x2="94" y2="6" stroke-width="6" stroke-linecap="round" style="stroke:var(--needle,currentColor)" />
+        <circle cx="44" cy="56" r="31" fill="none" stroke="currentColor" stroke-width="13" pathLength="100" stroke-dasharray="23 2" stroke-dashoffset="-1" />
+        <polygon points="80,20 52,64 36,48" style="fill:var(--needle,currentColor)" />
+        <polygon points="29,71 36,48 52,64" fill="currentColor" />
       </g>
     </defs>
   </svg>
 
-  <a class="skip" href="#propuesta">Ir al contenido</a>
+  <a class="skip" href="#destinos">Ir al contenido</a>
 
   <header class="nav" data-nav>
     <a class="nav-logo" href="index.html" aria-label="nowmad group, inicio">
@@ -40,39 +41,46 @@
   </header>
 
   <main>
-    <section class="hero hero-detail hero-explorers">
-      <div class="hero-meta">
-        <span>Agencia de turismo</span>
-        <span>Buenos Aires · 34°36′S · 58°22′O</span>
-      </div>
-      <div class="explorers-grid">
-        <div class="hero-brand">
-          <div class="hero-logo">
-            <span class="logo" role="img" aria-label="nowmad explorers"><span>n</span><svg class="logo-o" viewBox="6 18 76 76" data-compass aria-hidden="true">
-              <circle cx="44" cy="56" r="31" fill="none" stroke="currentColor" stroke-width="14" />
-              <circle cx="44" cy="56" r="9" style="fill:var(--needle,currentColor)" />
-              <line data-needle x1="44" y1="56" x2="94" y2="6" stroke-width="6" stroke-linecap="round" style="stroke:var(--needle,currentColor)" />
-            </svg><span>wmad</span></span>
+    <section class="scene" data-scene>
+      <div class="scene-stick" data-scene-stick>
+        <div class="scene-photos" data-scene-photos>
+          <img class="scene-photo" data-scene-photo src="assets/photos/iguazu-2000.webp" srcset="assets/photos/iguazu-1100.webp 1100w, assets/photos/iguazu-2000.webp 2000w" sizes="max(100vw, 178vh)" alt="Garganta del Diablo, cataratas del Iguazú" fetchpriority="high" />
+          <img class="scene-photo" data-scene-photo src="assets/photos/cordillera-2000.webp" srcset="assets/photos/cordillera-1100.webp 1100w, assets/photos/cordillera-2000.webp 2000w" sizes="max(100vw, 178vh)" alt="Cordillera de los Andes en Mendoza, cerca del Aconcagua" loading="eager" />
+          <img class="scene-photo" data-scene-photo src="assets/photos/glaciar-2000.webp" srcset="assets/photos/glaciar-1100.webp 1100w, assets/photos/glaciar-2000.webp 2000w" sizes="max(100vw, 178vh)" alt="Frente del glaciar Perito Moreno, en la Patagonia" loading="eager" />
+        </div>
+        <div class="scene-shade" data-scene-shade></div>
+
+        <div class="scene-intro">
+          <div class="scene-logo" data-scene-logo>
+            <span class="logo" role="img" aria-label="nowmad explorers"><span>n</span><svg class="logo-o" viewBox="6 18 76 76" data-compass data-scene-o aria-hidden="true"><use href="#o" /></svg><span>wmad</span></span>
             <span class="hero-group" aria-hidden="true">explorers</span>
           </div>
-          <h1 class="detail-title">Armamos viajes a medida desde Buenos Aires.</h1>
+          <div class="scene-copy" data-scene-copy>
+            <h1 class="detail-title">Armamos viajes a medida desde Buenos Aires.</h1>
+            <a class="hero-btn" href="#destinos">Elegí un rumbo <span aria-hidden="true">→</span></a>
+            <span class="scene-hint" aria-hidden="true">Bajá para entrar <b>↓</b></span>
+          </div>
         </div>
 
-        <div class="fan" data-fan aria-hidden="true">
-          <div class="fan-card fan-a">
-            <span class="tag">Iguazú</span>
-            <strong>25°41′S<br />54°26′O</strong>
-          </div>
-          <div class="fan-card fan-b">
-            <span class="tag">Ruta</span>
-            <strong>EZE →<br />IGR</strong>
-          </div>
-          <div class="fan-card fan-c">
-            <span class="fan-ring fan-ring-a"></span>
-            <span class="fan-ring fan-ring-b"></span>
-            <span class="tag">Buenos Aires</span>
-            <strong>Ahora</strong>
-          </div>
+        <svg class="scene-ring" aria-hidden="true">
+          <g data-scene-dial>
+            <circle cx="44" cy="56" r="31" fill="none" stroke="currentColor" stroke-width="13" pathLength="100" stroke-dasharray="23 2" stroke-dashoffset="-1" />
+            <g data-needle data-scene-needle><polygon points="80,20 52,64 36,48" style="fill:var(--needle,currentColor)" /><polygon points="29,71 36,48 52,64" fill="currentColor" /></g>
+          </g>
+        </svg>
+
+        <ol class="scene-stops">
+          <li data-scene-stop><span class="tag">Este · Litoral</span><strong>Iguazú</strong><span class="tag">25°41′S · 54°26′O</span></li>
+          <li data-scene-stop><span class="tag">Oeste · Cuyo</span><strong>Cordillera</strong><span class="tag">32°39′S · 70°00′O</span></li>
+          <li data-scene-stop><span class="tag">Sur · Patagonia</span><strong>Glaciares</strong><span class="tag">50°28′S · 73°02′O</span></li>
+        </ol>
+
+        <div class="scene-hud">
+          <svg class="scene-hud-dial" viewBox="0 0 400 400" aria-hidden="true">
+            <circle cx="200" cy="200" r="150" fill="none" stroke="currentColor" stroke-width="28" pathLength="100" stroke-dasharray="23 2" stroke-dashoffset="-1" />
+            <g class="dest-needle" data-scene-hud-needle><polygon class="dest-needle-n" points="200,78 227,200 173,200" /><polygon class="dest-needle-s" points="200,251 227,200 173,200" /></g>
+          </svg>
+          <a class="hero-btn" href="#destinos">Elegí un rumbo <span aria-hidden="true">→</span></a>
         </div>
       </div>
     </section>
@@ -80,6 +88,63 @@
     <div class="ticker" aria-hidden="true">
       <div class="ticker-track"><span>EZE → IGR</span><b>·</b><span>34°36′S · 58°22′O</span><b>·</b><span>25°41′S · 54°26′O</span><b>·</b><span>Moverse es la idea</span><b>·</b><span>EZE → IGR</span><b>·</b><span>34°36′S · 58°22′O</span><b>·</b><span>25°41′S · 54°26′O</span><b>·</b><span>Moverse es la idea</span><b>·</b><span>EZE → IGR</span><b>·</b><span>34°36′S · 58°22′O</span><b>·</b><span>25°41′S · 54°26′O</span><b>·</b><span>Moverse es la idea</span><b>·</b><span>EZE → IGR</span><b>·</b><span>34°36′S · 58°22′O</span><b>·</b><span>25°41′S · 54°26′O</span><b>·</b><span>Moverse es la idea</span><b>·</b></div>
     </div>
+
+    <section class="destinos" id="destinos" data-rumbos>
+      <div class="wrap">
+        <p class="label reveal">Destinos</p>
+        <h2 class="reveal">Elegí un rumbo.</h2>
+        <div class="destinos-grid reveal">
+          <div class="dest-compass">
+            <svg viewBox="0 0 400 400" aria-hidden="true">
+              <circle cx="200" cy="200" r="150" fill="none" stroke="currentColor" stroke-width="28" pathLength="100" stroke-dasharray="23 2" stroke-dashoffset="-1" />
+              <g class="dest-needle" data-rumbo-needle><polygon class="dest-needle-n" points="200,78 227,200 173,200" /><polygon class="dest-needle-s" points="200,251 227,200 173,200" /></g>
+            </svg>
+            <button class="rumbo rumbo-n" type="button" data-rumbo="n" aria-pressed="false" aria-label="Norte: Noroeste">N</button>
+            <button class="rumbo rumbo-e" type="button" data-rumbo="e" aria-pressed="false" aria-label="Este: Litoral">E</button>
+            <button class="rumbo rumbo-s" type="button" data-rumbo="s" aria-pressed="false" aria-label="Sur: Patagonia">S</button>
+            <button class="rumbo rumbo-o" type="button" data-rumbo="o" aria-pressed="false" aria-label="Oeste: Cuyo">O</button>
+          </div>
+          <div class="dest-panels" aria-live="polite">
+          <article class="dest-panel" data-rumbo-panel="n">
+            <span class="tag">Norte</span>
+            <h3>Noroeste</h3>
+            <ul class="dest-list">
+              <li><strong>Salta</strong><span class="tag">24°47′S · 65°25′O</span><p>Valles, viñedos de altura y pueblos de adobe.</p></li>
+              <li><strong>Jujuy</strong><span class="tag">24°11′S · 65°18′O</span><p>La Quebrada de Humahuaca, Purmamarca y las Salinas Grandes.</p></li>
+            </ul>
+            <a class="dest-link" href="#contacto">Quiero ir al Noroeste <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="dest-panel" data-rumbo-panel="e">
+            <span class="tag">Este</span>
+            <h3>Litoral</h3>
+            <ul class="dest-list">
+              <li><strong>Iguazú</strong><span class="tag">25°41′S · 54°26′O</span><p>Las cataratas, la selva y la Triple Frontera.</p></li>
+              <li><strong>Esteros del Iberá</strong><span class="tag">28°32′S · 57°10′O</span><p>Humedales, yacarés y carpinchos a la vista.</p></li>
+            </ul>
+            <a class="dest-link" href="#contacto">Quiero ir al Litoral <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="dest-panel" data-rumbo-panel="s">
+            <span class="tag">Sur</span>
+            <h3>Patagonia</h3>
+            <ul class="dest-list">
+              <li><strong>Bariloche</strong><span class="tag">41°08′S · 71°18′O</span><p>Lagos, bosques y cerros sobre la cordillera.</p></li>
+              <li><strong>Ushuaia</strong><span class="tag">54°48′S · 68°18′O</span><p>El canal Beagle y el final del mapa.</p></li>
+            </ul>
+            <a class="dest-link" href="#contacto">Quiero ir a la Patagonia <span aria-hidden="true">→</span></a>
+          </article>
+          <article class="dest-panel" data-rumbo-panel="o">
+            <span class="tag">Oeste</span>
+            <h3>Cuyo</h3>
+            <ul class="dest-list">
+              <li><strong>Mendoza</strong><span class="tag">32°53′S · 68°51′O</span><p>Bodegas, alta montaña y el Aconcagua de fondo.</p></li>
+              <li><strong>San Juan</strong><span class="tag">31°32′S · 68°31′O</span><p>Ischigualasto y los cielos de Barreal.</p></li>
+            </ul>
+            <a class="dest-link" href="#contacto">Quiero ir a Cuyo <span aria-hidden="true">→</span></a>
+          </article>
+          </div>
+        </div>
+      </div>
+    </section>
 
     <section class="detail wrap" id="propuesta">
       <p class="label reveal">La propuesta</p>
@@ -141,6 +206,8 @@
     <a href="index.html" aria-label="nowmad group, inicio"><span class="logo" aria-hidden="true"><span>n</span><svg class="logo-o" viewBox="6 18 76 76"><use href="#o" /></svg><span>wmad</span></span></a>
     <p>Buenos Aires · 34°36′S · 58°22′O</p>
     <p>© <span data-year>2026</span> nowmad group</p>
+    <p class="credits">Fotos redimensionadas, vía Wikimedia Commons: <a href="https://commons.wikimedia.org/wiki/File:J31_189_Garganta_del_Diablo,_Fallkante_Ostseite.jpg">Falk2</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>), <a href="https://commons.wikimedia.org/wiki/File:Cord%C3%B3n_del_Espinacito_y_Aconcagua_1.jpg">WeHaKa</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>), <a href="https://commons.wikimedia.org/wiki/File:Glaciar_Perito_Moreno2_-_Argentina.JPG">Diego Delso</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>).</p>
   </footer>
-</body>
+
+  <a class="nm-cta" href="#contacto" data-chat onclick="window.open(this.getAttribute('data-go')||'https://'+'wa'+'.me/?text=Hola%20nowmad!%20Quiero%20hacer%20una%20consulta.','_blank','noopener');return false;" aria-label="Escribinos por mensaje"><span class="nm-cta-icon"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3.2a8.8 8.8 0 0 0-7.6 13.2L3.2 20.8l4.5-1.2A8.8 8.8 0 1 0 12 3.2Z" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round" /><path d="M9.2 7.6c.3 0 .5.1.6.4l.8 1.8c.1.2 0 .5-.1.7l-.6.7c.5 1.1 1.7 2.3 2.9 2.9l.7-.6c.2-.2.5-.2.7-.1l1.8.8c.3.1.4.4.4.6-.1 1.3-1.1 2.1-2.3 2-3.4-.3-6.5-3.4-6.8-6.8-.1-1.2.7-2.3 1.9-2.4Z" fill="currentColor" /></svg><i class="nm-cta-dot" aria-hidden="true"></i></span><span class="nm-cta-text"><small>WhatsApp</small><span>Escribinos</span></span></a></body>
 </html>
