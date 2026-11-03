@@ -35,6 +35,7 @@ Misma marca del grupo (logo con brújula, Unbounded / Hanken Grotesk / JetBrains
 - Tramo 1: zoom a la Tierra de la NASA hasta casi tocar Buenos Aires. Cambio de escena "atravesando las nubes" (fundido en el post-proceso).
 - Tramo 2, con API key (`<meta name="nowmad-google-key">`): Google Photorealistic 3D Tiles (`agency-google.js`, 3DTilesRendererJS 0.5.3). La cámara baja de ~9 km a dar la vuelta al Obelisco real. Se muestran logo y atribución de Google mientras se ven las teselas. La key debe estar restringida por dominio y con tope diario.
 - Tramo 2, sin key o si Google falla: respaldo con la foto satelital Sentinel-2 cloudless 2016 de EOX (`agency-satellite.js`), bajando solo hasta ~5 km para que siga nítida.
+  Con leve enfoque (máscara de desenfoque) y un marcador sobre el Obelisco real (cruce de la 9 de Julio y la Diagonal Norte) que aparece con el texto "El Obelisco". El encuadre corre el Obelisco a un lado libre del título: a la derecha en pantallas anchas, abajo en celular. Foto de 2048 px en todos los dispositivos.
 - `?hora=HH` (hora de Buenos Aires) fuerza la posición del sol para probar de día o de noche.
 - Se descartó una ciudad generada con OpenStreetMap: no era real.
 

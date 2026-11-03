@@ -174,8 +174,8 @@
       var parts = [];
       if (rubro) parts.push("Mi rubro es " + rubro.replace(/[.\s]+$/, ""));
       if (services.length) parts.push((parts.length ? "y necesito " : "Necesito ") + list(services));
-      if (!parts.length) return "Hola nowmad agency! Quiero contarles un proyecto." + (plazo ? " Lo necesito " + plazo + "." : "");
-      var text = "Hola nowmad agency! " + parts.join(" ");
+      if (!parts.length) return "¡Hola, nowmad agency! Quiero contarles un proyecto." + (plazo ? " Lo necesito " + plazo + "." : "");
+      var text = "¡Hola, nowmad agency! " + parts.join(" ");
       if (plazo) text += (services.length ? ", " : ". Lo necesito ") + plazo;
       return text + ".";
     }
