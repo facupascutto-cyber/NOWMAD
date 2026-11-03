@@ -11,9 +11,11 @@
   <meta property="og:type" content="website" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261103m" />
   <link rel="preload" href="assets/fonts/unbounded-be36af.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="agency.css?v=20261106d" />
+  <link rel="stylesheet" href="agency.css?v=20261106e" />
   <script>document.documentElement.classList.add("js");try{if(!sessionStorage.getItem("nowmad-boot")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("is-booting");}catch(e){}</script>
   <script defer src="agency.js?v=20261105d"></script>
+  <script type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }</script>
+  <script type="module" src="agency-wall3d.js?v=20261106h"></script>
 </head>
 <body>
   <!-- agency como un sistema operativo: fondo de pantalla vivo (la brújula del logo en píxeles),
@@ -33,33 +35,8 @@
     </defs>
   </svg>
 
-  <!-- Fondo de pantalla del escritorio. Opciones en prueba: ?bg=a riso (el logo impreso en puntos), ?bg=b stickers -->
-  <div class="wall" data-wall aria-hidden="true">
-    <canvas class="wp wp-a" data-riso></canvas>
-    <div class="wp wp-b">
-      <span class="stk" style="--l:3vw;--t:73vh;--w:150px;--r:-10deg">
-        <svg viewBox="0 0 160 160"><circle cx="80" cy="80" r="76" fill="#fff" /><circle cx="80" cy="80" r="68" fill="#2B3BD8" /><g transform="translate(36 42) scale(1.05)" fill="none" stroke="#fff"><circle cx="38" cy="38" r="26" stroke-width="11" /><circle cx="38" cy="38" r="7" fill="#fff" stroke="none" /><path d="M38 38 76 0" stroke-width="5" stroke-linecap="round" /></g></svg>
-      </span>
-      <span class="stk" style="--l:15vw;--t:80vh;--w:132px;--r:12deg">
-        <svg viewBox="0 0 140 140"><defs><path id="stkBA" d="M70 70m-46 0a46 46 0 1 1 92 0a46 46 0 1 1-92 0" /></defs><circle cx="70" cy="70" r="67" fill="#fff" /><circle cx="70" cy="70" r="60" fill="#F2B33A" /><text font-family="JetBrains Mono, monospace" font-size="11.5" font-weight="700" letter-spacing="4.2" fill="#0E1430"><textPath href="#stkBA">HECHO EN BUENOS AIRES ·</textPath></text><text x="70" y="84" text-anchor="middle" font-family="Unbounded, Arial Black, sans-serif" font-size="38" font-weight="800" fill="#0E1430">BA</text></svg>
-      </span>
-      <span class="stk" style="--l:25vw;--t:71vh;--w:200px;--r:-4deg">
-        <svg viewBox="0 0 220 84"><rect x="2" y="2" width="216" height="80" rx="18" fill="#fff" /><rect x="8" y="8" width="204" height="68" rx="13" fill="#0E1430" /><text x="24" y="50" font-family="JetBrains Mono, monospace" font-size="20" font-weight="700" fill="#3DDC84">&lt;/&gt;</text><text x="70" y="49" font-family="JetBrains Mono, monospace" font-size="15" fill="#DFE4FB">lo construimos</text></svg>
-      </span>
-      <span class="stk" style="--l:3vw;--t:6vh;--w:190px;--r:-5deg">
-        <svg viewBox="0 0 210 64"><rect x="2" y="2" width="206" height="60" rx="30" fill="#fff" /><rect x="8" y="8" width="194" height="48" rx="24" fill="#FF8FC0" /><text x="105" y="40" text-anchor="middle" font-family="Hanken Grotesk, sans-serif" font-size="21" font-weight="800" fill="#0E1430">sin plantillas ✌</text></svg>
-      </span>
-      <span class="stk" style="--l:22vw;--t:4.6vh;--w:84px;--r:8deg">
-        <svg viewBox="0 0 90 110"><path d="M18 30h54l-4 58a12 12 0 0 1-12 11H34a12 12 0 0 1-12-11Z" fill="#fff" stroke="#fff" stroke-width="12" stroke-linejoin="round" /><path d="M18 30h54l-4 58a12 12 0 0 1-12 11H34a12 12 0 0 1-12-11Z" fill="#8A5A2B" /><path d="M22 44h46" stroke="#6B4421" stroke-width="5" /><ellipse cx="45" cy="30" rx="27" ry="7" fill="#6BAF3A" /><path d="M54 30 70 4" stroke="#fff" stroke-width="12" stroke-linecap="round" /><path d="M54 30 70 4" stroke="#C9CED8" stroke-width="5" stroke-linecap="round" /></svg>
-      </span>
-      <span class="stk" style="--r:14deg;right:-1.5vw;bottom:-2vh;--w:150px">
-        <svg viewBox="0 0 160 160"><path d="M80 4l15 26 29-8-2 30 27 13-20 22 20 22-27 13 2 30-29-8-15 26-15-26-29 8 2-30-27-13 20-22-20-22 27-13-2-30 29 8Z" fill="#fff" /><path d="M80 14l12 22 25-7-2 26 23 11-17 19 17 19-23 11 2 26-25-7-12 22-12-22-25 7 2-26-23-11 17-19-17-19 23-11-2-26 25 7Z" fill="#3DDC84" /><path d="M48 98 70 76l14 12 28-30" fill="none" stroke="#0E1430" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" /><path d="M96 56h18v18" fill="none" stroke="#0E1430" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" /></svg>
-      </span>
-      <span class="stk" style="--r:-6deg;right:12vw;bottom:4vh;--w:150px">
-        <svg viewBox="0 0 170 104"><path d="M20 4h130a16 16 0 0 1 16 16v44a16 16 0 0 1-16 16H64l-30 20 6-20H20A16 16 0 0 1 4 64V20A16 16 0 0 1 20 4Z" fill="#fff" /><path d="M22 11h126a10 10 0 0 1 10 10v42a10 10 0 0 1-10 10H62l-18 12 3-12H22a10 10 0 0 1-10-10V21a10 10 0 0 1 10-10Z" fill="#25D366" /><text x="85" y="50" text-anchor="middle" font-family="Hanken Grotesk, sans-serif" font-size="22" font-weight="800" fill="#fff">¿Hablamos?</text></svg>
-      </span>
-    </div>
-  </div>
+  <!-- Fondo de pantalla del escritorio: el logo de nowmad como escultura de metal, en 3D (agency-wall3d.js) -->
+  <div class="wall" data-wall aria-hidden="true"><canvas class="wall3d" data-wall3d></canvas></div>
 
   <header class="menubar">
     <a class="mb-logo" href="index.html" aria-label="nowmad group, inicio"><svg aria-hidden="true"><use href="#o" /></svg></a>
