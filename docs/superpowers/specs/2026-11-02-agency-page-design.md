@@ -59,7 +59,7 @@ Misma marca del grupo (logo con brújula, Unbounded / Hanken Grotesk / JetBrains
 ## Pendiente de datos reales
 
 - Número de WhatsApp (`data-wa` en el formulario) y mail de la agencia (`data-mail`; hoy `hola@nowmad.travel`).
-- Proyectos: nombre, rubro, qué se hizo, URL y captura de página completa en `assets/work/`.
+- Proyectos: nombre, rubro, qué se hizo, URL y captura de página completa en `assets/work/`. Mientras tanto la sección está oculta (`hidden`) y el CTA del hero dice "Ver servicios".
 - Revisar las respuestas de las preguntas frecuentes.
 
 ## Fuera de alcance (después)

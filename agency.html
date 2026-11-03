@@ -12,10 +12,10 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261102u" />
   <link rel="preload" href="assets/fonts/unbounded-be36af.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="styles.css?v=20261102u" />
-  <link rel="stylesheet" href="agency.css?v=20261103c" />
+  <link rel="stylesheet" href="agency.css?v=20261103d" />
   <script>document.documentElement.classList.add("js");</script>
   <script defer src="main.js?v=20261102u"></script>
-  <script defer src="agency.js?v=20261103c"></script>
+  <script defer src="agency.js?v=20261103d"></script>
   <!-- Fondo 3D: Three.js se descarga recién después del evento load (ver agency-3d.js) -->
   <!-- API key de Google Maps Platform (Map Tiles API) para el Buenos Aires 3D real.
        Restringila a tu dominio en Google Cloud y ponele tope diario. Vacía = respaldo satelital. -->
@@ -30,7 +30,7 @@
       }
     }
   </script>
-  <script type="module" src="agency-3d.js?v=20261103c"></script>
+  <script type="module" src="agency-3d.js?v=20261103d"></script>
 </head>
 <body class="page-agency">
   <canvas class="ag-scene" data-scene aria-hidden="true"></canvas>
@@ -81,7 +81,8 @@
           <h1 class="detail-title">Construimos tu producto digital y lo hacemos crecer.</h1>
           <div class="ag-ctas">
             <a class="btn" href="#contacto">Armá tu pedido <span aria-hidden="true">→</span></a>
-            <a class="ag-link" href="#proyectos">Ver proyectos</a>
+            <a class="ag-link" href="#servicios">Ver servicios</a>
+            <!-- Con proyectos cargados, volver a: <a class="ag-link" href="#proyectos">Ver proyectos</a> -->
           </div>
         </div>
 
@@ -147,7 +148,8 @@
          Para sumar uno: copiá un <li class="ag-project">, completá los textos y la URL,
          y poné una captura de página completa (alta, ~1440px de ancho) en assets/work/.
          Reemplazá <div class="ag-shot-empty"> por <img src="assets/work/nombre.webp" alt="" loading="lazy" width="1440" height="4000">. -->
-    <section class="ag-work wrap" id="proyectos" data-anchor data-pose="side">
+    <!-- Oculta hasta tener proyectos reales: sacá el atributo hidden y volvé a apuntar el CTA del hero a #proyectos. -->
+    <section class="ag-work wrap" id="proyectos" data-anchor data-pose="side" hidden>
       <p class="label reveal">Proyectos</p>
       <h2 class="reveal">Hecho por nosotros.</h2>
       <ul class="ag-work-list">

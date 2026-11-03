@@ -142,6 +142,7 @@
 
 /* ---------- 3. Proyectos ---------- */
 .ag-work { display: grid; gap: 24px; padding-block: clamp(80px, 11vw, 150px) 0; }
+.ag-work[hidden] { display: none; }
 .ag-work-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: clamp(20px, 3vw, 40px); margin-top: 24px; }
 .ag-project { display: grid; gap: 18px; align-content: start; }
 .ag-frame { display: block; overflow: hidden; border-radius: 14px; border: 1px solid var(--ag-line); background: #0D1330; color: var(--ink-muted); text-decoration: none; box-shadow: 0 40px 80px -30px rgba(0, 0, 0, .7), 0 0 0 1px rgba(255, 255, 255, .02); transition: transform .4s var(--ease), box-shadow .4s; }
