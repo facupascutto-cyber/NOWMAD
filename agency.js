@@ -24,7 +24,9 @@
     { id: "proyecto", t: "Project manager", d: "Llevaste tu proyecto hasta Online." },
     { id: "propuesta", t: "Con plan", d: "Armaste tu propuesta inicial." },
     { id: "apps", t: "Curioso", d: "Probaste tres apps en el celular." },
-    { id: "chat", t: "Preguntón", d: "Le hiciste una pregunta al asistente." }
+    { id: "chat", t: "Preguntón", d: "Le hiciste una pregunta al asistente." },
+    { id: "spot", t: "Power user", d: "Abriste el buscador (⌘K o la lupa de arriba)." },
+    { id: "fondo", t: "Decorador", d: "Cambiaste el fondo de pantalla." }
   ];
   var got = {};
   try { got = JSON.parse(localStorage.getItem("nowmad-logros") || "{}") || {}; } catch (e) { got = {}; }
@@ -224,6 +226,7 @@
         bar.addEventListener("pointermove", move); bar.addEventListener("pointerup", up); bar.addEventListener("pointercancel", up);
       });
       bar.addEventListener("dblclick", function (e) { if (!e.target.closest("i")) home(); });
+      win.addEventListener("win:home", function () { win.classList.remove("is-min"); home(); });
       // Rojo: no se deja cerrar. Amarillo: se minimiza. Verde: vuelve a su lugar.
       var L = $$(".lights i", win);
       if (L.length !== 3) return;
@@ -1301,8 +1304,283 @@
   function initYear() { $$("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); }); }
 
   function boot() {
-    safe(initTrophies, "trophies");
+    // ---------- Capa Mac: arranque, menú de la app, Spotlight, clic derecho, fondos y selección ----------
+  function initMac() {
+    var root = document.documentElement;
+
+    // Arranque: el logo y la barrita, una vez por visita
+    // (el script del <head> ya marcó "is-booting" para que se vea desde el primer cuadro)
+    var boot = $("[data-boot]");
+    if (boot && root.classList.contains("is-booting")) {
+      try { sessionStorage.setItem("nowmad-boot", "1"); } catch (e) {}
+      setTimeout(function () {
+        root.classList.remove("is-booting"); boot.classList.add("is-out");
+        setTimeout(function () { boot.remove(); }, 600);
+      }, 1300);
+    } else if (boot) boot.remove();
+
+    // Fondos de pantalla: el mismo diseño en cinco tonos, o según la hora de Buenos Aires
+    var wall = $("[data-wall]"), tone = "cobalto";
+    var TONES = [["cobalto", "Cobalto", "#2B3BD8"], ["violeta", "Violeta", "#6A4DF0"], ["turquesa", "Turquesa", "#119C8D"], ["atardecer", "Atardecer", "#E2762B"], ["noche", "Noche", "#0E1430"], ["auto", "Según la hora", "conic-gradient(#2B3BD8 0 33%, #E2762B 0 66%, #0E1430 0)"]];
+    function autoTone() {
+      var h = +new Intl.DateTimeFormat("en-US", { hour: "numeric", hourCycle: "h23", timeZone: "America/Argentina/Buenos_Aires" }).format(new Date());
+      return h >= 20 || h < 6 ? "noche" : h >= 17 ? "atardecer" : "cobalto";
+    }
+    function toneName(t) { for (var i = 0; i < TONES.length; i++) if (TONES[i][0] === t) return TONES[i][1]; return t; }
+    function setTone(t, save) {
+      tone = t;
+      if (wall) wall.setAttribute("data-tone", t === "auto" ? autoTone() : t);
+      if (!save) return;
+      try { localStorage.setItem("nowmad-fondo", t); } catch (e) {}
+      toast("Fondo de pantalla", toneName(t) + ".");
+      unlock("fondo");
+    }
+    try { tone = localStorage.getItem("nowmad-fondo") || "cobalto"; } catch (e) {}
+    setTone(tone);
+    function nextTone() {
+      var i = 0;
+      for (var k = 0; k < 5; k++) if (TONES[k][0] === tone) i = k + 1;
+      setTone(TONES[i % 5][0], true);
+    }
+
+    // Batería real del dispositivo si el navegador la da
+    var bat = $("[data-bat]");
+    if (bat && navigator.getBattery) navigator.getBattery().then(function (b) {
+      function upd() {
+        bat.parentNode.style.setProperty("--bat", Math.max(10, b.level * 100) + "%");
+        bat.parentNode.classList.toggle("is-low", b.level < 0.2 && !b.charging);
+        var dd = $("[data-about-bat]");
+        if (dd) dd.textContent = Math.round(b.level * 100) + "%" + (b.charging ? ", cargando" : "") + ". Nosotros, para rato.";
+      }
+      upd(); b.addEventListener("levelchange", upd); b.addEventListener("chargingchange", upd);
+    }).catch(function () {});
+
+    // Acciones que comparten el menú de la app, el clic derecho y Spotlight
+    var about = $("[data-about]"), spot = $("[data-spot]"), ctx = $("[data-ctx]");
+    var amBtn = $("[data-appmenu]"), amList = $("[data-appmenu-list]");
+    function closeMenus() {
+      if (amList) { amList.hidden = true; amBtn.setAttribute("aria-expanded", "false"); }
+      if (ctx) ctx.hidden = true;
+    }
+    function tidy() {
+      $$("main .win").forEach(function (w) { w.dispatchEvent(new Event("win:home")); });
+      $$(".desk [data-win]").forEach(function (w) { w.style.removeProperty("--x"); w.style.removeProperty("--y"); });
+      toast("Ventanas ordenadas", "Todo volvió a su lugar.");
+    }
+    function openAbout() { if (!about) return; about.hidden = false; $("[data-about-close]", about).focus(); }
+    var ACTS = {
+      about: openAbout,
+      spot: function () { openSpot(); },
+      wall: nextTone,
+      tidy: tidy,
+      logros: function () { var t = $("[data-trophy]"); if (t) t.click(); },
+      wa: function () { openWa("¡Hola, nowmad agency! Quiero contarles un proyecto."); }
+    };
+    document.addEventListener("click", function (e) {
+      var b = e.target.closest("[data-act]");
+      if (b && ACTS[b.getAttribute("data-act")]) { closeMenus(); ACTS[b.getAttribute("data-act")](); return; }
+      var t = b ? null : e.target.closest("[data-tone-set]");
+      if (t) { closeMenus(); setTone(t.getAttribute("data-tone-set"), true); return; }
+      if (!e.target.closest(".mb-am, .ctx")) closeMenus();
+    });
+    if (about) {
+      $("[data-about-close]", about).addEventListener("click", function () { about.hidden = true; });
+      $$(".lights i", about).forEach(function (i) { i.addEventListener("click", function () { about.classList.remove("is-nope"); void about.offsetWidth; }); });
+    }
+
+    // Menú de la app ("nowmad agency" en la barra)
+    if (amBtn && amList) amBtn.addEventListener("click", function (e) {
+      e.stopPropagation();
+      var open = amList.hidden;
+      closeMenus();
+      amList.hidden = !open; amBtn.setAttribute("aria-expanded", String(open));
+      if (open) $("button", amList).focus();
+    });
+
+    // Clic derecho en el escritorio: el menú de siempre, con los fondos
+    function ctxHtml() {
+      return '<button type="button" data-act="spot">Buscar… <kbd>⌘K</kbd></button>' +
+        '<button type="button" data-act="about">Acerca de nowmad agency</button><hr />' +
+        '<p class="ctx-h">Fondo de pantalla</p><div class="ctx-tones">' +
+        TONES.map(function (t) { return '<button type="button" data-tone-set="' + t[0] + '" title="' + t[1] + '" aria-label="Fondo ' + t[1] + '" style="--c:' + t[2] + ';background:' + t[2] + '"' + (t[0] === tone ? ' class="is-on"' : "") + "></button>"; }).join("") +
+        '</div><hr /><button type="button" data-act="tidy">Ordenar ventanas</button>' +
+        '<button type="button" data-act="logros">Ver logros</button><hr />' +
+        '<button type="button" data-act="wa">Escribinos por WhatsApp</button>';
+    }
+    if (ctx) document.addEventListener("contextmenu", function (e) {
+      if (!DESKTOP.matches || e.target.closest(".win, input, textarea, select, a, button, .dock, .menubar, .spot, .ctx, .leaflet-container")) return;
+      e.preventDefault();
+      closeMenus();
+      ctx.innerHTML = ctxHtml(); ctx.hidden = false;
+      var w = ctx.offsetWidth, h = ctx.offsetHeight;
+      ctx.style.left = Math.min(e.clientX, innerWidth - w - 8) + "px";
+      ctx.style.top = Math.min(e.clientY, innerHeight - h - 8) + "px";
+    });
+    document.addEventListener("keydown", function (e) {
+      if (e.key !== "Escape") return;
+      closeMenus();
+      if (about && !about.hidden) about.hidden = true;
+    });
+    addEventListener("scroll", function () { if (ctx && !ctx.hidden) ctx.hidden = true; }, { passive: true });
+
+    // Spotlight: secciones, demos, acciones, escanear una web y hacer cuentas
+    var input = $("[data-spot-input]"), list = $("[data-spot-list]"), items = [], sel = 0, opener = null;
+    var I = {
+      folder: '<svg><use href="#folder" /></svg>', o: '<svg><use href="#o" /></svg>', chat: '<svg><use href="#chat" /></svg>',
+      search: '<svg><use href="#search" /></svg>', doc: '<svg><use href="#doc" /></svg>'
+    };
+    function go(hash) { var el = $(hash); if (el) el.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" }); }
+    var BASE = [
+      { t: "Nosotros", d: "Quiénes somos", k: "nosotros agencia equipo quienes", i: I.doc, run: function () { go("#nosotros"); } },
+      { t: "Cómo trabajamos", d: "El proceso, del brief a estar online", k: "proceso pasos tablero brief trabajo", i: I.folder, run: function () { go("#como"); } },
+      { t: "Tu competencia", d: "Mapa con los negocios reales que tenés cerca", k: "competencia mapa rivales negocios cerca zona", i: I.o, run: function () { go("#competencia"); } },
+      { t: "Tu propuesta", d: "Armá tu propuesta según tu presupuesto", k: "propuesta presupuesto precio costo cuanto sale cotizar plan", i: I.o, run: function () { go("#propuesta"); } },
+      { t: "Servicios", d: "Webs, sistemas, automatización, IA y anuncios", k: "servicios webs sistemas apps automatizacion ia anuncios", i: I.folder, run: function () { go("#servicios"); } },
+      { t: "Preguntas frecuentes", d: "El asistente responde tus dudas", k: "preguntas ayuda faq dudas asistente", i: I.chat, run: function () { go("#preguntas"); } },
+      { t: "Contacto", d: "WhatsApp y mail", k: "contacto whatsapp mail email telefono escribir", i: I.chat, run: function () { go("#contacto"); } },
+      { t: "Escribinos por WhatsApp", d: "Te respondemos en el día", k: "whatsapp hablar escribir contacto mensaje", i: I.chat, run: ACTS.wa },
+      { t: "Cambiar fondo de pantalla", d: "Cobalto, violeta, turquesa, atardecer o noche", k: "fondo pantalla wallpaper color tema", i: "◐", run: nextTone },
+      { t: "Ordenar ventanas", d: "Todas vuelven a su lugar", k: "ordenar ventanas acomodar reset", i: "▦", run: tidy },
+      { t: "Acerca de nowmad agency", d: "Las especificaciones de la casa", k: "acerca about version info", i: I.o, run: openAbout },
+      { t: "Ver logros", d: "Lo que descubriste en la página", k: "logros trofeos achievements", i: "★", run: ACTS.logros },
+      { t: "nowmad explorers", d: "La rama de viajes del grupo", k: "explorers viajes turismo grupo", i: "↗", run: function () { location.href = "explorers-glass.html"; } }
+    ];
+    $$(".dock-app[data-open]").forEach(function (b) {
+      var l = $(".dock-l", b).textContent;
+      BASE.push({ t: l, d: "Demo en vivo de " + l.toLowerCase(), k: "demo app " + l.toLowerCase(), i: $(".ic", b).innerHTML.replace(/<i[^>]*>.*?<\/i>/, ""), app: b.className.replace(/.*\b(ic-\w+).*/, "$1"), run: function () { b.click(); } });
+    });
+    var SUGGEST = ["Tu competencia", "Tu propuesta", "Escribinos por WhatsApp", "Cambiar fondo de pantalla", "Webs"];
+    function norm(t) { return t.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
+    function calc(q) {
+      var s = q.replace(/\s/g, "").replace(/[x×]/gi, "*").replace(/÷/g, "/").replace(/\^/g, "**");
+      if (!/^[\d.,+\-*/()%]+$/.test(s) || !/\d/.test(s) || !/[+\-*/%]/.test(s.replace(/^-/, ""))) return null;
+      s = s.replace(/(\d),(\d)/g, "$1.$2").replace(/(\d+(?:\.\d+)?)%/g, "($1/100)");
+      try { var v = Function('"use strict";return (' + s + ")")(); return typeof v === "number" && isFinite(v) ? v : null; } catch (e) { return null; }
+    }
+    function build(q) {
+      var n = norm(q.trim()), out = [];
+      if (!n) return SUGGEST.map(function (t) { return BASE.filter(function (x) { return x.t === t; })[0]; }).filter(Boolean);
+      var v = calc(q);
+      if (v != null) {
+        var txt = v.toLocaleString("es-AR", { maximumFractionDigits: 6 });
+        out.push({ t: "= " + txt, d: "Calculadora · Enter para copiar", i: "=", calc: true, run: function () { try { navigator.clipboard.writeText(String(v)); } catch (e) {} toast("Copiado", txt); } });
+      }
+      if (looksLikeUrl(q.trim())) {
+        var host = hostOf(normUrl(q.trim()));
+        out.push({ t: "Escanear " + host, d: "Velocidad, SEO y cómo quedaría rehecha", i: I.search, run: function () {
+          var form = $("[data-hero-form]"), inp = $("[data-mock-input]");
+          if (!form || !inp) return;
+          scrollTo({ top: 0, behavior: REDUCED ? "auto" : "smooth" });
+          inp.value = q.trim();
+          if (form.requestSubmit) form.requestSubmit(); else form.dispatchEvent(new Event("submit", { cancelable: true }));
+        } });
+      }
+      var hits = BASE.map(function (x) {
+        var t = norm(x.t), s = t.indexOf(n) === 0 ? 3 : t.indexOf(n) > -1 ? 2 : norm(x.k + " " + x.d).indexOf(n) > -1 ? 1 : 0;
+        if (!s) n.split(/\s+/).forEach(function (w) { if (w.length > 2 && norm(x.t + " " + x.k).indexOf(w) > -1) s = Math.max(s, 0.5); });
+        return { x: x, s: s };
+      }).filter(function (h) { return h.s; }).sort(function (a, b) { return b.s - a.s; }).map(function (h) { return h.x; });
+      out = out.concat(hits.slice(0, 7));
+      if (v == null) {
+        out.push({ t: "Preguntarle al asistente: «" + q.trim() + "»", d: "Te responde en la sección de ayuda", i: I.chat, run: function () {
+          var f = $("[data-bot-form]");
+          go("#preguntas");
+          if (f) setTimeout(function () { var x = f.querySelector("input"); x.value = q.trim(); f.dispatchEvent(new Event("submit", { cancelable: true })); }, REDUCED ? 0 : 650);
+        } });
+        out.push({ t: "Mandarnos «" + q.trim() + "» por WhatsApp", d: "Directo a nuestro número", i: I.chat, run: function () { openWa("¡Hola, nowmad agency! " + q.trim()); } });
+      }
+      return out;
+    }
+    function render() {
+      items = build(input.value);
+      sel = Math.min(sel, Math.max(0, items.length - 1));
+      list.innerHTML = "";
+      items.forEach(function (x, i) {
+        var li = document.createElement("li");
+        li.id = "spot-" + i; li.setAttribute("role", "option");
+        if (x.calc) li.className = "spot-calc";
+        li.innerHTML = '<span class="spot-ico ' + (x.app || "") + '" aria-hidden="true"></span><span><b></b><small></small></span><em></em>';
+        var ico = $(".spot-ico", li);
+        if (x.app) { ico.className = "spot-ico ic " + x.app; ico.style.color = "#fff"; }
+        ico.innerHTML = x.i;
+        $("b", li).textContent = x.t; $("small", li).textContent = x.d; $("em", li).textContent = i === 0 ? "↵" : "";
+        li.addEventListener("pointermove", function () { if (sel !== i) { sel = i; mark(); } });
+        li.addEventListener("click", function () { sel = i; pick(); });
+        list.appendChild(li);
+      });
+      mark();
+    }
+    function mark() {
+      $$("li", list).forEach(function (li, i) { li.classList.toggle("is-on", i === sel); li.setAttribute("aria-selected", String(i === sel)); $("em", li).textContent = i === sel ? "↵" : ""; });
+      var on = $("li.is-on", list);
+      if (on) { on.scrollIntoView({ block: "nearest" }); input.setAttribute("aria-activedescendant", on.id); }
+    }
+    function pick() { var x = items[sel]; if (!x) return; closeSpot(); x.run(); }
+    function openSpot() {
+      if (!spot) return;
+      opener = document.activeElement;
+      closeMenus();
+      spot.hidden = false; input.value = ""; sel = 0; render(); input.focus();
+      unlock("spot");
+    }
+    function closeSpot() { if (!spot || spot.hidden) return; spot.hidden = true; if (opener && opener.focus) opener.focus(); }
+    if (spot) {
+      input.addEventListener("input", function () { sel = 0; render(); });
+      input.addEventListener("keydown", function (e) {
+        if (e.key === "ArrowDown") { e.preventDefault(); sel = (sel + 1) % items.length; mark(); }
+        else if (e.key === "ArrowUp") { e.preventDefault(); sel = (sel - 1 + items.length) % items.length; mark(); }
+        else if (e.key === "Enter") { e.preventDefault(); pick(); }
+        else if (e.key === "Escape") { e.preventDefault(); closeSpot(); }
+      });
+      spot.addEventListener("pointerdown", function (e) { if (e.target === spot) closeSpot(); });
+      $$("[data-spot-open]").forEach(function (b) { b.addEventListener("click", openSpot); });
+      document.addEventListener("keydown", function (e) {
+        var typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement.tagName) || document.activeElement.isContentEditable;
+        if ((e.metaKey || e.ctrlKey) && (e.key === "k" || e.key === "K")) { e.preventDefault(); spot.hidden ? openSpot() : closeSpot(); }
+        else if (e.key === "/" && !typing && spot.hidden) { e.preventDefault(); openSpot(); }
+      });
+    }
+
+    // Arrastrar sobre el fondo de la portada dibuja el recuadro de selección y marca los íconos
+    var desk = $("[data-desk]"), icons = $$(".desk-icons a");
+    if (desk && icons.length) {
+      desk.addEventListener("pointerdown", function (e) {
+        if (!DESKTOP.matches || e.button || (e.target !== desk && !e.target.classList.contains("desk-icons"))) return;
+        e.preventDefault(); root.classList.add("is-marquee");
+        icons.forEach(function (a) { a.classList.remove("is-sel"); });
+        var sx = e.clientX, sy = e.clientY, box = document.createElement("div"), moved = false;
+        box.className = "marquee"; document.body.appendChild(box);
+        function move(ev) {
+          var x = Math.min(sx, ev.clientX), y = Math.min(sy, ev.clientY), w = Math.abs(ev.clientX - sx), h = Math.abs(ev.clientY - sy);
+          if (w + h > 6) moved = true;
+          box.style.cssText = "left:" + x + "px;top:" + y + "px;width:" + w + "px;height:" + h + "px";
+          icons.forEach(function (a) {
+            var r = a.getBoundingClientRect();
+            a.classList.toggle("is-sel", r.left < x + w && r.right > x && r.top < y + h && r.bottom > y);
+          });
+        }
+        function up() {
+          box.remove(); root.classList.remove("is-marquee");
+          removeEventListener("pointermove", move); removeEventListener("pointerup", up);
+          var n = icons.filter(function (a) { return a.classList.contains("is-sel"); }).length;
+          if (moved && n > 1) toast(n + " ítems seleccionados", "Doble clic en uno para abrirlo.");
+        }
+        addEventListener("pointermove", move); addEventListener("pointerup", up);
+      });
+      icons.forEach(function (a) {
+        a.addEventListener("click", function (e) {
+          if (!DESKTOP.matches || a.classList.contains("is-sel")) return;
+          e.preventDefault();
+          icons.forEach(function (o) { o.classList.toggle("is-sel", o === a); });
+        });
+        a.addEventListener("dblclick", function () { var h = a.getAttribute("href"); if (h.charAt(0) === "#") go(h); else location.href = h; });
+      });
+    }
+  }
+
+  safe(initTrophies, "trophies");
     safe(initWinPlay, "winplay");
+  safe(initMac, "mac");
     safe(initWords, "words");
     safe(initReveal, "reveal");
     safe(initScrub, "scrub");

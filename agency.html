@@ -11,9 +11,9 @@
   <meta property="og:type" content="website" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261103m" />
   <link rel="preload" href="assets/fonts/unbounded-be36af.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="agency.css?v=20261104g" />
-  <script>document.documentElement.classList.add("js");</script>
-  <script defer src="agency.js?v=20261104f"></script>
+  <link rel="stylesheet" href="agency.css?v=20261104i" />
+  <script>document.documentElement.classList.add("js");try{if(!sessionStorage.getItem("nowmad-boot")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("is-booting");}catch(e){}</script>
+  <script defer src="agency.js?v=20261104i"></script>
 </head>
 <body>
   <!-- agency como un sistema operativo: fondo de pantalla vivo (la brújula del logo en píxeles),
@@ -53,7 +53,19 @@
 
   <header class="menubar">
     <a class="mb-logo" href="index.html" aria-label="nowmad group, inicio"><svg aria-hidden="true"><use href="#o" /></svg></a>
-    <b class="mb-app">nowmad agency</b>
+    <div class="mb-am">
+      <button type="button" class="mb-app" data-appmenu aria-haspopup="menu" aria-expanded="false">nowmad agency</button>
+      <div class="mb-drop" data-appmenu-list role="menu" hidden>
+        <button type="button" role="menuitem" data-act="about">Acerca de nowmad agency</button>
+        <hr />
+        <button type="button" role="menuitem" data-act="spot">Buscar… <kbd>⌘K</kbd></button>
+        <button type="button" role="menuitem" data-act="wall">Cambiar fondo de pantalla</button>
+        <button type="button" role="menuitem" data-act="tidy">Ordenar ventanas</button>
+        <button type="button" role="menuitem" data-act="logros">Ver logros</button>
+        <hr />
+        <button type="button" role="menuitem" data-act="wa">Escribinos por WhatsApp</button>
+      </div>
+    </div>
     <nav class="mb-menu" aria-label="Principal">
       <a href="#nosotros">Nosotros</a>
       <a href="#como">Cómo trabajamos</a>
@@ -66,6 +78,11 @@
     <span class="mb-sp"></span>
     <a class="mb-other" href="explorers-glass.html">nowmad explorers ↗</a>
     <span class="mb-status"><i aria-hidden="true"></i>En línea</span>
+    <span class="mb-sys" aria-hidden="true">
+      <svg viewBox="0 0 20 14"><path d="M10 12.6 12.3 10a3.2 3.2 0 0 0-4.6 0Z M5.4 7.7a6.6 6.6 0 0 1 9.2 0l1.6-1.8a9 9 0 0 0-12.4 0Z M1.6 3.6a12 12 0 0 1 16.8 0L20 1.8a14.5 14.5 0 0 0-20 0Z" fill="currentColor" /></svg>
+      <span class="mb-bat"><i data-bat></i></span>
+    </span>
+    <button type="button" class="mb-spot" data-spot-open aria-label="Buscar (Ctrl+K)"><svg aria-hidden="true"><use href="#search" /></svg></button>
     <button type="button" class="mb-trophy" data-trophy aria-expanded="false" aria-controls="logros">Logros <b data-trophy-n>0</b>/<span data-trophy-t>8</span></button>
     <span class="mb-clock">BUE <b data-clock>--:--</b></span>
   </header>
@@ -418,6 +435,39 @@
     <ul data-trophy-list></ul>
     <p class="tr-foot">Seguí tocando cosas: hay más.</p>
   </div>
+  <!-- Arranque: el logo y la barrita, una vez por visita -->
+  <div class="boot" data-boot aria-hidden="true"><svg><use href="#o" /></svg><span class="boot-bar"><i></i></span></div>
+
+  <!-- Spotlight: buscar secciones, escanear una web, hacer cuentas -->
+  <div class="spot" data-spot role="dialog" aria-modal="true" aria-label="Buscar en nowmad" hidden>
+    <div class="spot-box">
+      <div class="spot-in"><svg aria-hidden="true"><use href="#search" /></svg><input type="text" data-spot-input placeholder="Buscá en nowmad, pegá tu web o hacé una cuenta" autocomplete="off" spellcheck="false" aria-controls="spot-list" /><kbd>esc</kbd></div>
+      <ul class="spot-list" id="spot-list" data-spot-list role="listbox"></ul>
+      <p class="spot-foot"><span>↑↓ para moverte</span><span>↵ para abrir</span></p>
+    </div>
+  </div>
+
+  <!-- Clic derecho en el escritorio -->
+  <div class="ctx" data-ctx role="menu" hidden></div>
+
+  <!-- Acerca de nowmad agency (como "Acerca de esta Mac") -->
+  <div class="win about" data-about role="dialog" aria-label="Acerca de nowmad agency" hidden>
+    <div class="win-bar"><span class="lights"><button type="button" class="ql-close" data-about-close aria-label="Cerrar"></button><i></i><i></i></span></div>
+    <div class="about-body">
+      <span class="about-logo"><svg aria-hidden="true"><use href="#o" /></svg></span>
+      <h2>nowmad agency</h2>
+      <p class="about-v">Versión 2026 · Buenos Aires</p>
+      <dl>
+        <dt>Procesador</dt><dd>Mate amargo, 8 núcleos</dd>
+        <dt>Memoria</dt><dd>Cada proyecto, a medida</dd>
+        <dt>Gráficos</dt><dd>Diseño propio, sin plantillas</dd>
+        <dt>Almacenamiento</dt><dd>Tus clientes, conectados</dd>
+        <dt>Batería</dt><dd data-about-bat>Para rato</dd>
+      </dl>
+      <button type="button" class="about-cta" data-act="wa">Hablemos de tu proyecto</button>
+    </div>
+  </div>
+
   <div class="toast" data-toast role="status" aria-live="polite"><span class="toast-ico" aria-hidden="true">★</span><span><b data-toast-title></b><span data-toast-body></span></span></div>
   <div class="confetti" data-confetti aria-hidden="true"></div>
 

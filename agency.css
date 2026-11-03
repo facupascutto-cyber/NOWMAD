@@ -894,3 +894,104 @@ main .win-bar:hover .win-hint { opacity: .8; }
   .wp { transform: translateY(30%); }
   .foot { padding-bottom: 96px; background: rgba(11, 16, 48, .88); opacity: 1; }
 }
+
+/* =====================================================================
+   Capa Mac: arranque, menú de la app, Spotlight, clic derecho, "Acerca de", selección en el escritorio
+   ===================================================================== */
+/* Fondos de pantalla: el mismo diseño en otros tonos */
+.wall { transition: filter 1.2s var(--ease); }
+.wall[data-tone="violeta"] { filter: hue-rotate(38deg) saturate(1.1); }
+.wall[data-tone="turquesa"] { filter: hue-rotate(-48deg) saturate(1.15); }
+.wall[data-tone="atardecer"] { filter: hue-rotate(150deg) saturate(1.25) brightness(1.05); }
+.wall[data-tone="noche"] { filter: brightness(.5) saturate(.85); }
+
+/* Barra de menú: menú de la app, wifi, batería y lupa */
+.mb-am { position: relative; }
+.mb-app { padding: 4px 8px; margin: 0 -8px; border: 0; border-radius: 5px; background: none; color: inherit; font: inherit; font-weight: 700; cursor: default; }
+.mb-app:hover, .mb-app[aria-expanded="true"] { background: rgba(255, 255, 255, .16); }
+.mb-drop, .ctx { position: absolute; z-index: 90; min-width: 240px; padding: 5px; border-radius: 10px; background: rgba(236, 239, 250, .82); -webkit-backdrop-filter: blur(30px) saturate(180%); backdrop-filter: blur(30px) saturate(180%); box-shadow: 0 0 0 1px rgba(14, 20, 48, .12), 0 20px 50px -12px rgba(4, 7, 30, .55); color: var(--ink); transform-origin: top left; animation: menu-in .16s var(--ease); }
+.mb-drop { top: 30px; left: -8px; }
+.ctx { position: fixed; }
+.mb-drop[hidden], .ctx[hidden] { display: none; }
+@keyframes menu-in { from { opacity: 0; transform: scale(.96) translateY(-4px); } }
+.mb-drop button, .ctx button { display: flex; justify-content: space-between; align-items: center; gap: 18px; width: 100%; padding: 6px 10px; border: 0; border-radius: 5px; background: none; color: inherit; font: 500 13px/1.2 var(--sans); text-align: left; cursor: default; }
+.mb-drop button:hover, .mb-drop button:focus-visible, .ctx button:hover, .ctx button:focus-visible { outline: none; background: var(--cobalt); color: var(--white); }
+.mb-drop hr, .ctx hr { margin: 4px 8px; border: 0; border-top: 1px solid rgba(14, 20, 48, .12); }
+.mb-drop kbd, .ctx kbd { color: inherit; font: 500 12px/1 var(--sans); opacity: .55; }
+.ctx-h { margin: 0; padding: 6px 10px 2px; color: var(--ink-muted); font: 600 11px/1 var(--sans); }
+.ctx-tones { display: flex; gap: 8px; padding: 6px 10px 8px; }
+.ctx .ctx-tones button { width: 26px; height: 26px; padding: 0; border-radius: 50%; box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .6), 0 0 0 1px rgba(14, 20, 48, .2); transition: transform .15s var(--ease); }
+.ctx .ctx-tones button:hover, .ctx .ctx-tones button:focus-visible { background: var(--c); transform: scale(1.14); }
+.ctx .ctx-tones button.is-on { box-shadow: inset 0 0 0 2px #fff, 0 0 0 2px var(--cobalt); }
+.mb-sys { display: flex; align-items: center; gap: 12px; opacity: .9; }
+.mb-sys svg { width: 17px; height: 12px; }
+.mb-bat { position: relative; display: block; width: 24px; height: 11px; padding: 1.5px; border-radius: 3.5px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .6); }
+.mb-bat::after { content: ""; position: absolute; right: -3px; top: 3.5px; width: 1.5px; height: 4px; border-radius: 0 1px 1px 0; background: rgba(255, 255, 255, .6); }
+.mb-bat i { display: block; width: var(--bat, 80%); height: 100%; border-radius: 2px; background: var(--white); }
+.mb-bat.is-low i { background: #FF5F57; }
+.mb-spot { display: grid; place-items: center; width: 26px; height: 24px; padding: 0; border: 0; border-radius: 5px; background: none; color: var(--white); cursor: pointer; }
+.mb-spot:hover { background: rgba(255, 255, 255, .16); }
+.mb-spot svg { width: 15px; height: 15px; }
+
+/* Arranque */
+.boot { position: fixed; z-index: 200; inset: 0; display: none; place-content: center; justify-items: center; gap: 46px; background: #05071A; color: var(--white); }
+.js.is-booting .boot, .boot.is-out { display: grid; }
+.boot svg { width: 84px; height: 84px; }
+.boot-bar { width: 190px; height: 5px; overflow: hidden; border-radius: 3px; background: rgba(255, 255, 255, .2); }
+.boot-bar i { display: block; height: 100%; border-radius: inherit; background: var(--white); transform: scaleX(0); transform-origin: left; animation: boot-load 1.15s cubic-bezier(.5, 0, .3, 1) forwards; }
+@keyframes boot-load { 30% { transform: scaleX(.35); } 55% { transform: scaleX(.42); } to { transform: scaleX(1); } }
+.boot.is-out { animation: boot-out .55s var(--ease) forwards; }
+@keyframes boot-out { to { opacity: 0; visibility: hidden; } }
+
+/* Spotlight */
+.spot { position: fixed; z-index: 150; inset: 0; display: grid; justify-items: center; align-content: start; padding: 16vh 16px 0; background: rgba(5, 7, 26, .25); }
+.spot[hidden] { display: none; }
+.spot-box { width: min(640px, 100%); overflow: hidden; border-radius: 16px; background: rgba(240, 242, 252, .86); -webkit-backdrop-filter: blur(40px) saturate(190%); backdrop-filter: blur(40px) saturate(190%); box-shadow: 0 0 0 1px rgba(255, 255, 255, .5), 0 40px 100px -20px rgba(4, 7, 30, .7); color: var(--ink); animation: spot-in .22s var(--ease); }
+@keyframes spot-in { from { opacity: 0; transform: translateY(-10px) scale(.97); } }
+.spot-in { display: flex; align-items: center; gap: 12px; height: 62px; padding: 0 16px; }
+.spot-in svg { flex: none; width: 24px; height: 24px; color: var(--ink-muted); }
+.spot-in input { flex: 1; min-width: 0; height: 100%; padding: 0; border: 0; outline: 0; background: none; color: var(--ink); font: 400 22px/1 var(--sans); }
+.spot-in kbd { padding: 3px 6px; border-radius: 5px; background: rgba(14, 20, 48, .08); color: var(--ink-muted); font: 500 11px/1 var(--mono); }
+.spot-list { max-height: min(52vh, 420px); margin: 0; padding: 6px; overflow-y: auto; list-style: none; border-top: 1px solid rgba(14, 20, 48, .1); }
+.spot-list:empty { display: none; }
+.spot-list li { display: grid; grid-template-columns: 34px minmax(0, 1fr) auto; align-items: center; gap: 12px; padding: 8px 10px; border-radius: 9px; cursor: pointer; }
+.spot-list li.is-on { background: var(--cobalt); color: var(--white); }
+.spot-ico { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 9px; background: var(--white); color: var(--cobalt); font: 700 16px/1 var(--sans); box-shadow: 0 2px 6px -2px rgba(14, 20, 48, .3); }
+.spot-ico svg { width: 20px; height: 20px; }
+.spot-list b { display: block; overflow: hidden; font: 600 15px/1.25 var(--sans); text-overflow: ellipsis; white-space: nowrap; }
+.spot-list small { display: block; color: var(--ink-muted); font: 400 12.5px/1.3 var(--sans); }
+.spot-list li.is-on small { color: rgba(255, 255, 255, .75); }
+.spot-list em { color: var(--ink-muted); font: 500 11px/1 var(--mono); font-style: normal; }
+.spot-list li.is-on em { color: rgba(255, 255, 255, .7); }
+.spot-list .spot-calc b { font: 700 26px/1.1 var(--display); letter-spacing: -.02em; }
+.spot-foot { display: flex; justify-content: flex-end; gap: 16px; margin: 0; padding: 8px 16px; border-top: 1px solid rgba(14, 20, 48, .08); color: var(--ink-muted); font: 500 11px/1 var(--mono); }
+
+/* Acerca de nowmad agency */
+.about { position: fixed; z-index: 140; left: 50%; top: 50%; width: min(320px, calc(100vw - 32px)); transform: translate(-50%, -50%); animation: about-in .3s var(--ease); }
+.about[hidden] { display: none; }
+@keyframes about-in { from { opacity: 0; transform: translate(-50%, -46%) scale(.95); } }
+.about .win-bar { border: 0; background: var(--win); }
+.about-body { display: grid; justify-items: center; gap: 6px; padding: 4px 26px 26px; text-align: center; }
+.about-logo { display: grid; place-items: center; width: 88px; height: 88px; margin-bottom: 8px; border-radius: 22px; background: linear-gradient(160deg, #6F80FF, #1B2690); color: var(--white); box-shadow: 0 14px 30px -12px rgba(27, 38, 144, .8); }
+.about-logo svg { width: 52px; height: 52px; }
+.about h2 { margin: 0; font-size: 22px; letter-spacing: -.03em; }
+.about-v { margin: 0 0 12px; color: var(--ink-muted); font-size: 12px; }
+.about dl { display: grid; grid-template-columns: auto 1fr; gap: 5px 12px; width: 100%; margin: 0 0 16px; font-size: 12.5px; text-align: left; }
+.about dt { color: var(--ink); font-weight: 700; text-align: right; }
+.about dd { margin: 0; color: var(--ink-muted); }
+.about-cta { height: 34px; padding: 0 16px; border: 0; border-radius: 8px; background: var(--cobalt); color: var(--white); font: 600 13px/1 var(--sans); cursor: pointer; }
+
+/* Selección en el escritorio (arrastrando sobre el fondo) */
+.marquee { position: fixed; z-index: 60; border: 1px solid rgba(154, 168, 245, .9); border-radius: 2px; background: rgba(154, 168, 245, .18); pointer-events: none; }
+.desk-icons a.is-sel > svg { border-radius: 8px; background: rgba(255, 255, 255, .2); box-shadow: 0 0 0 4px rgba(255, 255, 255, .2); }
+.desk-icons a.is-sel span { background: var(--cobalt); }
+
+@media (max-width: 900px) {
+  .mb-sys { display: none; }
+  .spot { padding-top: 10vh; }
+  .spot-in input { font-size: 18px; }
+}
+
+/* Mientras arranca, la portada espera para animarse */
+.is-booting .desk .win, .is-booting .desk-icons { animation-play-state: paused !important; }
+.is-marquee, .is-marquee * { -webkit-user-select: none; user-select: none; }
