@@ -1,13 +1,30 @@
 /* nowmad agency: fondo de pantalla en 3D.
-   El logo de nowmad como escultura de metal pulido (anillo cromado, centro dorado y la aguja),
-   iluminado como en un estudio: reflejos de un ambiente, luces de color por detrás, niebla y polvo
-   que flota. La escultura mira suave hacia el mouse y las luces lo siguen.
+   Una brújula de bolsillo de metal (bisel cromado, esfera azul noche con marcas, rosa de los vientos,
+   aguja de dos colores y domo de vidrio), iluminada como en un estudio: reflejos de un ambiente,
+   contraluces de color, niebla y polvo que flota. La aguja apunta al mouse como si fuera un imán,
+   con rebote; la brújula viaja con el scroll y gira apenas hacia el cursor.
    Si no hay WebGL o el visitante pidió menos movimiento, queda quieta o queda el cielo de CSS. */
 import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
 
 const canvas = document.querySelector("[data-wall3d]");
 const REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+function star(points, outer, inner) {
+  const s = new THREE.Shape();
+  for (let i = 0; i < points * 2; i++) {
+    const r = i % 2 ? inner : outer, a = Math.PI / 2 + (i * Math.PI) / points;
+    if (i) s.lineTo(Math.cos(a) * r, Math.sin(a) * r); else s.moveTo(Math.cos(a) * r, Math.sin(a) * r);
+  }
+  s.closePath();
+  return s;
+}
+function tri(ax, ay, bx, by, cx, cy) {
+  const s = new THREE.Shape();
+  s.moveTo(ax, ay); s.lineTo(bx, by); s.lineTo(cx, cy); s.closePath();
+  return s;
+}
+const bevel = (depth, size) => ({ depth, bevelEnabled: true, bevelThickness: size, bevelSize: size, bevelSegments: 3, curveSegments: 24 });
 
 function start() {
   let renderer;
@@ -20,7 +37,7 @@ function start() {
   renderer.outputColorSpace = THREE.SRGBColorSpace;
 
   const scene = new THREE.Scene();
-  scene.fog = new THREE.FogExp2(0x05071a, 0.045);
+  scene.fog = new THREE.FogExp2(0x05071a, 0.04);
   const pmrem = new THREE.PMREMGenerator(renderer);
   scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
   scene.environmentIntensity = 1.1;
@@ -28,21 +45,67 @@ function start() {
   const camera = new THREE.PerspectiveCamera(32, 1, 0.1, 100);
   camera.position.set(0, 0, 11);
 
-  // La escultura: el logo de nowmad
-  const chrome = new THREE.MeshPhysicalMaterial({ color: 0xdfe4ff, metalness: 1, roughness: 0.12, clearcoat: 1, clearcoatRoughness: 0.06, iridescence: 0.35, iridescenceIOR: 1.6 });
-  const gold = new THREE.MeshPhysicalMaterial({ color: 0xf2b33a, metalness: 1, roughness: 0.22, clearcoat: 0.6 });
-  const logo = new THREE.Group();
-  const ring = new THREE.Mesh(new THREE.TorusGeometry(1.7, 0.46, 64, 220), chrome);
-  const dot = new THREE.Mesh(new THREE.SphereGeometry(0.5, 64, 64), gold);
-  const needle = new THREE.Mesh(new THREE.CapsuleGeometry(0.17, 3.9, 12, 32), chrome);
-  needle.rotation.z = -Math.PI / 4;
-  needle.position.set(1.38, 1.38, 0);
-  logo.add(ring, dot, needle);
+  // Materiales
+  const chrome = new THREE.MeshPhysicalMaterial({ color: 0xe3e8ff, metalness: 1, roughness: 0.1, clearcoat: 1, clearcoatRoughness: 0.05, iridescence: 0.3, iridescenceIOR: 1.6 });
+  const gold = new THREE.MeshPhysicalMaterial({ color: 0xf2b33a, metalness: 1, roughness: 0.2, clearcoat: 0.7 });
+  const brushed = new THREE.MeshPhysicalMaterial({ color: 0xaab4f0, metalness: 1, roughness: 0.32 });
+  const dial = new THREE.MeshPhysicalMaterial({ color: 0x0b1140, metalness: 0.5, roughness: 0.38, clearcoat: 1, clearcoatRoughness: 0.15 });
+  const north = new THREE.MeshPhysicalMaterial({ color: 0xff9a2e, emissive: 0xff6a1a, emissiveIntensity: 0.55, metalness: 0.6, roughness: 0.25, clearcoat: 1 });
+  const glass = new THREE.MeshPhysicalMaterial({ color: 0xffffff, metalness: 0, roughness: 0.02, transmission: 1, thickness: 0.25, ior: 1.5, clearcoat: 1, transparent: true, opacity: 1 });
+
+  // La brújula (de frente mira hacia +z)
+  const compass = new THREE.Group();
+  const bezel = new THREE.Mesh(new THREE.TorusGeometry(2.05, 0.24, 48, 220), chrome);
+  const lip = new THREE.Mesh(new THREE.TorusGeometry(1.8, 0.055, 24, 200), gold); lip.position.z = 0.1;
+  const back = new THREE.Mesh(new THREE.CylinderGeometry(2.1, 2.1, 0.32, 160), brushed); back.rotation.x = Math.PI / 2; back.position.z = -0.18;
+  const face = new THREE.Mesh(new THREE.CylinderGeometry(1.86, 1.86, 0.1, 160), dial); face.rotation.x = Math.PI / 2; face.position.z = 0.02;
+  compass.add(bezel, lip, back, face);
+  // Argolla de bolsillo arriba
+  const stem = new THREE.Mesh(new THREE.CylinderGeometry(0.17, 0.2, 0.36, 32), chrome); stem.position.y = 2.42;
+  const crown = new THREE.Mesh(new THREE.CylinderGeometry(0.24, 0.24, 0.18, 32), gold); crown.position.y = 2.66;
+  const bow = new THREE.Mesh(new THREE.TorusGeometry(0.42, 0.075, 20, 80), chrome); bow.position.y = 3.15;
+  compass.add(stem, crown, bow);
+  // Marcas: 72 finas y 4 cardinales doradas
+  const tickGeo = new THREE.BoxGeometry(0.028, 0.15, 0.03), bigGeo = new THREE.BoxGeometry(0.06, 0.32, 0.04);
+  const ticks = new THREE.InstancedMesh(tickGeo, brushed, 72), bigs = new THREE.InstancedMesh(bigGeo, gold, 8);
+  const m = new THREE.Object3D();
+  let b = 0;
+  for (let i = 0; i < 72; i++) {
+    const a = (i / 72) * Math.PI * 2, card = i % 9 === 0;
+    const r = card ? 1.56 : 1.64;
+    m.position.set(Math.sin(a) * r, Math.cos(a) * r, 0.1);
+    m.rotation.set(0, 0, -a);
+    m.updateMatrix();
+    if (card) bigs.setMatrixAt(b++, m.matrix); else ticks.setMatrixAt(i, m.matrix);
+  }
+  ticks.count = 72; bigs.count = b;
+  compass.add(ticks, bigs);
+  // Triangulito del norte
+  const nMark = new THREE.Mesh(new THREE.ExtrudeGeometry(tri(0, 1.4, 0.12, 1.2, -0.12, 1.2), bevel(0.02, 0.01)), north); nMark.position.z = 0.08;
+  compass.add(nMark);
+  // Rosa de los vientos: estrella de 4 puntas grande y otra de 4 rotada, más chica
+  const rose1 = new THREE.Mesh(new THREE.ExtrudeGeometry(star(4, 1.2, 0.2), bevel(0.03, 0.025)), brushed); rose1.position.z = 0.08;
+  const rose2 = new THREE.Mesh(new THREE.ExtrudeGeometry(star(4, 0.78, 0.16), bevel(0.03, 0.02)), chrome); rose2.rotation.z = Math.PI / 4; rose2.position.z = 0.1;
+  compass.add(rose1, rose2);
+  // Aguja: mitad norte ámbar (brilla) y mitad sur cromada, con tapón dorado
+  const needle = new THREE.Group();
+  const nHalf = new THREE.Mesh(new THREE.ExtrudeGeometry(tri(0, 1.45, 0.15, 0, -0.15, 0), bevel(0.035, 0.02)), north);
+  const sHalf = new THREE.Mesh(new THREE.ExtrudeGeometry(tri(0, -1.3, 0.15, 0, -0.15, 0), bevel(0.035, 0.02)), chrome);
+  const cap = new THREE.Mesh(new THREE.SphereGeometry(0.15, 32, 32), gold); cap.position.z = 0.07;
+  needle.add(nHalf, sHalf, cap);
+  needle.position.z = 0.3;
+  compass.add(needle);
+  // Domo de vidrio
+  const R = 4.2, th = Math.asin(1.84 / R);
+  const dome = new THREE.Mesh(new THREE.SphereGeometry(R, 96, 24, 0, Math.PI * 2, 0, th), glass);
+  dome.rotation.x = Math.PI / 2; dome.position.z = -R * Math.cos(th) + 0.16;
+  compass.add(dome);
+
   const holder = new THREE.Group();
-  holder.add(logo);
+  holder.add(compass);
   scene.add(holder);
 
-  // Luces: una clave cálida, contornos de color y un relleno muy bajo
+  // Luces: una clave cálida, contornos de color y una luz que sigue al mouse
   scene.add(new THREE.AmbientLight(0x1b2690, 0.35));
   const key = new THREE.DirectionalLight(0xfff1dc, 2.6); key.position.set(-3, 4, 6); scene.add(key);
   const rimBlue = new THREE.PointLight(0x4d5ff0, 260, 40, 1.5); rimBlue.position.set(-4, -2, 2); scene.add(rimBlue);
@@ -63,7 +126,7 @@ function start() {
   scene.add(dust);
 
   // Ubicación según el scroll: en la portada asoma abajo a la izquierda (debajo del texto) y al bajar
-  // viaja a la derecha girando, donde queda para el resto de la página. En el celular va centrada abajo.
+  // viaja a la derecha, donde queda para el resto de la página. En el celular va centrada abajo.
   let wide = true, prog = 0;
   function layout() {
     const w = innerWidth, h = innerHeight;
@@ -71,33 +134,49 @@ function start() {
     camera.aspect = w / h;
     camera.updateProjectionMatrix();
     wide = w > 900;
-    holder.scale.setScalar(wide ? 1.4 : 0.85);
+    holder.scale.setScalar(wide ? 1.25 : 0.8);
   }
   function place() {
     const k = prog * prog * (3 - 2 * prog);
-    if (wide) holder.position.set(-3.1 + 6 * k, -3.7 + 2.6 * k, 0);
-    else holder.position.set(0, -3.6 + 1.6 * k, 0);
-    holder.rotation.z = (1 - k) * -0.95;
-    holder.rotation.y = k * Math.PI * 0.6;
+    if (wide) holder.position.set(-3.1 + 6.1 * k, -3.9 + 3 * k, 0);
+    else holder.position.set(0, -3.4 + 1.4 * k, 0);
+    holder.rotation.z = (1 - k) * -0.8 - k * 0.15;
+    holder.rotation.y = -0.3 + k * 0.55;
   }
   layout();
   addEventListener("resize", layout);
 
-  const target = { x: 0, y: 0 }, cur = { x: 0, y: 0 };
+  const ptr = { x: 0, y: 0, seen: false }, cur = { x: 0, y: 0 };
   addEventListener("pointermove", (e) => {
-    target.x = e.clientX / innerWidth * 2 - 1;
-    target.y = e.clientY / innerHeight * 2 - 1;
+    ptr.x = e.clientX / innerWidth * 2 - 1;
+    ptr.y = e.clientY / innerHeight * 2 - 1;
+    ptr.seen = true;
   }, { passive: true });
+
+  // La aguja: un resorte que busca al mouse (o al norte, con un vaivén, si no hay mouse)
+  let na = 0, nv = 0;
+  const center = new THREE.Vector3();
+  function wrap(a) { return Math.atan2(Math.sin(a), Math.cos(a)); }
 
   const clock = new THREE.Clock();
   function frame() {
     const t = clock.getElapsedTime();
-    cur.x += (target.x - cur.x) * 0.05; cur.y += (target.y - cur.y) * 0.05;
-    logo.rotation.y = -0.55 + Math.sin(t * 0.25) * 0.25 + cur.x * 0.35;
-    logo.rotation.x = 0.18 + Math.sin(t * 0.2) * 0.08 + cur.y * 0.25;
-    logo.position.y = Math.sin(t * 0.6) * 0.12;
+    cur.x += (ptr.x - cur.x) * 0.05; cur.y += (ptr.y - cur.y) * 0.05;
     prog += (Math.min(1, scrollY / (innerHeight * 0.9)) - prog) * 0.08;
     place();
+    compass.rotation.y = Math.sin(t * 0.25) * 0.12 + cur.x * 0.3;
+    compass.rotation.x = 0.12 + Math.sin(t * 0.2) * 0.06 + cur.y * 0.22;
+    compass.position.y = Math.sin(t * 0.6) * 0.1;
+
+    compass.getWorldPosition(center).project(camera);
+    let goal;
+    if (ptr.seen) goal = Math.atan2(-ptr.y - center.y, (ptr.x - center.x) * camera.aspect) - Math.PI / 2 - holder.rotation.z;
+    else goal = Math.sin(t * 0.7) * 0.5 + Math.sin(t * 1.9) * 0.12;
+    nv += wrap(goal - na) * 0.012;
+    nv *= 0.93;
+    na += nv;
+    needle.rotation.z = na;
+
     follow.position.set(cur.x * 6, -cur.y * 4, 5);
     rimPink.position.x = 5 + Math.sin(t * 0.3) * 1.5;
     for (let i = 0; i < N; i++) {
