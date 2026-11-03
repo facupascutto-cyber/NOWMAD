@@ -1320,7 +1320,70 @@
   function initYear() { $$("[data-year]").forEach(function (el) { el.textContent = new Date().getFullYear(); }); }
 
   function boot() {
-    // ---------- Capa Mac: arranque, menú de la app, Spotlight, clic derecho, fondos y selección ----------
+    // ---------- Fondo "riso": el logo de nowmad impreso en puntos (dither ordenado de tres tintas) ----------
+  // No se mueve solo: queda quieto como una impresión. Donde pasa el mouse, los puntos se encienden.
+  function initRiso() {
+    var cv = $("[data-riso]");
+    if (!cv || !cv.getContext) return;
+    var ctx = cv.getContext("2d"), CELL = 4, W = 0, H = 0, img = null, base = null, mx = -1e4, my = -1e4, glow = 0, raf = 0;
+    var BAYER = [0, 8, 2, 10, 12, 4, 14, 6, 3, 11, 1, 9, 15, 7, 13, 5];
+    var INK = [[10, 15, 58], [43, 59, 216], [154, 168, 245], [242, 179, 58]]; // noche, cobalto, celeste, ámbar
+    // Campo de luz: el anillo del logo con volumen, el punto del centro en ámbar y la "aguja" en diagonal
+    function field() {
+      base = new Float32Array(W * H); var amber = new Uint8Array(W * H);
+      var s = Math.min(W, H), cx = W * 0.72, cy = H * 0.64, R = s * 0.46, T = s * 0.14, dot = s * 0.11;
+      var ex = cx + s * 0.75, ey = cy - s * 0.75, len = Math.hypot(ex - cx, ey - cy), ux = (ex - cx) / len, uy = (ey - cy) / len, half = s * 0.045;
+      for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) {
+        var i = y * W + x, dx = x - cx, dy = y - cy, d = Math.sqrt(dx * dx + dy * dy);
+        // cielo: apenas un degradé de abajo hacia arriba
+        var v = 0.03 + 0.1 * (y / H) + 0.14 * Math.max(0, x / W - 0.45);
+        // anillo con luz desde arriba a la izquierda
+        var t = (d - R) / T;
+        if (t > -1 && t < 1) {
+          var a = Math.atan2(dy, dx), lit = 0.5 + 0.5 * Math.cos(a + 2.4), tube = Math.sqrt(1 - t * t);
+          v = Math.max(v, 0.22 + 0.46 * tube * (0.3 + 0.7 * lit));
+        }
+        // aguja diagonal (como el logo)
+        var p = dx * ux + dy * uy, q = Math.abs(-dx * uy + dy * ux);
+        if (p > 0 && p < len && q < half) v = Math.max(v, 0.4 + 0.25 * (1 - q / half) * (1 - p / len * 0.6));
+        // punto central en ámbar
+        if (d < dot) { amber[i] = 1; v = 0.5 + 0.5 * Math.sqrt(1 - (d / dot) * (d / dot)); }
+        base[i] = Math.min(1, v);
+      }
+      base.amber = amber;
+    }
+    function draw() {
+      raf = 0;
+      var px = img.data, r = Math.max(W, H) * 0.16, r2 = r * r, k = glow;
+      for (var y = 0; y < H; y++) for (var x = 0; x < W; x++) {
+        var i = y * W + x, v = base[i];
+        if (k > 0) { var dx = x - mx, dy = y - my, dd = dx * dx + dy * dy; if (dd < r2) v = Math.min(1, v + k * 0.55 * (1 - dd / r2)); }
+        var th = (BAYER[(y & 3) * 4 + (x & 3)] + 0.5) / 16, lv;
+        if (base.amber[i]) lv = v * 1.2 > th ? 3 : 1;
+        else { var s = v * 2, f = Math.floor(s); lv = Math.min(2, f + (s - f > th ? 1 : 0)); }
+        var c = INK[lv], o = i * 4;
+        px[o] = c[0]; px[o + 1] = c[1]; px[o + 2] = c[2]; px[o + 3] = 255;
+      }
+      ctx.putImageData(img, 0, 0);
+    }
+    function size() {
+      W = Math.ceil(innerWidth / CELL); H = Math.ceil(innerHeight / CELL);
+      cv.width = W; cv.height = H;
+      img = ctx.createImageData(W, H);
+      field(); draw();
+    }
+    size();
+    var rw = innerWidth, rh = innerHeight;
+    addEventListener("resize", function () { if (Math.abs(innerWidth - rw) > 40 || Math.abs(innerHeight - rh) > 120) { rw = innerWidth; rh = innerHeight; size(); } });
+    if (REDUCED || !FINE) return;
+    addEventListener("pointermove", function (e) {
+      mx = e.clientX / CELL; my = e.clientY / CELL; glow = 1;
+      if (!raf) raf = requestAnimationFrame(draw);
+    }, { passive: true });
+    document.addEventListener("pointerleave", function () { glow = 0; if (!raf) raf = requestAnimationFrame(draw); });
+  }
+
+  // ---------- Capa Mac: arranque, menú de la app, Spotlight, clic derecho, fondos y selección ----------
   function initMac() {
     var root = document.documentElement;
 
@@ -1597,7 +1660,16 @@
   safe(initTrophies, "trophies");
     safe(initWinPlay, "winplay");
   safe(initMac, "mac");
-  safe(function () { var w = $("[data-wall]"); if (w) w.setAttribute("data-wp", (location.search.match(/[?&]bg=([abc])/) || [])[1] || "a"); }, "wallpick");
+  safe(initRiso, "riso");
+  safe(function () {
+    var w = $("[data-wall]"), k = (location.search.match(/[?&]bg=([ab])/) || [])[1] || "a";
+    if (!w) return;
+    w.setAttribute("data-wp", k);
+    // Los stickers están pegados en la portada: al bajar se van con ella y las secciones quedan limpias
+    var stk = $(".wp-b", w), t = 0;
+    if (k !== "b" || !stk) return;
+    addEventListener("scroll", function () { if (!t) t = requestAnimationFrame(function () { t = 0; stk.style.transform = "translateY(" + (-scrollY) + "px)"; }); }, { passive: true });
+  }, "wallpick");
     safe(initWords, "words");
     safe(initReveal, "reveal");
     safe(initScrub, "scrub");
