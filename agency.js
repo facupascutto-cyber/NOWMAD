@@ -43,7 +43,7 @@
   function confetti(x, y, n) {
     var box = $("[data-confetti]");
     if (!box || REDUCED || !box.animate) return;
-    var colors = ["#2B3BD8", "#9AA8F5", "#F2B33A", "#FF8FC0", "#3DDC84", "#FFFFFF"];
+    var colors = ["#8A6A3F", "#B08A4F", "#E8DCC5", "#D97757", "#4A3524", "#FFFFFF"];
     for (var i = 0; i < (n || 60); i++) {
       var c = document.createElement("i");
       c.style.background = colors[i % colors.length];
@@ -260,7 +260,7 @@
     for (var i = 0; i < PRESETS.length; i++) if (PRESETS[i].k.test(t)) return PRESETS[i];
     var m = t.match(/(?:para (?:mi|mis|un|una|el|la|los|las|nuestro|nuestra)\s+)(.+)$/i);
     var thing = (m ? m[1] : t).replace(/[.!?]+$/, "").slice(0, 32), name = cap(thing);
-    return { name: name, kicker: "Hecho a medida", title: name + ", en línea", cta: "Empezar", slug: slugify(thing), acc: "#3C4DE6", n: 57 };
+    return { name: name, kicker: "Hecho a medida", title: name + ", en línea", cta: "Empezar", slug: slugify(thing), acc: "#8A6A3F", n: 57 };
   }
 
   function initMock() {
@@ -655,7 +655,7 @@
           nwName.textContent = report.name;
           nwTitle.textContent = makeTitle(d.description, report.name);
           if (d.logo && d.logo.url && /^https:\/\//.test(d.logo.url)) nwLogo.src = d.logo.url; else nwLogo.removeAttribute("src");
-          var a1 = pickAccent(pal) || "#2B3BD8", a2 = pickAccent(pal.filter(function (h) { return h !== a1; })) || "#9AA8F5";
+          var a1 = pickAccent(pal) || "#8A6A3F", a2 = pickAccent(pal.filter(function (h) { return h !== a1; })) || "#D8BF8E";
           nw.style.setProperty("--acc", a1); nw.style.setProperty("--acc2", a2);
           log(dots("captura", "ok"));
           log(dots("marca", esc(report.name)));
@@ -888,7 +888,7 @@
         }
         if (layer) layer.remove();
         layer = L.layerGroup().addTo(map);
-        L.circle([lat, lon], { radius: radius, color: "#2B3BD8", weight: 1.5, fillOpacity: 0.06 }).addTo(layer);
+        L.circle([lat, lon], { radius: radius, color: "#8A6A3F", weight: 1.5, fillOpacity: 0.06 }).addTo(layer);
         L.marker([lat, lon], { icon: L.divIcon({ className: "", html: '<span class="pin-me"></span>', iconSize: [22, 22], iconAnchor: [11, 11] }) }).bindPopup("Vos").addTo(layer);
         map.invalidateSize();
         map.fitBounds(L.latLng(lat, lon).toBounds(radius * 2), { padding: [20, 20] });
@@ -899,7 +899,7 @@
           var n = e.tags && e.tags.name;
           if (n && names.indexOf(n) < 0) names.push(n);
           setTimeout(function () {
-            var m = L.circleMarker([la, lo], { radius: 7, color: "#fff", weight: 2, fillColor: "#2B3BD8", fillOpacity: 1 });
+            var m = L.circleMarker([la, lo], { radius: 7, color: "#fff", weight: 2, fillColor: "#4A3524", fillOpacity: 1 });
             m.bindPopup(document.createTextNode(n || "Sin nombre en el mapa"));
             m.addTo(layer);
           }, REDUCED ? 0 : Math.min(i, 120) * 22);
@@ -1336,11 +1336,11 @@
     } else if (boot) boot.remove();
 
     // Fondos de pantalla: el mismo diseño en cinco tonos, o según la hora de Buenos Aires
-    var wall = $("[data-wall]"), tone = "cobalto";
-    var TONES = [["cobalto", "Cobalto", "#2B3BD8"], ["violeta", "Violeta", "#6A4DF0"], ["turquesa", "Turquesa", "#119C8D"], ["atardecer", "Atardecer", "#E2762B"], ["noche", "Noche", "#0E1430"], ["auto", "Según la hora", "conic-gradient(#2B3BD8 0 33%, #E2762B 0 66%, #0E1430 0)"]];
+    var wall = $("[data-wall]"), tone = "bronce";
+    var TONES = [["bronce", "Bronce", "#8A6A3F"], ["sepia", "Sepia", "#4A3524"], ["oliva", "Oliva", "#6B7A3A"], ["atardecer", "Atardecer", "#D97757"], ["noche", "Noche", "#1A120B"], ["auto", "Según la hora", "conic-gradient(#B08A4F 0 33%, #D97757 0 66%, #1A120B 0)"]];
     function autoTone() {
       var h = +new Intl.DateTimeFormat("en-US", { hour: "numeric", hourCycle: "h23", timeZone: "America/Argentina/Buenos_Aires" }).format(new Date());
-      return h >= 20 || h < 6 ? "noche" : h >= 17 ? "atardecer" : "cobalto";
+      return h >= 20 || h < 6 ? "noche" : h >= 17 ? "atardecer" : "bronce";
     }
     function toneName(t) { for (var i = 0; i < TONES.length; i++) if (TONES[i][0] === t) return TONES[i][1]; return t; }
     function setTone(t, save) {
@@ -1351,7 +1351,8 @@
       toast("Fondo de pantalla", toneName(t) + ".");
       unlock("fondo");
     }
-    try { tone = localStorage.getItem("nowmad-fondo") || "cobalto"; } catch (e) {}
+    try { tone = localStorage.getItem("nowmad-fondo") || "bronce"; } catch (e) {}
+    if (!TONES.some(function (x) { return x[0] === tone; })) tone = "bronce";
     setTone(tone);
     function nextTone() {
       var i = 0;
@@ -1455,7 +1456,7 @@
       { t: "Preguntas frecuentes", d: "El asistente responde tus dudas", k: "preguntas ayuda faq dudas asistente", i: I.chat, run: function () { go("#preguntas"); } },
       { t: "Contacto", d: "WhatsApp y mail", k: "contacto whatsapp mail email telefono escribir", i: I.chat, run: function () { go("#contacto"); } },
       { t: "Escribinos por WhatsApp", d: "Te respondemos en el día", k: "whatsapp hablar escribir contacto mensaje", i: I.chat, run: ACTS.wa },
-      { t: "Cambiar fondo de pantalla", d: "Cobalto, violeta, turquesa, atardecer o noche", k: "fondo pantalla wallpaper color tema", i: "◐", run: nextTone },
+      { t: "Cambiar fondo de pantalla", d: "Bronce, sepia, oliva, atardecer o noche", k: "fondo pantalla wallpaper color tema", i: "◐", run: nextTone },
       { t: "Ordenar ventanas", d: "Todas vuelven a su lugar", k: "ordenar ventanas acomodar reset", i: "▦", run: tidy },
       { t: "Acerca de nowmad agency", d: "Las especificaciones de la casa", k: "acerca about version info", i: I.o, run: openAbout },
       { t: "Ver logros", d: "Lo que descubriste en la página", k: "logros trofeos achievements", i: "★", run: ACTS.logros },
