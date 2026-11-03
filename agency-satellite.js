@@ -1,4 +1,4 @@
-/* nowmad agency — respaldo del viaje cuando no hay Google 3D (sin API key, sin cupo o error).
+/* nowmad agency — tramo final del viaje: bajada sobre Buenos Aires hasta el Obelisco.
    Solo imagen real: Sentinel-2 cloudless 2016 de EOX (CC BY 4.0, datos Copernicus modificados)
    sobre Buenos Aires. La cámara baja hasta donde la foto se sigue viendo nítida y no más. */
 

@@ -12,25 +12,20 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261102u" />
   <link rel="preload" href="assets/fonts/unbounded-be36af.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="styles.css?v=20261102u" />
-  <link rel="stylesheet" href="agency.css?v=20261103d" />
+  <link rel="stylesheet" href="agency.css?v=20261103e" />
   <script>document.documentElement.classList.add("js");</script>
   <script defer src="main.js?v=20261102u"></script>
-  <script defer src="agency.js?v=20261103d"></script>
+  <script defer src="agency.js?v=20261103e"></script>
   <!-- Fondo 3D: Three.js se descarga recién después del evento load (ver agency-3d.js) -->
-  <!-- API key de Google Maps Platform (Map Tiles API) para el Buenos Aires 3D real.
-       Restringila a tu dominio en Google Cloud y ponele tope diario. Vacía = respaldo satelital. -->
-  <meta name="nowmad-google-key" content="" />
   <script type="importmap">
     {
       "imports": {
         "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.min.js",
-        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/",
-        "3d-tiles-renderer": "https://cdn.jsdelivr.net/npm/3d-tiles-renderer@0.5.3/build/index.js",
-        "3d-tiles-renderer/plugins": "https://cdn.jsdelivr.net/npm/3d-tiles-renderer@0.5.3/build/index.plugins.js"
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
       }
     }
   </script>
-  <script type="module" src="agency-3d.js?v=20261103d"></script>
+  <script type="module" src="agency-3d.js?v=20261103e"></script>
 </head>
 <body class="page-agency">
   <canvas class="ag-scene" data-scene aria-hidden="true"></canvas>

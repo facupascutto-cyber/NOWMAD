@@ -461,31 +461,18 @@ async function boot() {
   updateCaption();
 
   /* ================= Buenos Aires real (se carga cuando hace falta) =================
-     Con API key: Google Photorealistic 3D Tiles (agency-google.js), hasta el pie del Obelisco.
-     Sin key o si Google falla: respaldo con la foto satelital Sentinel-2 (agency-satellite.js). */
+     Foto satelital Sentinel-2 de EOX (agency-satellite.js): gratis y sin API key. */
   const VER = new URL(import.meta.url).search;
-  const googleKey = ((document.querySelector('meta[name="nowmad-google-key"]') || {}).content || "").trim();
   const creditEl = document.querySelector("[data-city-credit]");
   let city = null;
   let cityLoading = false;
-  const mod = (name) => import(new URL(name + VER, import.meta.url).href);
-  function loadSatellite() {
-    return mod("agency-satellite.js")
-      .then((m) => m.createSatellite(THREE, { renderer, lowPower, creditEl }))
-      .then((c) => { city = c; root.classList.add("city-satellite"); wake(); });
-  }
   function ensureCity() {
     if (cityLoading) return;
     cityLoading = true;
-    const fallback = () => {
-      root.classList.remove("city-google");
-      loadSatellite().catch((err) => console.warn("[nowmad agency] satélite", err));
-    };
-    if (!googleKey) { fallback(); return; }
-    mod("agency-google.js")
-      .then((m) => m.createGoogleCity(THREE, { renderer, lowPower, apiKey: googleKey, creditEl, onFail: () => { city = null; fallback(); } }))
-      .then((c) => { if (!c.failed) { city = c; root.classList.add("city-google"); wake(); } })
-      .catch((err) => { console.warn("[nowmad agency] Google 3D", err); fallback(); });
+    import(new URL("agency-satellite.js" + VER, import.meta.url).href)
+      .then((m) => m.createSatellite(THREE, { renderer, lowPower, creditEl }))
+      .then((c) => { city = c; root.classList.add("city-satellite"); wake(); })
+      .catch((err) => console.warn("[nowmad agency] satélite", err));
   }
   const journeyEl = document.querySelector('[data-pose="journey"]');
   if (journeyEl) {

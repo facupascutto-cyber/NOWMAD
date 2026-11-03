@@ -110,7 +110,6 @@
 .ag-journey-credit { position: absolute; left: var(--gutter); right: var(--gutter); bottom: 14px; display: flex; flex-wrap: wrap; align-items: center; gap: 6px 14px; font: 400 10px/1.5 var(--mono); letter-spacing: .04em; color: rgba(223, 228, 251, .72); text-shadow: 0 1px 3px rgba(0, 0, 0, .9); }
 .ag-city-credit { display: inline-flex; align-items: center; gap: 10px; }
 .ag-city-credit:empty { display: none; }
-.ag-google-logo { display: block; width: 66px; height: auto; filter: drop-shadow(0 1px 2px rgba(0, 0, 0, .6)); }
 .js .ag-journey-credit { opacity: 0; transition: opacity .6s; }
 .js .ag-journey.is-city .ag-journey-credit { opacity: 1; }
 @media (max-width: 760px) {
