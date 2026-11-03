@@ -2,6 +2,9 @@
   "use strict";
 
   var COARSE = matchMedia("(hover: none)").matches;
+  // La misma lógica sirve para la página en español y la en inglés: el idioma sale del <html lang>
+  var EN = /^en/i.test(document.documentElement.lang || "");
+  function t(es, en) { return EN ? en : es; }
 
   function safe(fn, name) {
     try { fn(); } catch (err) { console.warn("[nowmad] " + name, err); }
@@ -249,11 +252,11 @@
     var hero = document.querySelector(".hero");
     var places = Array.prototype.slice.call(document.querySelectorAll(".place"));
     var zones = [
-      { el: document.querySelector(".footer-cta"), theme: "is-warm", text: "Escribinos ahora", msg: "Hola nowmad explorers! Quiero armar un viaje." },
-      { el: document.querySelector(".places"), theme: "", text: "Preguntá por un destino", msg: "Hola nowmad explorers! Quiero info sobre sus destinos.", places: true },
-      { el: document.querySelector(".steps"), theme: "is-light", text: "Empezá por el paso 1", msg: "Hola nowmad explorers! Les cuento a dónde quiero ir:" },
-      { el: document.querySelector(".quiz"), theme: "is-light", text: "Contanos qué te salió", msg: "Hola nowmad explorers! Hice el test de viajero y quiero armar un viaje." },
-      { el: document.querySelector(".about"), theme: "", text: "Hablemos de tu viaje", msg: "Hola nowmad explorers! Quiero armar un viaje." }
+      { el: document.querySelector(".footer-cta"), theme: "is-warm", text: t("Escribinos ahora", "Message us now"), msg: t("Hola nowmad explorers! Quiero armar un viaje.", "Hi nowmad explorers! I'd like to plan a trip.") },
+      { el: document.querySelector(".places"), theme: "", text: t("Preguntá por un destino", "Ask about a destination"), msg: t("Hola nowmad explorers! Quiero info sobre sus destinos.", "Hi nowmad explorers! I'd like info about your destinations."), places: true },
+      { el: document.querySelector(".steps"), theme: "is-light", text: t("Empezá por el paso 1", "Start with step 1"), msg: t("Hola nowmad explorers! Les cuento a dónde quiero ir:", "Hi nowmad explorers! Here's where I'd like to go:") },
+      { el: document.querySelector(".quiz"), theme: "is-light", text: t("Contanos qué te salió", "Tell us your result"), msg: t("Hola nowmad explorers! Hice el test de viajero y quiero armar un viaje.", "Hi nowmad explorers! I took the traveler quiz and I'd like to plan a trip.") },
+      { el: document.querySelector(".about"), theme: "", text: t("Hablemos de tu viaje", "Let's talk about your trip"), msg: t("Hola nowmad explorers! Quiero armar un viaje.", "Hi nowmad explorers! I'd like to plan a trip.") }
     ];
     var current = "", hovered = null, openTimer = 0, ticking = false;
 
@@ -275,10 +278,10 @@
     function apply(zone, place) {
       var text = zone.text, msg = zone.msg;
       if (place) {
-        text = "Preguntá por " + place;
-        msg = "Hola nowmad explorers! Quiero info para viajar a " + place + ".";
+        text = t("Preguntá por ", "Ask about ") + place;
+        msg = t("Hola nowmad explorers! Quiero info para viajar a " + place + ".", "Hi nowmad explorers! I'd like info about traveling to " + place + ".");
       } else if (destination()) {
-        msg = "Hola nowmad explorers! Quiero armar un viaje a " + destination() + ".";
+        msg = t("Hola nowmad explorers! Quiero armar un viaje a " + destination() + ".", "Hi nowmad explorers! I'd like to plan a trip to " + destination() + ".");
       }
       btn.classList.toggle("is-light", zone.theme === "is-light");
       btn.classList.toggle("is-warm", zone.theme === "is-warm");
@@ -374,14 +377,14 @@
     var lats = [], lons = [];
     spots.forEach(function (s) { var p = s.getAttribute("data-weather").split(","); lats.push(p[0]); lons.push(p[1]); });
     function sky(code) {
-      if (code === 0) return "despejado";
-      if (code <= 2) return "algo nublado";
-      if (code === 3) return "nublado";
-      if (code === 45 || code === 48) return "con niebla";
-      if (code >= 51 && code <= 57) return "llovizna";
-      if ((code >= 61 && code <= 67) || (code >= 80 && code <= 82)) return "lluvia";
-      if ((code >= 71 && code <= 77) || code === 85 || code === 86) return "nieve";
-      if (code >= 95) return "tormenta";
+      if (code === 0) return t("despejado", "clear");
+      if (code <= 2) return t("algo nublado", "partly cloudy");
+      if (code === 3) return t("nublado", "cloudy");
+      if (code === 45 || code === 48) return t("con niebla", "foggy");
+      if (code >= 51 && code <= 57) return t("llovizna", "drizzle");
+      if ((code >= 61 && code <= 67) || (code >= 80 && code <= 82)) return t("lluvia", "rain");
+      if ((code >= 71 && code <= 77) || code === 85 || code === 86) return t("nieve", "snow");
+      if (code >= 95) return t("tormenta", "storm");
       return "";
     }
     var url = "https://api.open-meteo.com/v1/forecast?latitude=" + lats.join(",") + "&longitude=" + lons.join(",") + "&current=temperature_2m,weather_code&timezone=auto";
@@ -394,7 +397,7 @@
         var cur = list[i] && list[i].current;
         if (!cur || typeof cur.temperature_2m !== "number") return;
         var t = Math.round(cur.temperature_2m), desc = sky(cur.weather_code);
-        s.innerHTML = "<i></i>Ahora <b>" + t + "°</b>" + (desc ? " · " + desc : "");
+        s.innerHTML = "<i></i>" + t("Ahora", "Now") + " <b>" + t + "°</b>" + (desc ? " · " + desc : "");
         s.classList.add("is-ready");
       });
     }).catch(function () {});
@@ -411,7 +414,12 @@
   }
 
   // ¿Qué viajero sos?: tres preguntas, un destino y el mensaje de WhatsApp ya escrito
-  var QUIZ = {
+  var QUIZ = EN ? {
+    iguazu: { photo: "iguazu", type: "Jungle traveler", why: "You love green, the roar of water and days spent outdoors. Your starting point: Iguazú Falls.", name: "Iguazú" },
+    mendoza: { photo: "aconcagua", type: "Mountain traveler", why: "Peaks, great food and high-altitude roads. Mendoza brings together the Andes, wineries and clear skies.", name: "Mendoza" },
+    glaciares: { photo: "glaciar", type: "Ice traveler", why: "You're into vast landscapes and silence. The glaciers of Santa Cruz will leave you speechless.", name: "the Glaciers" },
+    ushuaia: { photo: "beagle", type: "End-of-the-world traveler", why: "Faraway places pull you in: the Beagle Channel, the forests of Tierra del Fuego and the southernmost city in Argentina.", name: "Ushuaia" }
+  } : {
     iguazu: { photo: "iguazu", type: "Viajero de selva", why: "Te va el verde, el ruido del agua y los días al aire libre. Tu punto de partida: las Cataratas del Iguazú.", name: "Iguazú" },
     mendoza: { photo: "aconcagua", type: "Viajero de cordillera", why: "Montaña, buena mesa y rutas de altura. Mendoza junta cerros, bodegas y cielos limpios.", name: "Mendoza" },
     glaciares: { photo: "glaciar", type: "Viajero de hielo", why: "Lo tuyo son los paisajes enormes y el silencio. Los glaciares de Santa Cruz te van a dejar sin palabras.", name: "los Glaciares" },
@@ -430,7 +438,9 @@
     invierno: { ushuaia: 1, iguazu: 1 },
     primavera: { iguazu: 0.5, mendoza: 0.5, glaciares: 0.5 }
   };
-  var LABEL = { montana: "montaña", selva: "selva y agua", hielo: "hielo y lagos", mar: "mar y fin del mundo", tranqui: "tranqui", mitad: "mitad y mitad", aventura: "aventura", verano: "en verano", otono: "en otoño", invierno: "en invierno", primavera: "en primavera" };
+  var LABEL = EN
+    ? { montana: "mountains", selva: "jungle and waterfalls", hielo: "ice and lakes", mar: "the sea and the end of the world", tranqui: "a relaxed pace", mitad: "a bit of both", aventura: "adventure", verano: "in summer", otono: "in autumn", invierno: "in winter", primavera: "in spring" }
+    : { montana: "montaña", selva: "selva y agua", hielo: "hielo y lagos", mar: "mar y fin del mundo", tranqui: "tranqui", mitad: "mitad y mitad", aventura: "aventura", verano: "en verano", otono: "en otoño", invierno: "en invierno", primavera: "en primavera" };
   function initQuiz() {
     var box = document.querySelector("[data-quiz]");
     if (!box) return;
@@ -452,8 +462,11 @@
       box.querySelector("[data-r-img]").alt = top.name;
       box.querySelector("[data-r-type]").textContent = top.type + ".";
       box.querySelector("[data-r-why]").textContent = top.why;
-      box.querySelector("[data-r-also]").innerHTML = "También te puede gustar: <b>" + also.name.replace(/^los /, "") + "</b>.";
-      var msg = "Hola nowmad explorers! Hice el test y me salió " + top.type.toLowerCase() + " (" + top.name + "). Busco " + answers.map(function (a) { return LABEL[a]; }).join(", ") + ". ¿Me ayudan a armarlo?";
+      var looking = answers.map(function (a) { return LABEL[a]; }).join(", ");
+      box.querySelector("[data-r-also]").innerHTML = t("También te puede gustar: <b>", "You might also like: <b>") + also.name.replace(/^(los|the) /i, "") + "</b>.";
+      var msg = EN
+        ? "Hi nowmad explorers! I took the quiz and got " + top.type.toLowerCase() + " (" + top.name + "). I'm looking for " + looking + ". Can you help me plan it?"
+        : "Hola nowmad explorers! Hice el test y me salió " + top.type.toLowerCase() + " (" + top.name + "). Busco " + looking + ". ¿Me ayudan a armarlo?";
       link = "https://" + "wa" + ".me/" + (typeof WA_NUMBER === "string" ? WA_NUMBER : "") + "?text=" + encodeURIComponent(msg);
       show(qs.length);
       result.hidden = false;
@@ -504,6 +517,38 @@
     document.addEventListener("mouseleave", function () { el.classList.remove("is-on"); });
   }
 
+  // Nosotros: las polaroids entran de a una y la tira se desliza hacia el sur a medida que bajás
+  function initTrip() {
+    var trip = document.querySelector(".trip");
+    var track = document.querySelector("[data-trip]");
+    if (!trip || !track) return;
+    Array.prototype.forEach.call(track.children, function (card, i) { card.style.setProperty("--i", i); });
+    if ("IntersectionObserver" in window) {
+      var io = new IntersectionObserver(function (entries) {
+        if (entries[0].isIntersecting) { trip.classList.add("is-in"); io.disconnect(); }
+      }, { threshold: 0.15 });
+      io.observe(trip);
+      setTimeout(function () { trip.classList.add("is-in"); }, 8000);
+    } else trip.classList.add("is-in");
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var ticking = false;
+    function update() {
+      ticking = false;
+      var vh = window.innerHeight;
+      var r = trip.getBoundingClientRect();
+      if (r.bottom < -100 || r.top > vh + 100) return;
+      var extra = track.scrollWidth - trip.clientWidth;
+      if (extra <= 0) { track.style.setProperty("--tx", "0px"); return; }
+      // 0 cuando la tira asoma abajo, 1 cuando ya está saliendo por arriba
+      var p = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
+      track.style.setProperty("--tx", (-extra * p).toFixed(1) + "px");
+    }
+    function request() { if (!ticking) { ticking = true; requestAnimationFrame(update); } }
+    update();
+    window.addEventListener("scroll", request, { passive: true });
+    window.addEventListener("resize", request);
+  }
+
   function initYear() {
     var el = document.querySelector("[data-year]");
     if (el) el.textContent = String(new Date().getFullYear());
@@ -520,6 +565,7 @@
     safe(initWeather, "weather");
     safe(initSeason, "season");
     safe(initQuiz, "quiz");
+    safe(initTrip, "trip");
     safe(initCompass, "compass");
     safe(initYear, "year");
   }

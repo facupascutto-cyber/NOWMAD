@@ -59,7 +59,7 @@ svg { display: block; }
 .glass-btn:hover { background: rgba(246, 226, 214, .14); transform: translateY(-2px); }
 
 .logo { display: inline-flex; align-items: baseline; font-family: var(--display); font-weight: 800; letter-spacing: -.03em; line-height: 1; white-space: nowrap; }
-.logo-o { flex: none; width: .64em; height: .64em; margin: 0 .035em -.01em; overflow: visible; }
+.logo-o { flex: none; width: .66em; height: .66em; margin: 0 .04em -.02em; overflow: visible; --lc-paper: var(--ink); --lc-bronze: #B08A4F; --lc-hub: #B08A4F; }
 
 /* Portada */
 .hero { position: relative; display: flex; flex-direction: column; min-height: 100svh; overflow: hidden; }
@@ -392,7 +392,7 @@ main { overflow-x: clip; }
   .place:hover .place-name { transform: none; }
 }
 
-@media (max-width: 380px) {
+@media (max-width: 420px) {
   .nav { padding: 11px 10px 11px 16px; }
   .brand .logo { font-size: 19px; }
   .brand-word { font-size: 11px; }
@@ -408,3 +408,69 @@ main { overflow-x: clip; }
   .nav-cta { padding: 10px 20px; font-size: 14px; }
 }
 
+
+/* Selector de idioma ES / EN, al lado de Contacto */
+.nav-end { justify-self: end; display: flex; align-items: center; gap: 12px; }
+.lang { display: inline-flex; align-items: center; padding: 4px; border: 1px solid rgba(246, 226, 214, .28); border-radius: 999px; text-decoration: none; transition: border-color .3s; }
+.lang span { display: grid; place-items: center; min-width: 34px; height: 30px; padding: 0 8px; border-radius: 999px; color: var(--hielo); font: 500 12px/1 var(--mono); letter-spacing: .08em; transition: background .3s, color .3s; }
+.lang span.is-current { background: var(--amber); color: var(--ink); }
+.lang:hover { border-color: var(--amber); }
+.lang:hover span:not(.is-current) { color: var(--amber); }
+@media (max-width: 760px) {
+  .nav-end { gap: 6px; }
+  .lang { padding: 0; }
+  .lang span { min-width: 36px; height: 34px; padding: 0 8px; font-size: 11px; }
+  .lang span.is-current { display: none; }
+}
+@media (max-width: 380px) {
+  .lang span { min-width: 30px; height: 30px; padding: 0 6px; }
+}
+
+/* Nosotros: viaje de norte a sur en polaroids, que se desliza con el scroll */
+.trip { position: relative; width: 100vw; margin: clamp(32px, 5vw, 64px) 0 0 calc(50% - 50vw); overflow: hidden; padding: 12px 0 36px; }
+.trip-label { display: flex; align-items: center; gap: 16px; padding: 0 var(--inner); margin-bottom: clamp(18px, 2.4vw, 28px); color: var(--hielo); font: 500 12px/1 var(--mono); letter-spacing: .12em; text-transform: uppercase; }
+.trip-label i { flex: 1; height: 1px; background: linear-gradient(90deg, rgba(242, 179, 58, .7), rgba(246, 226, 214, .12)); }
+.trip-label b { color: var(--amber); font-weight: 500; }
+.trip-track { display: flex; gap: clamp(18px, 2.6vw, 36px); width: max-content; padding: 0 var(--inner); transform: translate3d(var(--tx, 0px), 0, 0); will-change: transform; }
+.polaroid { flex: none; width: clamp(190px, 21vw, 290px); margin: 0; padding: 10px 10px 0; border-radius: 6px; background: var(--surface); color: var(--ink); box-shadow: 0 24px 40px -18px rgba(0, 0, 0, .65); transform: translateY(var(--lift, 0px)) rotate(var(--r, 0deg)); transition: transform .6s var(--ease), box-shadow .6s; }
+.polaroid:nth-child(even) { margin-top: clamp(24px, 3vw, 44px); }
+.polaroid:hover { --lift: -10px; transform: translateY(var(--lift)) rotate(0deg) scale(1.03); box-shadow: 0 34px 50px -18px rgba(0, 0, 0, .75); }
+.polaroid-pic { display: block; aspect-ratio: 4 / 5; overflow: hidden; border-radius: 3px; background: var(--hielo); }
+.polaroid-pic img { width: 100%; height: 100%; object-fit: cover; scale: 1.06; transition: scale 1s var(--ease); }
+.polaroid:hover .polaroid-pic img { scale: 1.14; }
+.polaroid figcaption { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; padding: 12px 4px 14px; }
+.polaroid figcaption b { font: 800 clamp(15px, 1.4vw, 19px)/1.1 var(--display); letter-spacing: -.02em; }
+.polaroid figcaption span { color: var(--terracota); font: 500 11px/1 var(--mono); letter-spacing: .06em; white-space: nowrap; }
+/* las fotos entran como si las fueran tirando sobre la mesa */
+.js .polaroid { opacity: 0; transform: translateY(60px) rotate(calc(var(--r, 0deg) * 3)); transition: opacity .9s var(--ease), transform .9s var(--ease), box-shadow .6s; transition-delay: calc(var(--i, 0) * 90ms); }
+.js .trip.is-in .polaroid { opacity: 1; transform: translateY(var(--lift, 0px)) rotate(var(--r, 0deg)); }
+.js .trip.is-in .polaroid:hover { transform: translateY(var(--lift)) rotate(0deg) scale(1.03); transition-delay: 0s; }
+
+/* Lo que nos diferencia */
+.points-label { margin-top: clamp(24px, 4vw, 48px); }
+.points { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: clamp(12px, 1.6vw, 20px); margin: 0; padding: 0; list-style: none; }
+.point { display: grid; align-content: start; gap: 10px; padding: clamp(20px, 2.2vw, 28px); border-radius: 22px; transition: background .4s, transform .5s var(--ease); }
+.point:hover, .js .point.reveal.is-visible:hover { background: rgba(246, 226, 214, .1); transform: translateY(-4px); }
+.point-ico { display: grid; place-items: center; width: 48px; height: 48px; margin-bottom: 6px; border-radius: 14px; background: rgba(242, 179, 58, .14); color: var(--amber); transition: background .4s, color .4s, transform .5s var(--ease); }
+.point:hover .point-ico { background: var(--amber); color: var(--ink); transform: rotate(-8deg); }
+.point-ico svg { width: 24px; height: 24px; fill: none; stroke: currentColor; stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; }
+.point h3 { font-size: clamp(17px, 1.4vw, 20px); line-height: 1.2; letter-spacing: -.02em; }
+.point p { color: var(--hielo); font-size: 15.5px; line-height: 1.55; opacity: .85; }
+.js .points .point.reveal:nth-child(2) { transition-delay: .08s; }
+.js .points .point.reveal:nth-child(3) { transition-delay: .16s; }
+.js .points .point.reveal:nth-child(4) { transition-delay: .24s; }
+@media (max-width: 1040px) { .points { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 560px) {
+  .points { grid-template-columns: minmax(0, 1fr); }
+  .point { grid-template-columns: 44px minmax(0, 1fr); column-gap: 14px; row-gap: 4px; }
+  .point-ico { grid-row: span 2; width: 44px; height: 44px; margin: 0; }
+  .polaroid { width: 168px; padding: 8px 8px 0; }
+  .polaroid figcaption { flex-direction: column; gap: 4px; padding: 10px 2px 12px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .trip { overflow-x: auto; }
+  .trip-track { transform: none; }
+  .js .polaroid { opacity: 1; transform: rotate(var(--r, 0deg)); }
+}
+/* la textura de Nosotros no se asoma sobre la sección de abajo (solo se recorta arriba y abajo) */
+.about { clip-path: inset(0 -100vw); }
