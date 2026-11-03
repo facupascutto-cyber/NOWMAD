@@ -11,9 +11,9 @@
   <meta property="og:type" content="website" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261103m" />
   <link rel="preload" href="assets/fonts/unbounded-be36af.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="agency.css?v=20261104i" />
+  <link rel="stylesheet" href="agency.css?v=20261105b" />
   <script>document.documentElement.classList.add("js");try{if(!sessionStorage.getItem("nowmad-boot")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("is-booting");}catch(e){}</script>
-  <script defer src="agency.js?v=20261104i"></script>
+  <script defer src="agency.js?v=20261105b"></script>
 </head>
 <body>
   <!-- agency como un sistema operativo: fondo de pantalla vivo (la brújula del logo en píxeles),
@@ -33,21 +33,46 @@
     </defs>
   </svg>
 
-  <!-- Fondo de pantalla del escritorio: cintas con los colores de la marca (estático) -->
+  <!-- Fondo de pantalla del escritorio. Opciones en prueba: ?bg=a sierras, ?bg=b aurora, ?bg=c geométrico -->
   <div class="wall" data-wall aria-hidden="true">
-    <svg class="wp" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+    <svg class="wp wp-a" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMax slice">
       <defs>
-        <linearGradient id="wp1a" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#1B2690" /><stop offset=".55" stop-color="#2B3BD8" /><stop offset="1" stop-color="#7486FF" /></linearGradient>
-        <linearGradient id="wp1b" x1="0" y1="0" x2="1" y2=".6"><stop offset="0" stop-color="#3C4DE6" /><stop offset=".5" stop-color="#9AA8F5" /><stop offset="1" stop-color="#EEF1FD" /></linearGradient>
-        <linearGradient id="wp1c" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#E89A1E" /><stop offset="1" stop-color="#FFD98A" /></linearGradient>
-        <filter id="wp1s" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="28" /></filter>
+        <linearGradient id="wpaSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#070B2E" /><stop offset=".38" stop-color="#1A2590" /><stop offset=".62" stop-color="#4A5BEA" /><stop offset=".78" stop-color="#B9A6F0" /><stop offset=".9" stop-color="#FFC27A" /></linearGradient>
+        <radialGradient id="wpaSun" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFF4DC" /><stop offset=".55" stop-color="#FFD28A" /><stop offset="1" stop-color="#F2A23A" /></radialGradient>
+        <radialGradient id="wpaGlow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFC98A" stop-opacity=".75" /><stop offset="1" stop-color="#FFC98A" stop-opacity="0" /></radialGradient>
+        <linearGradient id="wpaH1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7C88F2" /><stop offset="1" stop-color="#5463E6" /></linearGradient>
+        <linearGradient id="wpaH2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4655DD" /><stop offset="1" stop-color="#3241C9" /></linearGradient>
+        <linearGradient id="wpaH3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#2B39B8" /><stop offset="1" stop-color="#1D2896" /></linearGradient>
+        <linearGradient id="wpaH4" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#18227E" /><stop offset="1" stop-color="#101858" /></linearGradient>
+        <linearGradient id="wpaH5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#0D1450" /><stop offset="1" stop-color="#070B2E" /></linearGradient>
       </defs>
-      <path d="M-100 1000C300 800 500 520 900 520S1400 300 1700 120V400C1450 540 1300 780 950 780S400 920 200 1100Z" fill="#03061C" opacity=".55" filter="url(#wp1s)" transform="translate(0 50)" />
-      <path d="M-100 1000C300 800 500 520 900 520S1400 300 1700 120V400C1450 540 1300 780 950 780S400 920 200 1100Z" fill="url(#wp1a)" />
-      <path d="M-100 1000C300 800 500 520 900 520S1400 300 1700 120" fill="none" stroke="#fff" stroke-opacity=".35" stroke-width="2" />
-      <path d="M-100 1130C250 930 540 740 920 740S1420 590 1700 400V500C1450 660 1290 820 930 830S330 1000 100 1180Z" fill="#03061C" opacity=".5" filter="url(#wp1s)" transform="translate(0 40)" />
-      <path d="M-100 1130C250 930 540 740 920 740S1420 590 1700 400V500C1450 660 1290 820 930 830S330 1000 100 1180Z" fill="url(#wp1b)" />
-      <path d="M1060 1100C1220 900 1440 820 1700 770V815C1480 870 1300 960 1150 1100Z" fill="url(#wp1c)" />
+      <rect width="1600" height="1000" fill="url(#wpaSky)" />
+      <g fill="#fff">
+        <circle cx="140" cy="90" r="1.6" opacity=".8" /><circle cx="320" cy="170" r="1.1" opacity=".6" /><circle cx="520" cy="60" r="1.4" opacity=".7" /><circle cx="700" cy="140" r="1" opacity=".5" />
+        <circle cx="880" cy="70" r="1.7" opacity=".8" /><circle cx="1040" cy="180" r="1.1" opacity=".55" /><circle cx="1230" cy="95" r="1.4" opacity=".7" /><circle cx="1420" cy="60" r="1.2" opacity=".6" />
+        <circle cx="1530" cy="200" r="1" opacity=".5" /><circle cx="60" cy="250" r="1" opacity=".45" /><circle cx="430" cy="270" r="1.2" opacity=".45" /><circle cx="1330" cy="260" r="1" opacity=".4" />
+      </g>
+      <circle cx="1120" cy="640" r="320" fill="url(#wpaGlow)" />
+      <circle cx="1120" cy="640" r="96" fill="url(#wpaSun)" />
+      <path d="M0 690C160 640 300 600 470 620S760 700 930 660 1220 560 1400 590 1560 640 1600 650V1000H0Z" fill="url(#wpaH1)" />
+      <path d="M0 740C140 700 290 650 440 690S700 790 900 760 1180 660 1360 690 1540 760 1600 750V1000H0Z" fill="url(#wpaH2)" />
+      <path d="M0 800C190 760 360 720 560 770S880 860 1080 820 1380 740 1600 790V1000H0Z" fill="url(#wpaH3)" />
+      <path d="M0 860C230 820 420 800 640 845S980 910 1200 880 1480 830 1600 850V1000H0Z" fill="url(#wpaH4)" />
+      <path d="M0 925C260 895 520 885 780 910S1240 950 1600 915V1000H0Z" fill="url(#wpaH5)" />
+    </svg>
+    <div class="wp wp-b"><i></i><i></i><i></i><i></i></div>
+    <svg class="wp wp-c" viewBox="0 0 1600 1000" preserveAspectRatio="xMidYMid slice">
+      <rect width="1600" height="1000" fill="#0B1140" />
+      <circle cx="1240" cy="1000" r="520" fill="#2B3BD8" />
+      <path d="M1240 480A520 520 0 0 1 1760 1000H1240Z" fill="#3C4DE6" />
+      <circle cx="1060" cy="250" r="150" fill="#F2B33A" />
+      <path d="M1060 100A150 150 0 0 1 1210 250H1060Z" fill="#FFD28A" />
+      <rect x="1380" y="120" width="220" height="220" fill="#9AA8F5" />
+      <path d="M1380 340A220 220 0 0 1 1600 120V340Z" fill="#DFE4FB" />
+      <g stroke="#9AA8F5" stroke-width="10" stroke-opacity=".5"><path d="M760 1000V720M800 1000V720M840 1000V720M880 1000V720" /></g>
+      <path d="M0 1000A300 300 0 0 1 300 700V1000Z" fill="#1B2690" />
+      <circle cx="620" cy="560" r="14" fill="#F2B33A" />
+      <circle cx="1500" cy="600" r="40" fill="none" stroke="#F2B33A" stroke-width="10" />
     </svg>
   </div>
 
@@ -172,7 +197,7 @@
     <div class="win w-stats" data-win aria-hidden="true">
       <div class="win-bar" data-drag><span class="lights"><i></i><i></i><i></i></span><span class="win-title">Métricas</span></div>
       <p class="st-k" data-st-k>Consultas este mes</p>
-      <p class="st-v" data-m-count>0</p>
+      <p class="st-v" data-m-count>—</p>
       <svg class="st-spark" viewBox="0 0 200 50" preserveAspectRatio="none"><path pathLength="1" d="M0 46 L25 42 L50 44 L75 34 L100 36 L125 24 L150 26 L175 12 L200 6" /></svg>
     </div>
 
@@ -441,7 +466,7 @@
   <!-- Spotlight: buscar secciones, escanear una web, hacer cuentas -->
   <div class="spot" data-spot role="dialog" aria-modal="true" aria-label="Buscar en nowmad" hidden>
     <div class="spot-box">
-      <div class="spot-in"><svg aria-hidden="true"><use href="#search" /></svg><input type="text" data-spot-input placeholder="Buscá en nowmad, pegá tu web o hacé una cuenta" autocomplete="off" spellcheck="false" aria-controls="spot-list" /><kbd>esc</kbd></div>
+      <div class="spot-in"><svg aria-hidden="true"><use href="#search" /></svg><input type="text" data-spot-input aria-label="Buscar en nowmad" placeholder="Buscá en nowmad, pegá tu web o hacé una cuenta" autocomplete="off" spellcheck="false" aria-controls="spot-list" /><kbd>esc</kbd></div>
       <ul class="spot-list" id="spot-list" data-spot-list role="listbox"></ul>
       <p class="spot-foot"><span>↑↓ para moverte</span><span>↵ para abrir</span></p>
     </div>

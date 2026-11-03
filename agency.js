@@ -1,7 +1,7 @@
-/* nowmad agency: la página es un sistema operativo.
-   Fondo de pantalla vivo, ventanas que se arrastran, un navegador que arma un sitio con lo que
-   escribís, notificaciones, vista previa de cada servicio, tablero del proceso, ayuda con buscador
-   y el contacto como WhatsApp. */
+/* nowmad agency: la página es el escritorio de una Mac.
+   Arranque, Spotlight, menú de la app y clic derecho; ventanas que se arrastran; un navegador que
+   arma un sitio con lo que escribís o escanea tu web de verdad; mapa de tu competencia; vista previa
+   de cada servicio; tablero del proceso; asistente de preguntas y el contacto como WhatsApp. */
 (function () {
   "use strict";
 
@@ -318,7 +318,7 @@
       if (i === 0) build(0);
       if (i === 1) typeTo(0);
       if (i >= 2) { build(blocks.length); typeTo(total); }
-      if (i < 3) { countEl.textContent = "0"; spark.style.setProperty("--draw", "1"); }
+      if (i < 3) { countEl.textContent = "—"; spark.style.setProperty("--draw", "1"); }
       if (i === 2) toast("Publicado", preset.slug + ".com.ar ya está online.");
       if (i === 3) toast("Google Ads · Nueva consulta", "Alguien buscó “" + preset.name + "” y te escribió.");
       if (REDUCED) frame(start + PHASE_MS[i]);
@@ -638,9 +638,10 @@
 
       // 1. Captura y marca (Microlink)
       fetch("https://api.microlink.io/?url=" + encodeURIComponent(u) + "&screenshot=true&palette=true&meta=true")
-        .then(function (r) { return r.json(); })
+        .then(function (r) { return r.json().then(function (j) { j.http = r.status; return j; }); })
         .then(function (j) {
           if (my !== run) return;
+          if (j.http === 429 || j.code === "ERATE") throw new Error("cupo");
           if (j.status !== "success" || !j.data) throw new Error(j.message || "microlink");
           var d = j.data, shot = d.screenshot && d.screenshot.url;
           if (shot) {
@@ -657,9 +658,11 @@
           log(dots("captura", "ok"));
           log(dots("marca", esc(report.name)));
         })
-        .catch(function () {
+        .catch(function (err) {
           if (my !== run) return;
-          msg.textContent = "No pudimos abrir " + host + ". ¿Está bien escrita la dirección?";
+          msg.textContent = err && err.message === "cupo"
+            ? "Hoy escanearon muchas webs y la captura se tomó un descanso. El informe de Google sigue abajo."
+            : "No pudimos abrir " + host + ". ¿Está bien escrita la dirección?";
           log(dots("captura", "no disponible"));
         });
 
@@ -1581,6 +1584,7 @@
   safe(initTrophies, "trophies");
     safe(initWinPlay, "winplay");
   safe(initMac, "mac");
+  safe(function () { var w = $("[data-wall]"); if (w) w.setAttribute("data-wp", (location.search.match(/[?&]bg=([abc])/) || [])[1] || "a"); }, "wallpick");
     safe(initWords, "words");
     safe(initReveal, "reveal");
     safe(initScrub, "scrub");
