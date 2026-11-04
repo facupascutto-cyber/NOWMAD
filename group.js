@@ -6,6 +6,8 @@
 
   // Para usar el número del grupo, completá WA_NUMBER (solo dígitos, con 549 adelante). Vacío abre WhatsApp para elegir el chat.
   var WA_NUMBER = "";
+  // Número de nowmad agency (el mismo que usa agency.html): las consultas de la rama agency van directo ahí.
+  var WA_AGENCY = "5493795054206";
 
   function safe(fn, name) {
     try { fn(); } catch (err) { console.warn("[nowmad] " + name, err); }
@@ -259,7 +261,7 @@
     var ZONES = {
       base: { t: "Escribinos", m: "Hola nowmad! Quiero hacer una consulta.", c: "" },
       ex: { t: "Quiero viajar", m: "Hola nowmad explorers! Quiero armar un viaje.", c: "is-ex" },
-      ag: { t: "Necesito una web", m: "Hola nowmad agency! Necesito una web.", c: "" },
+      ag: { t: "Necesito una web", m: "Hola nowmad agency! Necesito una web.", c: "", n: WA_AGENCY },
       light: { t: "Escribinos", m: "Hola nowmad! Quiero hacer una consulta.", c: "is-light" },
       blue: { t: "Hablemos ahora", m: "Hola nowmad! Quiero hacer una consulta.", c: "is-blue" }
     };
@@ -270,7 +272,7 @@
       var z = ZONES[zone];
       btn.classList.remove("is-ex", "is-light", "is-blue");
       if (z.c) btn.classList.add(z.c);
-      btn.setAttribute("data-go", "https://wa.me/" + WA_NUMBER + "?text=" + encodeURIComponent(z.m));
+      btn.setAttribute("data-go", "https://wa.me/" + (z.n || WA_NUMBER) + "?text=" + encodeURIComponent(z.m));
       if (text && text.textContent !== z.t) {
         text.textContent = z.t;
         text.classList.remove("is-new");
