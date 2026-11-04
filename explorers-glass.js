@@ -258,6 +258,15 @@
       { el: document.querySelector(".quiz"), theme: "is-light", text: t("Contanos qué te salió", "Tell us your result"), msg: t("Hola nowmad explorers! Hice el test de viajero y quiero armar un viaje.", "Hi nowmad explorers! I took the traveler quiz and I'd like to plan a trip.") },
       { el: document.querySelector(".about"), theme: "", text: t("Hablemos de tu viaje", "Let's talk about your trip"), msg: t("Hola nowmad explorers! Quiero armar un viaje.", "Hi nowmad explorers! I'd like to plan a trip.") }
     ];
+    // Zonas extra marcadas en el HTML (Diario de ruta): data-wa-zone = frase, data-wa-zone-msg = mensaje, data-wa-theme = color
+    var marked = Array.prototype.map.call(document.querySelectorAll("[data-wa-zone]"), function (el) {
+      return { el: el, theme: el.getAttribute("data-wa-theme") || "", text: el.getAttribute("data-wa-zone"), msg: el.getAttribute("data-wa-zone-msg") || zones[zones.length - 1].msg };
+    });
+    zones = zones.slice(0, 1).concat(marked, zones.slice(1));
+    // Botones de WhatsApp con su propio mensaje (data-wa-link): usan el mismo número que el flotante
+    Array.prototype.forEach.call(document.querySelectorAll("a[data-wa-link]"), function (a) {
+      a.href = "https://" + "wa" + ".me/" + WA_NUMBER + "?text=" + encodeURIComponent(a.getAttribute("data-wa-link"));
+    });
     var current = "", hovered = null, openTimer = 0, ticking = false;
 
     function destination() {
@@ -396,8 +405,8 @@
       spots.forEach(function (s, i) {
         var cur = list[i] && list[i].current;
         if (!cur || typeof cur.temperature_2m !== "number") return;
-        var t = Math.round(cur.temperature_2m), desc = sky(cur.weather_code);
-        s.innerHTML = "<i></i>" + t("Ahora", "Now") + " <b>" + t + "°</b>" + (desc ? " · " + desc : "");
+        var temp = Math.round(cur.temperature_2m), desc = sky(cur.weather_code);
+        s.innerHTML = "<i></i>" + t("Ahora", "Now") + " <b>" + temp + "°</b>" + (desc ? " · " + desc : "");
         s.classList.add("is-ready");
       });
     }).catch(function () {});

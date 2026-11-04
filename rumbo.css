@@ -1,0 +1,48 @@
+/* Rumbo, la brújula mascota (ver rumbo.js). Abajo a la izquierda; el botón de WhatsApp queda a la derecha. */
+/* Letra manuscrita: la usan Rumbo y el estilo scrapbook del diario */
+@font-face { font-family: "Caveat"; src: url("assets/fonts/caveat-700-latin.woff2") format("woff2"); font-weight: 700; font-display: swap; }
+:root { --hand: "Caveat", "Segoe Print", "Bradley Hand", cursive; }
+
+.rumbo { --rb: clamp(68px, 7vw, 92px); position: fixed; z-index: 49; left: clamp(12px, 2vw, 28px); bottom: clamp(10px, 2vw, 24px); display: flex; align-items: flex-end; gap: 10px; pointer-events: none; opacity: 0; transform: translateY(30px); transition: opacity .6s var(--ease, ease), transform .6s var(--ease, ease); }
+.rumbo.is-ready { opacity: 1; transform: none; }
+.rumbo > * { pointer-events: auto; }
+.rumbo-btn, .rumbo-back { order: -1; flex: none; }
+
+.rumbo-btn { position: relative; width: var(--rb); aspect-ratio: 380 / 395; padding: 0; border: 0; background: none; cursor: pointer; filter: drop-shadow(0 10px 14px rgba(20, 12, 8, .35)); transition: transform .35s cubic-bezier(.3, 1.6, .5, 1); }
+.rumbo-btn:hover { transform: translateY(-4px) rotate(-4deg); }
+.rumbo-btn:active { transform: scale(.94); }
+.rumbo-btn:focus-visible, .rumbo-back:focus-visible, .rumbo-hide:focus-visible { outline: 2px solid var(--amber, #F2B33A); outline-offset: 4px; border-radius: 12px; }
+.rumbo-btn img { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; transition: opacity .25s; }
+.rumbo[data-mood="tranquilo"] img[data-m="tranquilo"],
+.rumbo[data-mood="curioso"] img[data-m="curioso"],
+.rumbo[data-mood="perdido"] img[data-m="perdido"],
+.rumbo[data-mood="encontrado"] img[data-m="encontrado"] { opacity: 1; }
+.rumbo.is-hop .rumbo-btn { animation: rumbo-hop .55s cubic-bezier(.3, 1.6, .5, 1); }
+@keyframes rumbo-hop { 0% { transform: translateY(0) scale(1, 1); } 30% { transform: translateY(0) scale(1.1, .88); } 60% { transform: translateY(-12px) scale(.95, 1.06); } 100% { transform: none; } }
+
+/* Globo de diálogo, escrito a mano */
+.rumbo-bubble { position: relative; max-width: min(270px, calc(100vw - var(--rb) - 110px)); margin-bottom: calc(var(--rb) * .55); padding: 12px 16px 10px; border: 2px solid var(--ink, #2A1A12); border-radius: 18px 18px 18px 4px; background: var(--surface, #FBF3EC); color: var(--ink, #2A1A12); box-shadow: 4px 5px 0 var(--ink, #2A1A12); opacity: 0; transform: translateY(8px) scale(.92); transform-origin: left bottom; transition: opacity .25s, transform .35s cubic-bezier(.3, 1.6, .5, 1); }
+.rumbo-bubble.is-on { opacity: 1; transform: none; }
+.rumbo-bubble[hidden] { display: none; }
+.rumbo-bubble::before { content: ""; position: absolute; left: -11px; bottom: 10px; width: 16px; height: 16px; border: 2px solid var(--ink, #2A1A12); border-width: 0 0 2px 2px; background: inherit; transform: rotate(45deg) skew(10deg, 10deg); }
+.rumbo-bubble p { position: relative; margin: 0; font: 700 21px/1.15 var(--hand, "Caveat", cursive); }
+.rumbo-hide { position: relative; margin-top: 6px; padding: 4px 0; border: 0; background: none; color: var(--ink-muted, #76584A); font: 500 10px/1 var(--mono, monospace); letter-spacing: .1em; text-transform: uppercase; cursor: pointer; }
+.rumbo-hide:hover { color: var(--terracota, #B9482A); text-decoration: underline; text-underline-offset: 3px; }
+
+/* Oculto: queda solo una pestañita para traerlo de vuelta */
+.rumbo-back { display: none; width: 46px; height: 46px; padding: 6px; border: 2px solid var(--ink, #2A1A12); border-radius: 50%; background: var(--surface, #FBF3EC); box-shadow: 3px 3px 0 var(--ink, #2A1A12); cursor: pointer; transition: transform .3s; }
+.rumbo-back img { width: 100%; height: 100%; object-fit: contain; }
+.rumbo-back:hover { transform: rotate(-10deg) scale(1.06); }
+.rumbo.is-off .rumbo-btn, .rumbo.is-off .rumbo-bubble { display: none; }
+.rumbo.is-off .rumbo-back { display: block; }
+
+@media (max-width: 760px) {
+  .rumbo { --rb: 62px; }
+  .rumbo-bubble { max-width: calc(100vw - var(--rb) - 100px); padding: 10px 12px 8px; }
+  .rumbo-bubble p { font-size: 18px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .rumbo, .rumbo-btn, .rumbo-bubble, .rumbo-btn img { transition: none; }
+  .rumbo.is-hop .rumbo-btn { animation: none; }
+}
+@media print { .rumbo { display: none; } }

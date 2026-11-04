@@ -25,8 +25,12 @@
   <link rel="icon" type="image/svg+xml" href="assets/favicon-explorers.svg?v=20261103c" />
   <link rel="preload" href="assets/fonts/unbounded-be36af.woff2" as="font" type="font/woff2" crossorigin />
   <link rel="stylesheet" href="explorers-glass.css?v=20261103t" />
+  <link rel="stylesheet" href="diario.css?v=20261104b" />
+  <link rel="stylesheet" href="rumbo.css?v=20261104a" />
   <script>document.documentElement.classList.add("js");</script>
-  <script defer src="explorers-glass.js?v=20261103r"></script>
+  <script defer src="diario.js?v=20261104b"></script>
+  <script defer src="rumbo.js?v=20261104a"></script>
+  <script defer src="explorers-glass.js?v=20261104a"></script>
 </head>
 <body>
   <div class="progress" aria-hidden="true"></div>
@@ -53,6 +57,7 @@
           <a href="#nosotros">Nosotros</a>
           <a href="#como">Cómo trabajamos</a>
           <a href="#destinos">Destinos</a>
+          <a href="diario.html">Diario</a>
           <a class="nav-agency" href="agency.html">Agency</a>
           <a class="nav-group" href="index.html">nowmad group</a>
         </div>
@@ -245,6 +250,18 @@
           </div>
         </div>
       </div>
+    </section>
+
+    <section class="dr-home" id="diario" aria-labelledby="dr-home-t" data-wa-zone="¿Te tentó alguna historia?" data-wa-zone-msg="Hola nowmad explorers! Leí el Diario de ruta y quiero armar un viaje.">
+      <div class="dr-home-head">
+        <div>
+          <p class="label reveal">Diario de ruta</p>
+          <h2 id="dr-home-t" class="reveal" data-words>Historias del <em>camino</em>.</h2>
+          <p class="dr-home-intro reveal">Viajes reales contados por quienes los hicieron: lo que vimos, lo que comimos y lo que no sale en las guías.</p>
+        </div>
+        <a class="glass-btn liquid-glass dr-home-all reveal" href="diario.html">Leer el diario <svg aria-hidden="true"><use href="#arrow-right" /></svg></a>
+      </div>
+      <div class="dr-grid" data-dr-latest></div>
     </section>
   </main>
 
