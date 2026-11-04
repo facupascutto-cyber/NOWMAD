@@ -1017,3 +1017,7 @@ main .win-bar:hover .win-hint { opacity: .8; }
 /* Títulos que van directo sobre el fondo: una sombra suave para que se lean sobre cualquier fondo */
 .app-stage h2, .app-stage .app-label, .app-stage p { text-shadow: 0 2px 18px rgba(26, 18, 11, .85), 0 1px 3px rgba(26, 18, 11, .6); }
 @media (max-width: 900px) { .mb-other { display: none; } }
+
+/* Nombre en la barra con la letra de la marca, como "nowmad explorers" en la página de Facu */
+.mb-word { font: 800 13px/1 var(--display); letter-spacing: -.03em; }
+.mb-word-b { font: 300 13px/1 var(--display); letter-spacing: -.02em; opacity: .85; }
