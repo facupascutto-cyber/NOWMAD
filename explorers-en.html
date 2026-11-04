@@ -26,6 +26,8 @@
   <script defer src="diario.js?v=20261104b"></script>
   <script defer src="rumbo.js?v=20261104a"></script>
   <script defer src="explorers-glass.js?v=20261104a"></script>
+  <link rel="stylesheet" href="explorers-us.css?v=20261104a" />
+  <script defer src="explorers-us.js?v=20261104a"></script>
 </head>
 <body>
   <div class="progress" aria-hidden="true"></div>
@@ -53,6 +55,7 @@
           <a href="#como">How it works</a>
           <a href="#destinos">Destinations</a>
           <a href="diario-en.html">Journal</a>
+          <a class="nav-routes" href="#routes">Routes</a>
           <a class="nav-agency" href="agency.html">Agency</a>
           <a class="nav-group" href="index.html">nowmad group</a>
         </div>
@@ -197,6 +200,70 @@
       </div>
     </section>
 
+    <!-- Rutas para EE.UU. (Jowi). Los precios "from" son PROVISORIOS hasta cerrar tarifas netas 2027 (tarea p5):
+         se cambian acá mismo, en el texto de cada .route-price. -->
+    <section class="routes" id="routes">
+      <div class="routes-head">
+        <p class="label reveal">Signature routes</p>
+        <h2 class="reveal" data-words>Three ways to <em>start</em>.</h2>
+        <p class="routes-intro reveal">Ready-made starting points that we tailor to you: change the days, the hotels or the pace. Prices are per person, based on two travelers sharing, with domestic flights, hotels, private transfers and English-speaking guides included.</p>
+      </div>
+      <ul class="routes-list">
+        <li class="route reveal" data-route="Argentina Essentials">
+          <span class="route-pic"><img src="assets/photos/iguazu-1100.webp" alt="Iguazú Falls from the walkways" loading="lazy" /></span>
+          <div class="route-body">
+            <p class="route-days"><b>10</b> days · 9 nights</p>
+            <h3>Argentina Essentials</h3>
+            <p class="route-stops">Buenos Aires <i aria-hidden="true">→</i> Iguazú <i aria-hidden="true">→</i> El Calafate</p>
+            <ul class="route-hl">
+              <li>Tango night and a private city tour in Buenos Aires</li>
+              <li>Both sides of Iguazú Falls, Argentine and Brazilian</li>
+              <li>Walkways and boat face of Perito Moreno Glacier</li>
+            </ul>
+            <div class="route-foot">
+              <p class="route-price"><small>from</small> <b>USD 3,900</b> <small>per person</small></p>
+              <a class="route-cta" href="#plan" data-route-cta>Plan this route <svg aria-hidden="true"><use href="#arrow-right" /></svg></a>
+            </div>
+          </div>
+        </li>
+        <li class="route reveal" data-route="Wine &amp; Andes">
+          <span class="route-pic"><img src="assets/photos/aconcagua-1100.webp" alt="Mount Aconcagua in the Andes, Mendoza" loading="lazy" /></span>
+          <div class="route-body">
+            <p class="route-days"><b>7</b> days · 6 nights</p>
+            <h3>Wine &amp; Andes</h3>
+            <p class="route-stops">Mendoza <i aria-hidden="true">→</i> Uco Valley <i aria-hidden="true">→</i> High Andes</p>
+            <ul class="route-hl">
+              <li>Private tastings at family and boutique wineries</li>
+              <li>A day in the high Andes, with views of Aconcagua</li>
+              <li>Two nights at a vineyard lodge in the Uco Valley</li>
+            </ul>
+            <div class="route-foot">
+              <p class="route-price"><small>from</small> <b>USD 2,400</b> <small>per person</small></p>
+              <a class="route-cta" href="#plan" data-route-cta>Plan this route <svg aria-hidden="true"><use href="#arrow-right" /></svg></a>
+            </div>
+          </div>
+        </li>
+        <li class="route reveal" data-route="End of the World">
+          <span class="route-pic"><img src="assets/photos/beagle-1100.webp" alt="The Beagle Channel and the mountains of Ushuaia" loading="lazy" /></span>
+          <div class="route-body">
+            <p class="route-days"><b>8</b> days · 7 nights</p>
+            <h3>End of the World</h3>
+            <p class="route-stops">El Calafate <i aria-hidden="true">→</i> Ushuaia</p>
+            <ul class="route-hl">
+              <li>Perito Moreno Glacier and a day among the icebergs</li>
+              <li>Sailing the Beagle Channel to the sea lion colonies</li>
+              <li>Hiking in Tierra del Fuego National Park</li>
+            </ul>
+            <div class="route-foot">
+              <p class="route-price"><small>from</small> <b>USD 3,200</b> <small>per person</small></p>
+              <a class="route-cta" href="#plan" data-route-cta>Plan this route <svg aria-hidden="true"><use href="#arrow-right" /></svg></a>
+            </div>
+          </div>
+        </li>
+      </ul>
+      <p class="routes-note reveal">International flights to Argentina are not included. Final prices depend on dates, hotel category and group size: we confirm everything in your quote, in US dollars.</p>
+    </section>
+
     <section class="quiz" id="viajero">
       <div class="quiz-head">
         <p class="label reveal">3-tap quiz</p>
@@ -258,6 +325,111 @@
       </div>
       <div class="dr-grid" data-dr-latest></div>
     </section>
+
+    <!-- Formulario corto (Jowi): termina en WhatsApp o en un mail ya escrito. Sin JS, manda por mailto. -->
+    <section class="plan" id="plan">
+      <div class="plan-head">
+        <p class="label reveal">Plan your trip</p>
+        <h2 class="reveal" data-words>Six questions, <em>one itinerary</em>.</h2>
+        <p class="plan-intro reveal">Takes a minute. We reply within 24 hours, in English, with a first day-by-day draft and a price in US dollars. No payment needed to ask.</p>
+      </div>
+      <form class="plan-form liquid-glass reveal" data-plan data-wa="" action="mailto:hola@nowmad.travel" method="post" enctype="text/plain" novalidate>
+        <div class="plan-field">
+          <label for="pf-name">Your name</label>
+          <input id="pf-name" name="name" type="text" autocomplete="name" required />
+        </div>
+        <div class="plan-field">
+          <label for="pf-email">Email</label>
+          <input id="pf-email" name="email" type="email" autocomplete="email" inputmode="email" required />
+        </div>
+        <div class="plan-field">
+          <label for="pf-route">Route</label>
+          <select id="pf-route" name="route">
+            <option value="">Not sure yet, help me choose</option>
+            <option>Argentina Essentials (10 days)</option>
+            <option>Wine &amp; Andes (7 days)</option>
+            <option>End of the World (8 days)</option>
+            <option>Something custom</option>
+          </select>
+        </div>
+        <div class="plan-field">
+          <label for="pf-when">When</label>
+          <input id="pf-when" name="when" type="text" placeholder="e.g. March 2027, flexible" />
+        </div>
+        <div class="plan-field">
+          <label for="pf-people">Travelers</label>
+          <select id="pf-people" name="travelers">
+            <option>1</option>
+            <option selected>2</option>
+            <option>3</option>
+            <option>4</option>
+            <option>5+</option>
+          </select>
+        </div>
+        <div class="plan-field plan-wide">
+          <label for="pf-notes">Anything else? <span>(optional)</span></label>
+          <textarea id="pf-notes" name="notes" rows="3" placeholder="Celebrations, interests, hotel style, budget…"></textarea>
+        </div>
+        <p class="plan-error" data-plan-error role="alert" hidden></p>
+        <div class="plan-send plan-wide">
+          <button type="submit" class="plan-btn plan-wa" data-send="whatsapp"><svg aria-hidden="true"><use href="#chat" /></svg> Send on WhatsApp</button>
+          <button type="submit" class="plan-btn plan-mail" data-send="email">Send by email <svg aria-hidden="true"><use href="#arrow-right" /></svg></button>
+        </div>
+        <p class="plan-done" data-plan-done role="status" hidden>Thanks! Your message is ready in WhatsApp or your email app: just hit send. If nothing opened, write to <a href="mailto:hola@nowmad.travel">hola@nowmad.travel</a>.</p>
+      </form>
+    </section>
+
+    <!-- Preguntas frecuentes y política de cancelación (Jowi). BORRADOR: confirmar seña, plazos y
+         porcentajes con Facu y el contador antes de publicar (tareas c3, l4 y l7). -->
+    <section class="faq" id="faq">
+      <div class="faq-head">
+        <p class="label reveal">FAQ</p>
+        <h2 class="reveal" data-words>Good <em>questions</em>.</h2>
+      </div>
+      <div class="faq-list">
+        <details class="faq-item reveal">
+          <summary>Is it safe to travel in Argentina?</summary>
+          <p>Yes. Argentina is one of the most visited countries in South America and the places on our routes are well used to international travelers. Use the same common sense you would in any big city, especially in Buenos Aires, and we'll share practical tips for each stop before you go.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Do US citizens need a visa?</summary>
+          <p>No. US citizens can visit Argentina as tourists for up to 90 days with a valid passport. Rules can change, so always check the U.S. State Department's travel page for Argentina before you book your flights.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>How do I pay, and in what currency?</summary>
+          <p>All our quotes are in US dollars, per person, with everything included spelled out. To confirm the trip we ask for a deposit of 30% and the balance 45 days before arrival. We'll tell you the available payment methods (card or bank transfer) when we send your quote.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>What's included in the price?</summary>
+          <p>Hotels, domestic flights within Argentina, private airport transfers, the tours and English-speaking guides listed in your itinerary, and a local contact on WhatsApp during the whole trip. International flights, travel insurance, most meals and tips are not included unless your itinerary says so.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Can you change a route?</summary>
+          <p>Always. The three routes are starting points: we can add or remove days, switch hotels, combine destinations or slow down the pace. Tell us what you want and we'll send a new version.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>Do I need travel insurance?</summary>
+          <p>We strongly recommend it, with medical coverage and trip cancellation. Some cancellation costs can only be recovered through insurance.</p>
+        </details>
+        <details class="faq-item reveal">
+          <summary>When is the best time to go?</summary>
+          <p>It depends on the route. Patagonia is best from November to March, Iguazú is good all year, and Mendoza shines in autumn (March to May) during the harvest. See the season table above, or ask us for your dates.</p>
+        </details>
+        <details class="faq-item faq-policy reveal" id="cancellation">
+          <summary>Cancellation policy</summary>
+          <div>
+            <p>If you need to cancel, let us know in writing (email or WhatsApp). Charges depend on how far in advance you cancel, counted from your arrival date:</p>
+            <ul>
+              <li><b>More than 60 days before:</b> full refund of the deposit, minus non-refundable third-party costs (such as domestic flights already issued).</li>
+              <li><b>60 to 31 days before:</b> the 30% deposit is kept.</li>
+              <li><b>30 to 15 days before:</b> 50% of the total trip price.</li>
+              <li><b>Less than 15 days before, or no-show:</b> 100% of the total trip price.</li>
+            </ul>
+            <p>Changing dates instead of cancelling? We'll always try to move your trip at no extra charge, subject to availability. If we ever have to cancel for reasons on our side, you get a full refund.</p>
+          </div>
+        </details>
+      </div>
+    </section>
   </main>
 
   <footer class="footer" id="contacto">
@@ -266,6 +438,7 @@
       <p class="label reveal">Contact</p>
       <h2 class="reveal" data-words>Tell us where <em>you're headed</em>.</h2>
       <a class="mail-btn reveal" href="mailto:hola@nowmad.travel">hola@nowmad.travel <span aria-hidden="true">→</span></a>
+      <p class="footer-links reveal"><a href="#plan">Plan your trip</a><a href="#faq">FAQ</a><a href="#cancellation">Cancellation policy</a></p>
     </div>
     <p class="credits">© <span data-year>2026</span> nowmad group · Videos via Pexels: <a href="https://www.pexels.com/video/trekking-in-patagonia-s-misty-mountains-30240552/">Florian Delée</a>, <a href="https://www.pexels.com/video/stunning-aerial-view-of-iguazu-falls-33054007/">Sergey Guk</a>, <a href="https://www.pexels.com/video/the-downtown-area-of-buenos-aires-argentina-4762116/">Juan Manuel Ferraro</a> and <a href="https://www.pexels.com/video/breathtaking-aerial-view-of-perito-moreno-glacier-32881652/">Sergey Guk</a>. Photos resized, via Wikimedia Commons: <a href="https://commons.wikimedia.org/wiki/File:J31_189_Garganta_del_Diablo,_Fallkante_Ostseite.jpg">Falk2</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>), <a href="https://commons.wikimedia.org/wiki/File:Glaciar_Perito_Moreno2_-_Argentina.JPG">Diego Delso</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0">CC BY-SA 3.0</a>), <a href="https://commons.wikimedia.org/wiki/File:Aconcagua,_2019.jpg">Draceane</a> (<a href="https://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>), <a href="https://commons.wikimedia.org/wiki/File:Beagle_Channel_-l.jpg">RAYANDBEE</a> (<a href="https://creativecommons.org/licenses/by/2.0">CC BY 2.0</a>).</p>
   </footer>

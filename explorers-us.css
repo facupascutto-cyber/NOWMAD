@@ -1,0 +1,105 @@
+/* nowmad explorers EN · secciones para el mercado de EE.UU.: rutas, formulario y preguntas frecuentes.
+   Usa los tokens de explorers-glass.css (no lo modifica). */
+
+/* Rutas */
+.routes { padding: clamp(80px, 10vw, 128px) var(--inner); background: var(--surface); color: var(--ink); scroll-margin-top: 16px; }
+.routes-head { display: grid; gap: 16px; max-width: 760px; margin-bottom: clamp(36px, 5vw, 64px); }
+.routes-head .label, .plan-head .label, .faq-head .label { color: var(--terracota); }
+.routes h2, .plan h2, .faq h2 { font-size: clamp(28px, 4.4vw, 56px); line-height: 1.1; text-wrap: balance; }
+.routes h2 em, .faq h2 em { color: var(--terracota); }
+.routes-intro { color: var(--ink-muted); font-size: 18px; line-height: 1.55; max-width: 62ch; }
+.routes-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(16px, 2vw, 28px); margin: 0; padding: 0; list-style: none; }
+.route { display: grid; grid-template-rows: auto 1fr; overflow: hidden; border-radius: 24px; background: var(--white); box-shadow: 0 30px 60px -36px rgba(42, 26, 18, .45); transition: transform .5s var(--ease), box-shadow .5s var(--ease); }
+.route:hover { transform: translateY(-4px); box-shadow: 0 36px 70px -36px rgba(42, 26, 18, .55); }
+.route-pic { display: block; aspect-ratio: 4 / 3; overflow: hidden; background: var(--hielo); }
+.route-pic img { width: 100%; height: 100%; object-fit: cover; transition: transform 1.2s var(--ease); }
+.route:hover .route-pic img { transform: scale(1.04); }
+.route-body { display: grid; grid-template-rows: auto auto auto 1fr auto; gap: 12px; padding: clamp(20px, 2.2vw, 28px); }
+.route-days { color: var(--terracota); font: 500 12px/1 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+.route-days b { font-weight: 700; }
+.route h3 { font-size: clamp(21px, 1.9vw, 26px); line-height: 1.15; }
+.route-stops { color: var(--ink); font-weight: 600; font-size: 16px; }
+.route-stops i { font-style: normal; color: var(--terracota); padding: 0 2px; }
+.route-hl { display: grid; gap: 8px; margin: 0; padding: 0; list-style: none; color: var(--ink-muted); font-size: 15.5px; line-height: 1.45; }
+.route-hl li { position: relative; padding-left: 18px; }
+.route-hl li::before { content: ""; position: absolute; left: 0; top: .6em; width: 7px; height: 7px; border-radius: 50%; background: var(--amber); }
+.route-foot { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin-top: 8px; padding-top: 18px; border-top: 1px solid rgba(42, 26, 18, .1); }
+.route-price { display: grid; line-height: 1.15; }
+.route-price small { color: var(--ink-muted); font: 500 11px/1.3 var(--mono); letter-spacing: .08em; text-transform: uppercase; }
+.route-price b { font: 800 22px/1.15 var(--display); letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
+.route-cta { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 12px 18px; border-radius: 999px; background: var(--ink); color: var(--white); font-weight: 600; font-size: 15px; text-decoration: none; transition: background .25s, transform .3s var(--ease); }
+.route-cta svg { width: 16px; height: 16px; transition: transform .3s var(--ease); }
+.route-cta:hover { background: var(--terracota); }
+.route-cta:hover svg { transform: translateX(3px); }
+.routes-note { margin-top: clamp(24px, 3vw, 36px); color: var(--ink-muted); font-size: 14.5px; max-width: 70ch; }
+
+/* Formulario */
+.plan { padding: clamp(80px, 10vw, 128px) var(--inner); scroll-margin-top: 16px; }
+.plan-head { display: grid; gap: 16px; max-width: 720px; margin-bottom: clamp(32px, 5vw, 48px); }
+.plan-head .label { color: var(--amber); }
+.plan-intro { color: var(--hielo); opacity: .85; font-size: 18px; line-height: 1.55; max-width: 60ch; }
+.plan-form { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px 20px; max-width: 880px; padding: clamp(22px, 3.4vw, 40px); border-radius: 28px; }
+.plan-field { display: grid; gap: 8px; min-width: 0; }
+.plan-wide, .plan-error, .plan-done { grid-column: 1 / -1; }
+.plan-field label { color: var(--hielo); font: 500 12px/1.3 var(--mono); letter-spacing: .1em; text-transform: uppercase; }
+.plan-field label span { text-transform: none; letter-spacing: 0; opacity: .7; }
+.plan-field input, .plan-field select, .plan-field textarea { width: 100%; min-height: 50px; padding: 13px 16px; border: 1px solid rgba(246, 226, 214, .22); border-radius: 14px; background: rgba(246, 226, 214, .06); color: var(--white); font: 400 16px/1.4 var(--sans); transition: border-color .25s, background .25s; }
+.plan-field textarea { resize: vertical; min-height: 96px; }
+.plan-field select { appearance: none; -webkit-appearance: none; padding-right: 40px; background-image: linear-gradient(45deg, transparent 50%, var(--amber) 50%), linear-gradient(135deg, var(--amber) 50%, transparent 50%); background-position: calc(100% - 22px) 50%, calc(100% - 16px) 50%; background-size: 6px 6px; background-repeat: no-repeat; }
+.plan-field select option { color: var(--ink); background: var(--surface); }
+.plan-field ::placeholder { color: var(--hielo); opacity: .45; }
+.plan-field input:hover, .plan-field select:hover, .plan-field textarea:hover { border-color: rgba(246, 226, 214, .4); }
+.plan-field input:focus, .plan-field select:focus, .plan-field textarea:focus { outline: none; border-color: var(--amber); background: rgba(246, 226, 214, .1); }
+.plan-field [aria-invalid="true"] { border-color: #FF8A6B; }
+.plan-error { color: #FFB59F; font-size: 15px; }
+.plan-send { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 4px; }
+.plan-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 15px 26px; border: 0; border-radius: 999px; font: 600 16px/1 var(--sans); cursor: pointer; transition: transform .3s var(--ease), background .25s, color .25s; }
+.plan-btn svg { width: 18px; height: 18px; }
+.plan-wa { background: var(--amber); color: var(--ink); }
+.plan-wa:hover { background: #F6C35E; transform: translateY(-2px); }
+.plan-mail { background: transparent; color: var(--white); box-shadow: inset 0 0 0 1.5px rgba(246, 226, 214, .4); }
+.plan-mail:hover { box-shadow: inset 0 0 0 1.5px var(--amber); color: var(--amber); transform: translateY(-2px); }
+.plan-done { padding: 14px 18px; border-radius: 14px; background: rgba(242, 179, 58, .14); color: var(--hielo); font-size: 15.5px; }
+.plan-done a { color: var(--amber); }
+
+/* Preguntas frecuentes */
+.faq { padding: clamp(80px, 10vw, 128px) var(--inner); background: var(--surface); color: var(--ink); scroll-margin-top: 16px; }
+.faq-head { display: grid; gap: 16px; margin-bottom: clamp(28px, 4vw, 48px); }
+.faq-list { max-width: 880px; border-top: 1px solid rgba(42, 26, 18, .14); }
+.faq-item { border-bottom: 1px solid rgba(42, 26, 18, .14); scroll-margin-top: 24px; }
+.faq-item summary { position: relative; display: block; padding: 22px 48px 22px 0; font: 700 clamp(17px, 1.6vw, 20px)/1.3 var(--display); letter-spacing: -.02em; cursor: pointer; list-style: none; transition: color .25s; }
+.faq-item summary::-webkit-details-marker { display: none; }
+.faq-item summary::after { content: ""; position: absolute; right: 6px; top: 50%; width: 12px; height: 12px; margin-top: -9px; border-right: 2px solid var(--terracota); border-bottom: 2px solid var(--terracota); transform: rotate(45deg); transition: transform .35s var(--ease), margin-top .35s var(--ease); }
+.faq-item[open] summary::after { transform: rotate(225deg); margin-top: -3px; }
+.faq-item summary:hover { color: var(--terracota); }
+.faq-item > p, .faq-item > div { padding: 0 0 24px; color: var(--ink-muted); font-size: 17px; line-height: 1.6; max-width: 70ch; }
+.faq-item > div { display: grid; gap: 12px; }
+.faq-item ul { display: grid; gap: 8px; margin: 0; padding-left: 20px; }
+.faq-item b { color: var(--ink); }
+.faq-policy summary { color: var(--terracota); }
+
+/* Pie: enlaces a formulario, FAQ y política */
+.footer-links { display: flex; flex-wrap: wrap; gap: 8px 22px; }
+.footer-links a { color: var(--white); font: 500 13px/1.4 var(--mono); letter-spacing: .08em; text-transform: uppercase; text-underline-offset: 4px; }
+.footer-links a:hover { color: var(--ink); }
+
+/* La barra de navegación tiene un enlace más: se achica un poco en pantallas medianas */
+@media (min-width: 1041px) and (max-width: 1280px) { .nav-links { gap: 14px; } .nav-agency { padding-left: 14px; } }
+@media (min-width: 1041px) and (max-width: 1200px) { .nav-group { display: none; } }
+@media (min-width: 761px) and (max-width: 1040px) { .nav-routes { display: none; } }
+
+@media (max-width: 1040px) {
+  .routes-list { grid-template-columns: minmax(0, 1fr); max-width: 640px; }
+  .route { grid-template-columns: minmax(0, 2fr) minmax(0, 3fr); grid-template-rows: none; }
+  .route-pic { aspect-ratio: auto; height: 100%; min-height: 220px; }
+}
+@media (max-width: 640px) {
+  .route { grid-template-columns: minmax(0, 1fr); }
+  .route-pic { aspect-ratio: 16 / 10; min-height: 0; }
+  .plan-form { grid-template-columns: minmax(0, 1fr); }
+  .plan-btn { flex: 1 1 100%; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .route, .route-pic img, .route-cta, .route-cta svg, .plan-btn, .faq-item summary::after { transition: none; }
+  .route:hover, .route:hover .route-pic img { transform: none; }
+}
