@@ -428,7 +428,7 @@
       $$(".dock-app").forEach(function (a) { a.classList.toggle("is-open", a.getAttribute("data-open") === key); });
       $$(".file").forEach(function (f) { f.classList.toggle("is-on", f.getAttribute("data-open") === key); });
       clearInterval(timer);
-      if (!REDUCED) timer = setInterval(function () { if (!ql.hidden) replay(d); }, 6500);
+      if (!REDUCED) timer = setInterval(function () { if (!ql.hidden) replay(d); }, 8000);
     }
     function close() {
       ql.hidden = true; current = null; clearInterval(timer);

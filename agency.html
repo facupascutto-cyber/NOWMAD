@@ -11,9 +11,9 @@
   <meta property="og:type" content="website" />
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261103m" />
   <link rel="preload" href="assets/fonts/unbounded-be36af.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="agency.css?v=20261107d" />
+  <link rel="stylesheet" href="agency.css?v=20261108b" />
   <script>document.documentElement.classList.add("js");try{if(!sessionStorage.getItem("nowmad-boot")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("is-booting");}catch(e){}</script>
-  <script defer src="agency.js?v=20261107a"></script>
+  <script defer src="agency.js?v=20261108a"></script>
   <script type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }</script>
   <script type="module" src="agency-wall3d.js?v=20261108b"></script>
 </head>
@@ -466,55 +466,97 @@
       <div class="win-bar" data-drag><span class="lights"><button type="button" class="ql-close" data-ql-close aria-label="Cerrar"></button><i></i><i></i></span><span class="win-title" id="ql-title" data-ql-title>Vista previa</span></div>
       <div class="ql-body">
         <div class="demo demo-web" data-demo="web">
-          <div class="dw-page"><b class="dw-nav"></b><b class="dw-h1"></b><b class="dw-h2"></b><b class="dw-btn"></b><span class="dw-grid"><i></i><i></i><i></i></span></div>
-          <span class="dw-score">Velocidad <b>98</b> · Celular <b>OK</b></span>
+          <div class="xw-browser">
+            <p class="xw-bar"><i></i><i></i><i></i><span class="xw-url"><b>tunegocio.com.ar</b></span></p>
+            <div class="xw-page">
+              <p class="xw-nav"><span class="xw-logo">Tu marca</span><span class="xw-links"><i></i><i></i><i></i></span></p>
+              <div class="xw-hero"><span class="xw-kicker">Nuevo · Envíos en el día</span><b class="xw-h">Café de especialidad, a tu puerta.</b><span class="xw-btn">Pedir ahora</span></div>
+              <p class="xw-cards"><i></i><i></i><i></i></p>
+            </div>
+            <svg class="x-cursor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 1.5v12.2l3.3-3.1 2.3 5 2.1-.9-2.3-5H12Z" fill="#fff" stroke="#2E2116" stroke-width="1.2" stroke-linejoin="round" /></svg>
+          </div>
+          <div class="xw-scores">
+            <p class="xw-ring" style="--to:98;--d:3.7s"><span><b class="cnt"></b></span><small>Velocidad</small></p>
+            <p class="xw-ring" style="--to:100;--d:3.85s"><span><b class="cnt"></b></span><small>SEO</small></p>
+            <p class="xw-ring" style="--to:96;--d:4s"><span><b class="cnt"></b></span><small>Celular</small></p>
+          </div>
         </div>
         <div class="demo demo-sys" data-demo="sys">
-          <p class="ds-kpi"><span>Pedidos hoy</span><b>128</b></p>
-          <ul class="ds-rows">
-            <li><span>#1042</span><em>Mercado Pago</em><i class="ok">Pagado</i></li>
-            <li><span>#1041</span><em>Retiro en local</em><i class="wait">Armando</i></li>
-            <li><span>#1040</span><em>Envío a domicilio</em><i class="ok">Pagado</i></li>
-            <li><span>#1039</span><em>Transferencia</em><i class="ok">Pagado</i></li>
+          <p class="xs-top"><span class="xs-live"><i></i>En vivo</span><span>Panel de tu negocio · hoy</span></p>
+          <div class="xs-kpis">
+            <p><small>Pedidos</small><b class="cnt" style="--to:128;--d:.3s"></b><em>+12%</em></p>
+            <p><small>Facturado</small><b>$<span class="cnt" style="--to:842;--d:.4s"></span>k</b><em>+8%</em></p>
+          </div>
+          <p class="xs-chart" aria-hidden="true"><i style="--h:38%"></i><i style="--h:52%"></i><i style="--h:44%"></i><i style="--h:66%"></i><i style="--h:58%"></i><i style="--h:74%"></i><i class="is-now" style="--h:92%"></i></p>
+          <ul class="xs-rows">
+            <li class="xs-new"><span>#1043</span><em>Envío a domicilio</em><i class="ok">Pagado</i></li>
+            <li><span>#1042</span><em>Retiro en local</em><i class="xs-swap"><b class="wait">Armando</b><b class="ok">Listo</b></i></li>
+            <li><span>#1041</span><em>Mercado Pago</em><i class="ok">Pagado</i></li>
           </ul>
+          <p class="xs-toast"><i></i><span><b>Nuevo pedido #1043</b> · $12.400</span></p>
         </div>
         <div class="demo demo-ia" data-demo="ia">
-          <p class="di-msg di-in">¿Tienen turno mañana?</p>
-          <p class="di-typing"><i></i><i></i><i></i></p>
-          <p class="di-msg di-out">Sí: a las 10:00 o 15:30. ¿Te reservo uno?</p>
-          <p class="di-msg di-in di-2">15:30</p>
-          <p class="di-msg di-out di-2">Listo, quedó reservado. Te mando el recordatorio.</p>
+          <p class="xi-head"><span class="xi-av"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3.5c.6 3.6 2.4 5.4 6 6-3.6.6-5.4 2.4-6 6-.6-3.6-2.4-5.4-6-6 3.6-.6 5.4-2.4 6-6ZM17.5 13.5c.3 1.8 1.2 2.7 3 3-1.8.3-2.7 1.2-3 3-.3-1.8-1.2-2.7-3-3 1.8-.3 2.7-1.2 3-3Z" fill="currentColor" /></svg></span><span><b>Asistente de tu marca</b><small><i></i>En línea · responde al instante</small></span></p>
+          <p class="xi-msg xi-in" style="--t:.3s">¿Tienen turno mañana?</p>
+          <div class="xi-slot" style="--t:.8s"><p class="xi-typing"><i></i><i></i><i></i></p><p class="xi-msg xi-out">¡Sí! Tengo estos horarios para mañana:</p></div>
+          <p class="xi-chips"><span>10:00</span><span class="is-pick">15:30</span><span>18:00</span></p>
+          <p class="xi-msg xi-in" style="--t:3.3s">15:30, dale</p>
+          <div class="xi-slot" style="--t:3.7s"><p class="xi-typing"><i></i><i></i><i></i></p><p class="xi-msg xi-out">Listo, quedó reservado. Te aviso un día antes.</p></div>
+          <div class="xi-card"><span class="xi-cal"><small>Mié</small><b>12</b></span><p><b>Turno confirmado</b><small>15:30 · Recoleta</small></p><span class="xi-ok"><svg viewBox="0 0 24 24" aria-hidden="true"><path pathLength="1" d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" /></svg></span></div>
         </div>
         <div class="demo demo-google" data-demo="google">
-          <p class="dg-search"><span>dentista en recoleta</span></p>
-          <div class="dg-result dg-ad"><small>Patrocinado · tuconsultorio.com.ar</small><b>Turnos hoy en Recoleta | Sacá turno online</b><em>Atención sin espera. Obras sociales.</em></div>
-          <div class="dg-result"><small>otrositio.com</small><b>Odontólogos en Recoleta</b><em>Listado de profesionales.</em></div>
-          <div class="dg-result"><small>directorio.com</small><b>Clínicas dentales</b><em>Opiniones y teléfonos.</em></div>
+          <p class="xg-search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="6.5" fill="none" stroke="currentColor" stroke-width="2" /><path d="m16 16 4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg><span class="xg-q">cafetería en palermo</span><i class="xg-caret"></i></p>
+          <div class="xg-list">
+            <div class="xg-res xg-ad"><small><b>Patrocinado</b> · tucafe.com.ar</small><strong>Café de especialidad en Palermo | Pedí online</strong><em>Abierto hasta las 22 · Envío en 30 min</em><span class="xg-ext"><i>Ver carta</i><i>Cómo llegar</i><i>Reservar</i></span></div>
+            <div class="xg-rest">
+              <div class="xg-res"><small>otrocafe.com</small><strong>Cafeterías en Palermo: las 10 mejores</strong><em>Ranking y opiniones.</em></div>
+              <div class="xg-res"><small>guiadecafes.com.ar</small><strong>Dónde tomar café en Buenos Aires</strong><em>Mapa de cafeterías.</em></div>
+            </div>
+          </div>
+          <svg class="x-cursor" viewBox="0 0 16 16" aria-hidden="true"><path d="M2 1.5v12.2l3.3-3.1 2.3 5 2.1-.9-2.3-5H12Z" fill="#fff" stroke="#2E2116" stroke-width="1.2" stroke-linejoin="round" /></svg>
+          <div class="xg-stats">
+            <p><small>Clics hoy</small><b class="cnt" style="--to:146;--d:4s"></b></p>
+            <p><small>Consultas</small><b class="cnt" style="--to:23;--d:4.1s"></b></p>
+            <p><small>Posición</small><b>#1</b></p>
+          </div>
         </div>
         <div class="demo demo-meta" data-demo="meta">
-          <div class="dm-phone">
-            <p class="dm-bars"><i></i><i></i><i></i></p>
-            <p class="dm-who"><i></i>tumarca <small>Publicidad</small></p>
-            <div class="dm-media"><b>Nueva colección</b><span>Envíos a todo el país</span></div>
-            <span class="dm-cta">Comprar ahora</span>
+          <div class="xm-phone">
+            <p class="xm-bars"><i></i><i></i><i></i></p>
+            <p class="xm-who"><i></i><b>tumarca</b><small>Publicidad</small></p>
+            <div class="xm-media"><span class="xm-prod" aria-hidden="true"></span><b>Nueva colección</b><small>Envíos gratis a todo el país</small></div>
+            <p class="xm-likes"><span aria-hidden="true">♥</span> <span class="cnt" style="--to:1;--d:1.5s"></span>.<span class="cnt pad3" style="--to:284;--d:1.5s"></span> me gusta</p>
+            <span class="xm-cta">Comprar ahora</span>
+            <span class="xm-hearts" aria-hidden="true"><i style="--x:-18px;--d:1.5s"></i><i style="--x:10px;--d:1.7s"></i><i style="--x:-4px;--d:1.9s"></i><i style="--x:22px;--d:2.1s"></i><i style="--x:-24px;--d:2.3s"></i><i style="--x:6px;--d:2.5s"></i></span>
+            <p class="xm-notif"><i></i><span><b>Nueva venta</b> · $24.900</span></p>
           </div>
         </div>
         <div class="demo demo-auto" data-demo="auto">
-          <p class="da-h">Una venta, y todo pasa solo:</p>
-          <ol class="da-flow">
-            <li><i>01</i><b>Venta en tu web</b><span>Pedido #2087 · $48.900</span></li>
-            <li><i>02</i><b>Pago aprobado</b><span>Mercado Pago</span></li>
-            <li><i>03</i><b>Stock actualizado</b><span>Quedan 12 unidades</span></li>
-            <li><i>04</i><b>Factura enviada</b><span>Al mail del cliente</span></li>
-            <li><i>05</i><b>Aviso a tu celular</b><span>"Nueva venta, ya está todo listo"</span></li>
-          </ol>
-          <p class="da-foot">Sin IA. Todo conectado y en tu celular.</p>
+          <p class="xa-h">Entra una venta, y todo pasa solo:</p>
+          <div class="xa-wrap">
+            <span class="xa-fill" aria-hidden="true"></span><span class="xa-run" aria-hidden="true"></span>
+            <ol class="xa-flow">
+              <li style="--t:.4s"><i>01</i><b>Venta en tu web</b><span>Pedido #2087 · $48.900</span></li>
+              <li style="--t:1.2s"><i>02</i><b>Pago aprobado</b><span>Mercado Pago</span></li>
+              <li style="--t:2s"><i>03</i><b>Stock actualizado</b><span>Quedan 12 unidades</span></li>
+              <li style="--t:2.8s"><i>04</i><b>Factura enviada</b><span>Al mail del cliente</span></li>
+              <li style="--t:3.6s"><i>05</i><b>Aviso a tu celular</b><span>Sin que toques nada</span></li>
+            </ol>
+          </div>
+          <p class="xa-foot">Sin IA. Todo conectado, en 3 segundos.</p>
+          <div class="xa-notif"><span class="xa-app"><svg aria-hidden="true"><use href="#o" /></svg></span><p><small>Tu negocio · ahora</small><b>Nueva venta: ya está todo listo</b></p></div>
         </div>
         <div class="demo demo-data" data-demo="data">
-          <p class="dd-row"><span>Visitas</span><b style="--w:100%"></b><em>2.340</em></p>
-          <p class="dd-row"><span>Consultas</span><b style="--w:34%"></b><em>796</em></p>
-          <p class="dd-row"><span>Ventas</span><b style="--w:12%"></b><em>281</em></p>
-          <svg class="dd-spark" viewBox="0 0 200 50" preserveAspectRatio="none"><path pathLength="1" d="M0 44 L20 40 L40 42 L60 34 L80 36 L100 26 L120 28 L140 18 L160 20 L180 10 L200 6" /></svg>
+          <div class="xd-kpi"><p><small>Retorno de la publicidad</small><b>×4,2</b></p><span class="xd-badge">+38% vs. mes pasado</span></div>
+          <div class="xd-funnel">
+            <p class="xd-row" style="--d:.3s"><span>Visitas</span><b style="--w:100%"></b><em><span class="cnt" style="--to:2"></span>.<span class="cnt pad3" style="--to:340"></span></em></p>
+            <p class="xd-row" style="--d:.5s"><span>Consultas</span><b style="--w:34%"></b><em class="cnt" style="--to:796"></em></p>
+            <p class="xd-row" style="--d:.7s"><span>Ventas</span><b style="--w:12%"></b><em class="cnt" style="--to:281"></em></p>
+          </div>
+          <div class="xd-chart">
+            <svg viewBox="0 0 200 70" preserveAspectRatio="none" aria-hidden="true"><defs><linearGradient id="xd-g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D8BF8E" stop-opacity=".45" /><stop offset="1" stop-color="#D8BF8E" stop-opacity="0" /></linearGradient></defs><path class="xd-area" d="M0 62 L20 58 L40 60 L60 50 L80 53 L100 40 L120 43 L140 30 L160 33 L180 18 L200 8 L200 70 L0 70Z" fill="url(#xd-g)" /><path class="xd-line" pathLength="1" d="M0 62 L20 58 L40 60 L60 50 L80 53 L100 40 L120 43 L140 30 L160 33 L180 18 L200 8" /></svg>
+            <span class="xd-dot"></span><span class="xd-tip">Hoy: 41 ventas</span>
+          </div>
         </div>
       </div>
       <p class="ql-foot"><span>Ejemplo en vivo</span><a href="#contacto" data-ql-pick>Lo quiero →</a></p>
@@ -523,14 +565,14 @@
 
   <!-- Dock: fijo en toda la página -->
   <nav class="dock" aria-label="Demos de servicios y contacto">
-    <span class="dock-h" aria-hidden="true">Probá<br />una demo</span>
-    <button type="button" class="dock-app ic-web" data-open="web"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="2.5" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M3 9h18" stroke="currentColor" stroke-width="1.8" /><circle cx="6" cy="6.8" r=".9" fill="currentColor" /><circle cx="8.6" cy="6.8" r=".9" fill="currentColor" /><path d="M7 13h6M7 16h4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg></span><span class="dock-l">Webs</span></button>
-    <button type="button" class="dock-app ic-sys" data-open="sys"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="2.8" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M5 6v6c0 1.6 3.1 2.8 7 2.8s7-1.2 7-2.8V6M5 12v6c0 1.6 3.1 2.8 7 2.8s7-1.2 7-2.8v-6" fill="none" stroke="currentColor" stroke-width="1.8" /></svg></span><span class="dock-l">Sistemas</span></button>
-    <button type="button" class="dock-app ic-auto" data-open="auto"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="5" cy="6" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8" /><circle cx="19" cy="6" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8" /><circle cx="12" cy="18" r="2.4" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M7.4 6h9.2M6.3 8.1l4.4 7.7M17.7 8.1l-4.4 7.7" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg></span><span class="dock-l">Automatizar</span></button>
-    <button type="button" class="dock-app ic-ia" data-open="ia"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3.5c.6 3.6 2.4 5.4 6 6-3.6.6-5.4 2.4-6 6-.6-3.6-2.4-5.4-6-6 3.6-.6 5.4-2.4 6-6ZM17.5 13.5c.3 1.8 1.2 2.7 3 3-1.8.3-2.7 1.2-3 3-.3-1.8-1.2-2.7-3-3 1.8-.3 2.7-1.2 3-3Z" fill="currentColor" /></svg></span><span class="dock-l">IA</span></button>
-    <button type="button" class="dock-app ic-google" data-open="google"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6" fill="none" stroke="currentColor" stroke-width="2" /><path d="m15 15 5 5" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" /><path d="M8 12.5 10 10l1.6 1.6 2-2.6" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span class="dock-l">Google Ads</span></button>
-    <button type="button" class="dock-app ic-meta" data-open="meta"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.8" width="10" height="18.4" rx="2.6" fill="none" stroke="currentColor" stroke-width="1.8" /><path d="M9.5 6h5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /><path d="M12 15.6s-2.6-1.6-2.6-3.3a1.4 1.4 0 0 1 2.6-.8 1.4 1.4 0 0 1 2.6.8c0 1.7-2.6 3.3-2.6 3.3Z" fill="currentColor" /></svg></span><span class="dock-l">Meta Ads</span></button>
-    <button type="button" class="dock-app ic-data" data-open="data"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 19.5V13M10 19.5V9M15 19.5v-4M20 19.5V5" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /><path d="M3.5 19.5h17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" /></svg></span><span class="dock-l">Medición</span></button>
+    <span class="dock-h" aria-hidden="true"><small>Probá</small><b>una demo <i>→</i></b></span>
+    <button type="button" class="dock-app ic-web" data-open="web"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="4.5" width="18" height="15" rx="3" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /><path d="M3 9h18" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /><circle cx="6.2" cy="6.8" r=".9" fill="currentColor" /><circle cx="8.8" cy="6.8" r=".9" fill="currentColor" /><rect x="6" y="11.6" width="7.5" height="2.1" rx="1" fill="currentColor" /><rect x="6" y="15.2" width="4.6" height="1.8" rx=".9" fill="currentColor" fill-opacity=".55" /><rect x="15" y="11.6" width="3" height="5.4" rx="1" fill="currentColor" fill-opacity=".55" /></svg></span><span class="dock-l">Webs</span></button>
+    <button type="button" class="dock-app ic-sys" data-open="sys"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><ellipse cx="12" cy="6" rx="7" ry="2.8" fill="currentColor" fill-opacity=".28" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /><path d="M5 6v6c0 1.6 3.1 2.8 7 2.8s7-1.2 7-2.8V6M5 12v6c0 1.6 3.1 2.8 7 2.8s7-1.2 7-2.8v-6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /><circle cx="16" cy="11.9" r="1" fill="currentColor" /><circle cx="16" cy="17.9" r="1" fill="currentColor" /></svg></span><span class="dock-l">Sistemas</span></button>
+    <button type="button" class="dock-app ic-auto" data-open="auto"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 6h8M6.9 8.3l3.8 7.6M17.1 8.3l-3.8 7.6" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="2 2.2" /><circle cx="5.5" cy="6" r="2.6" fill="currentColor" fill-opacity=".28" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /><circle cx="18.5" cy="6" r="2.6" fill="currentColor" fill-opacity=".28" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /><circle cx="12" cy="18.3" r="2.9" fill="currentColor" /><path d="m12.6 16.6-1.5 2h1.6l-.9 1.6" fill="none" stroke="#2C1F14" stroke-width="1.1" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span class="dock-l">Automatizar</span></button>
+    <button type="button" class="dock-app ic-ia" data-open="ia"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3.5c.6 3.6 2.4 5.4 6 6-3.6.6-5.4 2.4-6 6-.6-3.6-2.4-5.4-6-6 3.6-.6 5.4-2.4 6-6Z" fill="currentColor" /><path d="M17.5 13.5c.3 1.8 1.2 2.7 3 3-1.8.3-2.7 1.2-3 3-.3-1.8-1.2-2.7-3-3 1.8-.3 2.7-1.2 3-3Z" fill="currentColor" fill-opacity=".7" /><circle cx="18" cy="5.5" r="1.2" fill="currentColor" fill-opacity=".55" /></svg></span><span class="dock-l">IA</span></button>
+    <button type="button" class="dock-app ic-google" data-open="google"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.3" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /><path d="m15.2 15.2 4.6 4.6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" /><path d="M7.6 12.6 9.8 10.2l1.6 1.6 2.3-2.9" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /><path d="M12 8.9h1.7v1.7" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /></svg></span><span class="dock-l">Google Ads</span></button>
+    <button type="button" class="dock-app ic-meta" data-open="meta"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="7" y="2.8" width="10" height="18.4" rx="2.8" fill="currentColor" fill-opacity=".14" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /><path d="M10 5.8h4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /><path d="M12 15.8s-2.7-1.6-2.7-3.4a1.45 1.45 0 0 1 2.7-.8 1.45 1.45 0 0 1 2.7.8c0 1.8-2.7 3.4-2.7 3.4Z" fill="currentColor" /><path d="M10.5 18.6h3" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" stroke-opacity=".6" /></svg></span><span class="dock-l">Meta Ads</span></button>
+    <button type="button" class="dock-app ic-data" data-open="data"><span class="ic"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.8 20h16.4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /><rect x="5" y="13.5" width="3" height="5" rx="1" fill="currentColor" fill-opacity=".4" /><rect x="10.5" y="10.5" width="3" height="8" rx="1" fill="currentColor" fill-opacity=".4" /><rect x="16" y="7.5" width="3" height="11" rx="1" fill="currentColor" fill-opacity=".4" /><path d="M4.5 10.5 9.5 7l3.6 2.2 5.9-5" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" /><circle cx="19" cy="4.2" r="1.4" fill="currentColor" /></svg></span><span class="dock-l">Medición</span></button>
     <span class="dock-sep" aria-hidden="true"></span>
     <a class="dock-app ic-wa" href="#contacto" data-chat><span class="ic"><svg aria-hidden="true"><use href="#chat" /></svg><i class="dock-badge" aria-hidden="true">1</i></span><span class="dock-l">Contacto</span></a>
   </nav>
