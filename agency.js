@@ -1,32 +1,35 @@
-/* nowmad agency: la página es el escritorio de una Mac.
+/* nowmad method: la página es el escritorio de una Mac.
    Arranque, Spotlight, menú de la app y clic derecho; ventanas que se arrastran; un navegador que
    arma un sitio con lo que escribís o escanea tu web de verdad; mapa de tu competencia; vista previa
    de cada servicio; tablero del proceso; asistente de preguntas y el contacto como WhatsApp. */
 (function () {
   "use strict";
+  // Idioma: la página en inglés tiene <html lang="en">; tt("castellano", "inglés") elige el texto
+  var EN = /^en/i.test(document.documentElement.lang || "");
+  function tt(es, en) { return EN ? en : es; }
 
   var REDUCED = matchMedia("(prefers-reduced-motion: reduce)").matches;
   var FINE = matchMedia("(hover: hover) and (pointer: fine)").matches;
   var DESKTOP = matchMedia("(min-width: 901px)");
 
-  function safe(fn, name) { try { fn(); } catch (err) { console.warn("[nowmad agency] " + name, err); } }
+  function safe(fn, name) { try { fn(); } catch (err) { console.warn("[nowmad method] " + name, err); } }
   function clamp(v) { return Math.max(0, Math.min(1, v)); }
   function $(s, r) { return (r || document).querySelector(s); }
   function $$(s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); }
 
   // ---------- Logros: se desbloquean jugando con la página ----------
   var ACH = [
-    { id: "ventana", t: "Arquitecto de ventanas", d: "Moviste una ventana del escritorio." },
-    { id: "luces", t: "Botonero", d: "Tocaste los botones de una ventana." },
-    { id: "escaner", t: "Bajo la lupa", d: "Escaneaste una web en vivo." },
-    { id: "mapa", t: "Conocé a tu rival", d: "Buscaste tu competencia en el mapa." },
-    { id: "sitio", t: "Constructor", d: "Armaste un sitio escribiendo en el navegador." },
-    { id: "proyecto", t: "Project manager", d: "Llevaste tu proyecto hasta Online." },
-    { id: "propuesta", t: "Con plan", d: "Armaste tu propuesta inicial." },
-    { id: "apps", t: "Curioso", d: "Probaste tres apps en el celular." },
-    { id: "chat", t: "Preguntón", d: "Le hiciste una pregunta al asistente." },
-    { id: "spot", t: "Power user", d: "Abriste el buscador (⌘K o la lupa de arriba)." },
-    { id: "fondo", t: "Decorador", d: "Cambiaste el fondo de pantalla." }
+    { id: "ventana", t: tt("Arquitecto de ventanas", "Window architect"), d: tt("Moviste una ventana del escritorio.", "You moved a desktop window.") },
+    { id: "luces", t: tt("Botonero", "Button pusher"), d: tt("Tocaste los botones de una ventana.", "You clicked a window's buttons.") },
+    { id: "escaner", t: tt("Bajo la lupa", "Under the lens"), d: tt("Escaneaste una web en vivo.", "You scanned a website live.") },
+    { id: "mapa", t: tt("Conocé a tu rival", "Know your rival"), d: tt("Buscaste tu competencia en el mapa.", "You looked up your competition on the map.") },
+    { id: "sitio", t: tt("Constructor", "Builder"), d: tt("Armaste un sitio escribiendo en el navegador.", "You built a site by typing in the browser.") },
+    { id: "proyecto", t: "Project manager", d: tt("Llevaste tu proyecto hasta Online.", "You took your project all the way to Live.") },
+    { id: "propuesta", t: tt("Con plan", "Planner"), d: tt("Armaste tu propuesta inicial.", "You put together your first proposal.") },
+    { id: "apps", t: tt("Curioso", "Curious"), d: tt("Probaste tres apps en el celular.", "You tried three apps on the phone.") },
+    { id: "chat", t: tt("Preguntón", "Inquisitive"), d: tt("Le hiciste una pregunta al asistente.", "You asked the assistant a question.") },
+    { id: "spot", t: "Power user", d: tt("Abriste el buscador (⌘K o la lupa de arriba).", "You opened search (⌘K or the magnifier up top).") },
+    { id: "fondo", t: tt("Decorador", "Decorator"), d: tt("Cambiaste el fondo de pantalla.", "You changed the wallpaper.") }
   ];
   var got = {};
   try { got = JSON.parse(localStorage.getItem("nowmad-logros") || "{}") || {}; } catch (e) { got = {}; }
@@ -71,8 +74,8 @@
         var b = document.createElement("b"), sm = document.createElement("small");
         li.className = got[a.id] ? "is-on" : "";
         i.textContent = got[a.id] ? "★" : "?";
-        b.textContent = got[a.id] ? a.t : "Logro escondido";
-        sm.textContent = got[a.id] ? a.d : "Seguí jugando para descubrirlo.";
+        b.textContent = got[a.id] ? a.t : tt("Logro escondido", "Hidden achievement");
+        sm.textContent = got[a.id] ? a.d : tt("Seguí jugando para descubrirlo.", "Keep exploring to unlock it.");
         box.appendChild(b); box.appendChild(sm); li.appendChild(i); li.appendChild(box); list.appendChild(li);
       });
     }
@@ -88,9 +91,9 @@
     var btn = $("[data-trophy]");
     if (btn) { btn.classList.remove("is-bump"); void btn.offsetWidth; btn.classList.add("is-bump"); }
     if (n === ACH.length) {
-      toast("¡Completaste todos los logros!", "Te pasaste un buen rato acá. ¿Charlamos tu proyecto?");
+      toast(tt("¡Completaste todos los logros!", "You unlocked every achievement!"), tt("Te pasaste un buen rato acá. ¿Charlamos tu proyecto?", "You spent a good while here. Shall we talk about your project?"));
       confetti(innerWidth / 2, innerHeight / 3, 140);
-    } else toast("Logro: " + a.t, a.d + " (" + n + "/" + ACH.length + ")");
+    } else toast(tt("Logro: ", "Achievement: ") + a.t, a.d + " (" + n + "/" + ACH.length + ")");
   }
   function initTrophies() {
     var btn = $("[data-trophy]"), panel = $("[data-trophies]");
@@ -232,7 +235,7 @@
       if (L.length !== 3) return;
       L[0].addEventListener("click", function () {
         win.classList.remove("is-nope"); void win.offsetWidth; win.classList.add("is-nope");
-        toast("Esta no se cierra", "Adentro está lo bueno. Probá el amarillo o el verde.");
+        toast(tt("Esta no se cierra", "This one doesn't close"), tt("Adentro está lo bueno. Probá el amarillo o el verde.", "The good stuff is inside. Try yellow or green."));
         unlock("luces");
       });
       L[1].addEventListener("click", function () { win.classList.toggle("is-min"); unlock("luces"); });
@@ -242,11 +245,11 @@
 
   // ---------- Navegador: arma un sitio de ejemplo en cuatro etapas ----------
   var PRESETS = [
-    { k: /inmobil|propiedad|alquil|departament|casas?\b/i, name: "Casa Sur", kicker: "Palermo · Belgrano · Núñez", title: "Encontrá tu próximo hogar", cta: "Ver propiedades", slug: "casasur", acc: "#C9822B", n: 48 },
-    { k: /odont|dent|consult|m[eé]dic|cl[ií]nic|turno|salud|psic|kine|nutri|est[eé]tic|veterin/i, name: "Sonrisa Studio", kicker: "Odontología · Recoleta", title: "Sacá turno en 30 segundos", cta: "Pedir turno", slug: "sonrisastudio", acc: "#119C8D", n: 64 },
-    { k: /gim|gym|entren|fitness|yoga|pilates|crossfit|deport|club/i, name: "Pulso Gym", kicker: "Funcional · Musculación · Clases", title: "Tu primera clase es gratis", cta: "Reservar clase", slug: "pulsogym", acc: "#E2462B", n: 91 },
-    { k: /resto|restaur|\bbar\b|parrilla|caf[eé]|comida|pizz|gastr|delivery|cocina|panader|helad/i, name: "Fuego Parrilla", kicker: "San Telmo · Desde 1998", title: "Reservá tu mesa para esta noche", cta: "Reservar", slug: "fuegoparrilla", acc: "#D9821F", n: 132 },
-    { k: /ropa|tienda|indument|moda|shop|e-?commerce|vender|venta|productos|calzado/i, name: "Lúa Indumentaria", kicker: "Envíos a todo el país", title: "Nueva colección de otoño", cta: "Comprar ahora", slug: "luaindumentaria", acc: "#C2417F", n: 215 }
+    { k: /inmobil|propiedad|alquil|departament|casas?\b/i, name: "Casa Sur", kicker: "Palermo · Belgrano · Núñez", title: tt("Encontrá tu próximo hogar", "Find your next home"), cta: tt("Ver propiedades", "See listings"), slug: "casasur", acc: "#C9822B", n: 48 },
+    { k: /odont|dent|consult|m[eé]dic|cl[ií]nic|turno|salud|psic|kine|nutri|est[eé]tic|veterin/i, name: "Sonrisa Studio", kicker: tt("Odontología · Recoleta", "Dental care · Recoleta"), title: tt("Sacá turno en 30 segundos", "Book in 30 seconds"), cta: tt("Pedir turno", "Book now"), slug: "sonrisastudio", acc: "#119C8D", n: 64 },
+    { k: /gim|gym|entren|fitness|yoga|pilates|crossfit|deport|club/i, name: "Pulso Gym", kicker: tt("Funcional · Musculación · Clases", "Functional · Strength · Classes"), title: tt("Tu primera clase es gratis", "Your first class is free"), cta: tt("Reservar clase", "Book a class"), slug: "pulsogym", acc: "#E2462B", n: 91 },
+    { k: /resto|restaur|\bbar\b|parrilla|caf[eé]|comida|pizz|gastr|delivery|cocina|panader|helad/i, name: "Fuego Parrilla", kicker: tt("San Telmo · Desde 1998", "San Telmo · Since 1998"), title: tt("Reservá tu mesa para esta noche", "Book your table for tonight"), cta: tt("Reservar", "Book"), slug: "fuegoparrilla", acc: "#D9821F", n: 132 },
+    { k: /ropa|tienda|indument|moda|shop|e-?commerce|vender|venta|productos|calzado/i, name: "Lúa Indumentaria", kicker: tt("Envíos a todo el país", "Nationwide shipping"), title: tt("Nueva colección de otoño", "New fall collection"), cta: tt("Comprar ahora", "Shop now"), slug: "luaindumentaria", acc: "#C2417F", n: 215 }
   ];
   var SCAN = { on: false, resume: function () {} };
   var PHASE_MS = [3400, 5600, 3400, 4600];
@@ -260,7 +263,7 @@
     for (var i = 0; i < PRESETS.length; i++) if (PRESETS[i].k.test(t)) return PRESETS[i];
     var m = t.match(/(?:para (?:mi|mis|un|una|el|la|los|las|nuestro|nuestra)\s+)(.+)$/i);
     var thing = (m ? m[1] : t).replace(/[.!?]+$/, "").slice(0, 32), name = cap(thing);
-    return { name: name, kicker: "Hecho a medida", title: name + ", en línea", cta: "Empezar", slug: slugify(thing), acc: "#8A6A3F", n: 57 };
+    return { name: name, kicker: tt("Hecho a medida", "Made to measure"), title: name + tt(", en línea", ", online"), cta: tt("Empezar", "Get started"), slug: slugify(thing), acc: "#8A6A3F", n: 57 };
   }
 
   function initMock() {
@@ -319,8 +322,8 @@
       if (i === 1) typeTo(0);
       if (i >= 2) { build(blocks.length); typeTo(total); }
       if (i < 3) { countEl.textContent = "—"; spark.style.setProperty("--draw", "1"); }
-      if (i === 2) toast("Publicado", preset.slug + ".com.ar ya está online.");
-      if (i === 3) toast("Google Ads · Nueva consulta", "Alguien buscó “" + preset.name + "” y te escribió.");
+      if (i === 2) toast(tt("Publicado", "Published"), preset.slug + tt(".com.ar ya está online.", ".com.ar is now live."));
+      if (i === 3) toast(tt("Google Ads · Nueva consulta", "Google Ads · New inquiry"), tt("Alguien buscó “", "Someone searched “") + preset.name + tt("” y te escribió.", "” and messaged you."));
       if (REDUCED) frame(start + PHASE_MS[i]);
     }
     function ease(t) { return 1 - Math.pow(1 - t, 3); }
@@ -390,10 +393,10 @@
       var bytes = nav ? (nav.encodedBodySize || 0) : 0;
       res.forEach(function (r) { bytes += r.encodedBodySize || 0; });
       var lines = ["$ medir agency.html"];
-      if (nav && nav.loadEventEnd > 0) lines.push(dots("carga completa", Math.round(nav.loadEventEnd - nav.startTime) + " ms"));
-      if (lcp !== null) lines.push(dots("contenido principal", Math.round(lcp) + " ms"));
-      if (bytes > 0) lines.push(dots("peso", (bytes / 1024).toFixed(0) + " KB"));
-      lines.push("› medido ahora, en tu navegador.");
+      if (nav && nav.loadEventEnd > 0) lines.push(dots(tt("carga completa", "full load"), Math.round(nav.loadEventEnd - nav.startTime) + " ms"));
+      if (lcp !== null) lines.push(dots(tt("contenido principal", "main content"), Math.round(lcp) + " ms"));
+      if (bytes > 0) lines.push(dots(tt("peso", "weight"), (bytes / 1024).toFixed(0) + " KB"));
+      lines.push(tt("› medido ahora, en tu navegador.", "› measured just now, in your browser."));
       if (REDUCED) { el.innerHTML = lines.join("\n"); return; }
       var i = 0;
       (function step() {
@@ -407,8 +410,8 @@
   }
 
   // ---------- Vista previa: la demo de cada servicio (desde el dock o el explorador) ----------
-  var NAMES = { web: "Webs", sys: "Sistemas a medida", auto: "Automatización", ia: "Inteligencia artificial", google: "Google Ads", meta: "Meta Ads", data: "Medición" };
-  var SERVICE = { web: "una web", sys: "un sistema a medida", auto: "automatizar mi negocio", ia: "algo con inteligencia artificial", google: "campañas en Google Ads", meta: "campañas en Meta Ads", data: "medir mis resultados" };
+  var NAMES = { web: tt("Webs", "Websites"), sys: tt("Sistemas a medida", "Custom systems"), auto: tt("Automatización", "Automation"), ia: tt("Inteligencia artificial", "Artificial intelligence"), google: "Google Ads", meta: "Meta Ads", data: tt("Medición", "Analytics") };
+  var SERVICE = { web: tt("una web", "a website"), sys: tt("un sistema a medida", "a custom system"), auto: tt("automatizar mi negocio", "to automate my business"), ia: tt("algo con inteligencia artificial", "something with AI"), google: tt("campañas en Google Ads", "Google Ads campaigns"), meta: tt("campañas en Meta Ads", "Meta Ads campaigns"), data: tt("medir mis resultados", "to measure my results") };
   function initQuickLook() {
     var ql = $("[data-ql]");
     if (!ql) return;
@@ -422,7 +425,7 @@
       $$("[data-demo].is-on", ql).forEach(function (x) { if (x !== d) x.classList.remove("is-on"); });
       ql.hidden = false;
       ql.style.setProperty("--qx", "0px"); ql.style.setProperty("--qy", "0px");
-      title.textContent = NAMES[key] + " — vista previa";
+      title.textContent = NAMES[key] + tt(" — vista previa", " — preview");
       current = key;
       replay(d);
       $$(".dock-app").forEach(function (a) { a.classList.toggle("is-open", a.getAttribute("data-open") === key); });
@@ -479,7 +482,7 @@
     if (!sec) return;
     var win = $(".win-board", sec), card = $("[data-card]", sec), cols = $$(".col", sec);
     var state = $("[data-card-state]", sec), next = $("[data-card-next]", sec);
-    var STATES = ["En análisis", "Propuesta aprobada", "En construcción", "¡Online!"];
+    var STATES = [tt("En análisis", "In review"), tt("Propuesta aprobada", "Proposal approved"), tt("En construcción", "Under construction"), tt("¡Online!", "Live!")];
     var cur = 0;
     function spot(k) {
       var board = cols[0].parentNode, col = cols[k];
@@ -497,7 +500,7 @@
       card.style.setProperty("--cr", (k % 2 ? 1.5 : -1.5) + "deg");
       state.textContent = STATES[k];
       card.classList.toggle("is-online", k === 3);
-      next.textContent = k === 3 ? "Otra vez ↺" : "Avanzar →";
+      next.textContent = k === 3 ? tt("Otra vez ↺", "Again ↺") : tt("Avanzar →", "Next →");
       if (k === 3 && celebrate) {
         var r = card.getBoundingClientRect();
         confetti(r.left + r.width / 2, r.top, 90);
@@ -566,10 +569,10 @@
     });
     return best;
   }
-  function cleanName(t) { return (t || "").split(/\s[|\-–—·:]\s/)[0].trim().slice(0, 28) || "Tu marca"; }
+  function cleanName(t) { return (t || "").split(/\s[|\-–—·:]\s/)[0].trim().slice(0, 28) || tt("Tu marca", "Your brand"); }
   function makeTitle(desc, name) {
     if (desc) { var d = desc.split(/[.!?]\s/)[0].trim(); if (d.length > 8) return d.length > 62 ? d.slice(0, 60).replace(/\s\S*$/, "") + "…" : d; }
-    return name + ", más rápida y en tu celular";
+    return name + tt(", más rápida y en tu celular", ", faster and mobile-ready");
   }
   function initScanner() {
     var form = $("[data-hero-form]"), input = $("[data-mock-input]"), browser = $("[data-stage]"), scan = $("[data-scan]");
@@ -592,7 +595,7 @@
       scan.classList.remove("is-scanning");
       img.classList.remove("is-on"); load.hidden = true; lock.hidden = false;
       urlEl.textContent = host;
-      lockMsg.innerHTML = "Ya usaste tu escaneo gratis con <b>" + esc(prev) + "</b>. ¿Querés que revisemos <b>" + esc(host) + "</b>? Escribinos y te la auditamos nosotros, con el informe completo.";
+      lockMsg.innerHTML = tt("Ya usaste tu escaneo gratis con <b>", "You already used your free scan on <b>") + esc(prev) + tt("</b>. ¿Querés que revisemos <b>", "</b>. Want us to review <b>") + esc(host) + tt("</b>? Escribinos y te la auditamos nosotros, con el informe completo.", "</b>? Message us and we'll audit it ourselves, with the full report.");
     }
 
     function view(k) {
@@ -630,13 +633,13 @@
       scan.hidden = false; tabsA.hidden = true; tabsB.hidden = false;
       view("shot");
       img.classList.remove("is-on"); img.removeAttribute("src");
-      load.hidden = false; msg.textContent = "Abriendo " + host + "…";
+      load.hidden = false; msg.textContent = tt("Abriendo ", "Opening ") + host + "…";
       scan.classList.add("is-scanning"); scan.style.setProperty("--h", scan.clientHeight + "px");
       urlEl.textContent = host;
       stats.classList.add("is-score"); stK.textContent = "Velocidad en celular"; stV.textContent = "…";
       rings.innerHTML = ""; findings.innerHTML = "";
-      li("Google está auditando tu web: tarda unos segundos…", "note");
-      lines = ["$ escanear " + esc(host), "› abriendo tu web…", "› auditando con Google…"]; log();
+      li(tt("Google está auditando tu web: tarda unos segundos…", "Google is auditing your site: it takes a few seconds…"), "note");
+      lines = [tt("$ escanear ", "$ scan ") + esc(host), tt("› abriendo tu web…", "› opening your site…"), tt("› auditando con Google…", "› auditing with Google…")]; log();
 
       // 1. Captura y marca (Microlink)
       fetch("https://api.microlink.io/?url=" + encodeURIComponent(u) + "&screenshot=true&palette=true&meta=true")
@@ -649,7 +652,7 @@
           if (shot) {
             img.onload = function () { if (my === run) { load.hidden = true; img.classList.add("is-on"); } };
             img.src = shot;
-          } else msg.textContent = "No pudimos sacar la captura de " + host + ".";
+          } else msg.textContent = tt("No pudimos sacar la captura de ", "We couldn't take a screenshot of ") + host + ".";
           var pal = ((d.logo && d.logo.palette) || []).concat((d.image && d.image.palette) || [], (d.screenshot && d.screenshot.palette) || []);
           report.name = cleanName(d.title || d.publisher || host);
           nwName.textContent = report.name;
@@ -657,20 +660,20 @@
           if (d.logo && d.logo.url && /^https:\/\//.test(d.logo.url)) nwLogo.src = d.logo.url; else nwLogo.removeAttribute("src");
           var a1 = pickAccent(pal) || "#8A6A3F", a2 = pickAccent(pal.filter(function (h) { return h !== a1; })) || "#D8BF8E";
           nw.style.setProperty("--acc", a1); nw.style.setProperty("--acc2", a2);
-          log(dots("captura", "ok"));
-          log(dots("marca", esc(report.name)));
+          log(dots(tt("captura", "screenshot"), "ok"));
+          log(dots(tt("marca", "brand"), esc(report.name)));
         })
         .catch(function (err) {
           if (my !== run) return;
           msg.textContent = err && err.message === "cupo"
-            ? "Hoy escanearon muchas webs y la captura se tomó un descanso. El informe de Google sigue abajo."
-            : "No pudimos abrir " + host + ". ¿Está bien escrita la dirección?";
-          log(dots("captura", "no disponible"));
+            ? tt("Hoy escanearon muchas webs y la captura se tomó un descanso. El informe de Google sigue abajo.", "Lots of sites were scanned today and screenshots are taking a break. Google's report is below.")
+            : tt("No pudimos abrir ", "We couldn't open ") + host + tt(". ¿Está bien escrita la dirección?", ". Is the address spelled right?");
+          log(dots(tt("captura", "screenshot"), tt("no disponible", "not available")));
         });
 
       // 2. Auditoría (Google PageSpeed Insights, en celular y en español)
       var psi = "https://www.googleapis.com/pagespeedonline/v5/runPagespeed?url=" + encodeURIComponent(u) +
-        "&strategy=mobile&locale=es&category=performance&category=seo&category=accessibility&category=best-practices" + (PSI_KEY ? "&key=" + PSI_KEY : "");
+        "&strategy=mobile&locale=" + tt("es", "en") + "&category=performance&category=seo&category=accessibility&category=best-practices" + (PSI_KEY ? "&key=" + PSI_KEY : "");
       fetch(psi).then(function (r) { return r.json(); }).then(function (j) {
         if (my !== run) return;
         if (j.error || !j.lighthouseResult) throw new Error(j.error ? j.error.message : "psi");
@@ -681,31 +684,31 @@
         report.scores = S; report.lcp = lcp;
         markScan(host);
         rings.innerHTML = ""; findings.innerHTML = "";
-        ring("Velocidad", S.perf); ring("SEO", S.seo); ring("Accesibilidad", S.acc); ring("Buenas prácticas", S.bp);
-        if (lcp) li("En un celular, lo principal de tu web tarda " + lcp + " en aparecer.", S.perf >= 90 ? "ok" : "");
+        ring(tt("Velocidad", "Speed"), S.perf); ring("SEO", S.seo); ring(tt("Accesibilidad", "Accessibility"), S.acc); ring(tt("Buenas prácticas", "Best practices"), S.bp);
+        if (lcp) li(tt("En un celular, lo principal de tu web tarda ", "On a phone, your site's main content takes ") + lcp + tt(" en aparecer.", " to appear."), S.perf >= 90 ? "ok" : "");
         var KEY = ["meta-description", "image-alt", "tap-targets", "font-size", "document-title", "link-text", "is-crawlable", "viewport", "color-contrast"];
         var issues = Object.keys(a).map(function (k) { return a[k]; }).filter(function (x) {
           return x.score != null && x.score < 0.9 && ((x.details && x.details.type === "opportunity") || KEY.indexOf(x.id) > -1);
         }).sort(function (x, y) { return ((y.details && y.details.overallSavingsMs) || 0) - ((x.details && x.details.overallSavingsMs) || 0); }).slice(0, 4);
         issues.forEach(function (x) { li(x.title + (x.displayValue ? " (" + x.displayValue + ")" : "")); });
-        if (!issues.length) li("Tu web está muy bien. Igual podemos hacer que venda más.", "ok");
+        if (!issues.length) li(tt("Tu web está muy bien. Igual podemos hacer que venda más.", "Your site is in great shape. We can still make it sell more."), "ok");
         stV.innerHTML = S.perf + "<small>/100</small>";
-        log(dots("velocidad celular", S.perf + "/100"));
+        log(dots(tt("velocidad celular", "mobile speed"), S.perf + "/100"));
         log(dots("SEO", S.seo + "/100"));
-        log(dots("accesibilidad", S.acc + "/100"));
-        if (lcp) log(dots("carga en celular", esc(lcp)));
-        log("› listo: mirá el informe y tu web nueva.");
+        log(dots(tt("accesibilidad", "accessibility"), S.acc + "/100"));
+        if (lcp) log(dots(tt("carga en celular", "mobile load"), esc(lcp)));
+        log(tt("› listo: mirá el informe y tu web nueva.", "› done: check the report and your new site."));
         scan.classList.remove("is-scanning");
         view("report");
-        toast("Escaneo listo", host + ": " + S.perf + "/100 de velocidad en celular.");
+        toast(tt("Escaneo listo", "Scan ready"), host + ": " + S.perf + tt("/100 de velocidad en celular.", "/100 mobile speed."));
         unlock("escaner");
       }).catch(function () {
         if (my !== run) return;
         scan.classList.remove("is-scanning");
         findings.innerHTML = "";
-        li("La auditoría de Google está saturada en este momento. Mandanos tu web y te la hacemos nosotros, gratis.", "note");
+        li(tt("La auditoría de Google está saturada en este momento. Mandanos tu web y te la hacemos nosotros, gratis.", "Google's audit is overloaded right now. Send us your site and we'll do it for you, free."), "note");
         stV.textContent = "—";
-        log(dots("auditoría Google", "no disponible ahora"));
+        log(dots(tt("auditoría Google", "Google audit"), tt("no disponible ahora", "not available now")));
         unlock("escaner");
       });
     }
@@ -720,20 +723,20 @@
     $$("[data-sv-btn]").forEach(function (b) { b.addEventListener("click", function () { view(b.getAttribute("data-sv-btn")); }); });
     $("[data-scan-cta]").addEventListener("click", function () {
       if (!report) return;
-      var t = "¡Hola, nowmad agency! Escaneé mi web " + report.host + " en su página";
-      if (report.scores) t += ": velocidad en celular " + report.scores.perf + "/100, SEO " + report.scores.seo + "/100, accesibilidad " + report.scores.acc + "/100";
-      t += ". Quiero que me pasen el informe y mejorarla.";
+      var t = tt("¡Hola, nowmad method! Escaneé mi web ", "Hi nowmad method! I scanned my site ") + report.host + tt(" en su página", " on your page");
+      if (report.scores) t += tt(": velocidad en celular ", ": mobile speed ") + report.scores.perf + "/100, SEO " + report.scores.seo + tt("/100, accesibilidad ", "/100, accessibility ") + report.scores.acc + "/100";
+      t += tt(". Quiero que me pasen el informe y mejorarla.", ". I'd like the full report and help improving it.");
       var b = $("[data-builder]");
       if (b) { b.elements.idea.value = "mejorar mi web " + report.host; b.dispatchEvent(new Event("change", { bubbles: true })); }
       openWa(t);
     });
     $("[data-scan-lock-btn]").addEventListener("click", function () {
-      openWa("¡Hola, nowmad agency! Ya usé el escaneo gratis de su página y quiero que me auditen " + lockHost + ".");
+      openWa(tt("¡Hola, nowmad method! Ya usé el escaneo gratis de su página y quiero que me auditen ", "Hi nowmad method! I already used the free scan on your page and I'd like you to audit ") + lockHost + ".");
     });
     $$("[data-try]").forEach(function (b) {
       b.addEventListener("click", function () {
         var v = b.getAttribute("data-try");
-        if (v === "tu web") { input.value = ""; input.focus(); input.placeholder = "Escribí la dirección de tu web y Enter"; return; }
+        if (v === "tu web") { input.value = ""; input.focus(); input.placeholder = tt("Escribí la dirección de tu web y Enter", "Type your site's address and press Enter"); return; }
         input.value = v;
         scanIt(v);
         browser.scrollIntoView({ block: "nearest", behavior: REDUCED ? "auto" : "smooth" });
@@ -743,23 +746,23 @@
 
   // ---------- Competencia: negocios reales cerca, en un mapa ----------
   var RUBRO = {
-    gimnasio: ["gimnasios", ["[leisure=fitness_centre]", "[leisure=sports_centre][sport=fitness]"]],
-    restaurante: ["restaurantes", ["[amenity=restaurant]"]],
+    gimnasio: [tt("gimnasios", "gyms"), ["[leisure=fitness_centre]", "[leisure=sports_centre][sport=fitness]"]],
+    restaurante: [tt("restaurantes", "restaurants"), ["[amenity=restaurant]"]],
     cafe: ["cafés", ["[amenity=cafe]"]],
-    bar: ["bares", ["[amenity=bar]", "[amenity=pub]"]],
-    inmobiliaria: ["inmobiliarias", ["[office=estate_agent]", "[shop=estate_agent]"]],
-    odontologo: ["odontólogos", ["[amenity=dentist]", "[healthcare=dentist]"]],
-    medico: ["consultorios y clínicas", ["[amenity=clinic]", "[amenity=doctors]"]],
-    peluqueria: ["peluquerías y barberías", ["[shop=hairdresser]"]],
-    estetica: ["centros de estética", ["[shop=beauty]", "[leisure=spa]"]],
-    ropa: ["tiendas de ropa", ["[shop=clothes]"]],
-    veterinaria: ["veterinarias", ["[amenity=veterinary]"]],
-    farmacia: ["farmacias", ["[amenity=pharmacy]"]],
-    hotel: ["hoteles y hospedajes", ["[tourism=hotel]", "[tourism=hostel]", "[tourism=guest_house]"]],
-    panaderia: ["panaderías", ["[shop=bakery]"]],
-    ferreteria: ["ferreterías", ["[shop=hardware]", "[shop=doityourself]"]],
-    autos: ["talleres mecánicos", ["[shop=car_repair]"]],
-    optica: ["ópticas", ["[shop=optician]"]]
+    bar: [tt("bares", "bars"), ["[amenity=bar]", "[amenity=pub]"]],
+    inmobiliaria: [tt("inmobiliarias", "real estate agencies"), ["[office=estate_agent]", "[shop=estate_agent]"]],
+    odontologo: [tt("odontólogos", "dentists"), ["[amenity=dentist]", "[healthcare=dentist]"]],
+    medico: [tt("consultorios y clínicas", "clinics and practices"), ["[amenity=clinic]", "[amenity=doctors]"]],
+    peluqueria: [tt("peluquerías y barberías", "hair salons and barbershops"), ["[shop=hairdresser]"]],
+    estetica: [tt("centros de estética", "beauty centers"), ["[shop=beauty]", "[leisure=spa]"]],
+    ropa: [tt("tiendas de ropa", "clothing stores"), ["[shop=clothes]"]],
+    veterinaria: [tt("veterinarias", "vet clinics"), ["[amenity=veterinary]"]],
+    farmacia: [tt("farmacias", "pharmacies"), ["[amenity=pharmacy]"]],
+    hotel: [tt("hoteles y hospedajes", "hotels and lodgings"), ["[tourism=hotel]", "[tourism=hostel]", "[tourism=guest_house]"]],
+    panaderia: [tt("panaderías", "bakeries"), ["[shop=bakery]"]],
+    ferreteria: [tt("ferreterías", "hardware stores"), ["[shop=hardware]", "[shop=doityourself]"]],
+    autos: [tt("talleres mecánicos", "auto repair shops"), ["[shop=car_repair]"]],
+    optica: [tt("ópticas", "opticians"), ["[shop=optician]"]]
   };
   var leaflet = null;
   function loadLeaflet() {
@@ -801,10 +804,10 @@
     var PLACE = ["city", "town", "village", "suburb", "neighbourhood", "quarter", "borough", "municipality", "hamlet", "city_district"];
     function geocode(q) {
       function ask(extra) {
-        return fetch("https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&accept-language=es" + extra + "&q=" + encodeURIComponent(q))
+        return fetch("https://nominatim.openstreetmap.org/search?format=jsonv2&limit=6&accept-language=" + tt("es", "en") + extra + "&q=" + encodeURIComponent(q))
           .then(function (r) { return r.json(); });
       }
-      return ask("&countrycodes=ar").then(function (d) { return d.length ? d : ask(""); }).then(function (d) {
+      return ask(EN ? "" : "&countrycodes=ar").then(function (d) { return d.length ? d : ask(""); }).then(function (d) {
         if (!d.length) throw new Error("nogeo");
         var best = d.filter(function (x) { return PLACE.indexOf(x.addresstype) > -1 || PLACE.indexOf(x.type) > -1; })[0] || d[0];
         return { lat: +best.lat, lon: +best.lon, label: q };
@@ -868,8 +871,8 @@
     function search(lat, lon, label) {
       var key = form.elements.rubro.value, R = RUBRO[key], radius = +form.elements.radio.value;
       var rubroTxt = form.elements.rubro.options[form.elements.rubro.selectedIndex].text.toLowerCase();
-      go.disabled = true; go.textContent = "Buscando…";
-      say("Buscando " + R[0] + " cerca de " + label + "…");
+      go.disabled = true; go.textContent = tt("Buscando…", "Searching…");
+      say(tt("Buscando ", "Looking for ") + R[0] + tt(" cerca de ", " near ") + label + "…");
       // Carrera: Overpass es el más completo; si a los 5 s no contestó, sale también Photon y gana el primero con datos
       var found = new Promise(function (resolve, reject) {
         var done = false, fails = 0, backup = null;
@@ -889,7 +892,7 @@
         if (layer) layer.remove();
         layer = L.layerGroup().addTo(map);
         L.circle([lat, lon], { radius: radius, color: "#8A6A3F", weight: 1.5, fillOpacity: 0.06 }).addTo(layer);
-        L.marker([lat, lon], { icon: L.divIcon({ className: "", html: '<span class="pin-me"></span>', iconSize: [22, 22], iconAnchor: [11, 11] }) }).bindPopup("Vos").addTo(layer);
+        L.marker([lat, lon], { icon: L.divIcon({ className: "", html: '<span class="pin-me"></span>', iconSize: [22, 22], iconAnchor: [11, 11] }) }).bindPopup(tt("Vos", "You")).addTo(layer);
         map.invalidateSize();
         map.fitBounds(L.latLng(lat, lon).toBounds(radius * 2), { padding: [20, 20] });
         var names = [];
@@ -900,7 +903,7 @@
           if (n && names.indexOf(n) < 0) names.push(n);
           setTimeout(function () {
             var m = L.circleMarker([la, lo], { radius: 7, color: "#fff", weight: 2, fillColor: "#4A3524", fillOpacity: 1 });
-            m.bindPopup(document.createTextNode(n || "Sin nombre en el mapa"));
+            m.bindPopup(document.createTextNode(n || tt("Sin nombre en el mapa", "Unnamed on the map")));
             m.addTo(layer);
           }, REDUCED ? 0 : Math.min(i, 120) * 22);
         });
@@ -909,11 +912,11 @@
         var q = document.createElement("p"); q.className = "cmp-q";
         if (els.length) {
           big.innerHTML = "<em></em> " ; big.querySelector("em").textContent = els.length;
-          big.appendChild(document.createTextNode(R[0] + " a " + km + " km de " + label + "."));
-          q.textContent = "Cuando alguien busca “" + rubroTxt + " en " + label + "”, ¿te encuentra a vos o a ellos?" + (els.partial ? " (Resultado parcial: el mapa está con mucha demanda.)" : "");
+          big.appendChild(document.createTextNode(R[0] + tt(" a ", " within ") + km + tt(" km de ", " km of ") + label + "."));
+          q.textContent = tt("Cuando alguien busca “", "When someone searches “") + rubroTxt + tt(" en ", " in ") + label + tt("”, ¿te encuentra a vos o a ellos?", "”, do they find you or them?") + (els.partial ? tt(" (Resultado parcial: el mapa está con mucha demanda.)", " (Partial result: the map is very busy right now.)") : "");
         } else {
-          big.textContent = "No hay " + R[0] + " cargados en el mapa a " + km + " km de " + label + ".";
-          q.textContent = "Oportunidad: el primero que aparece online en tu zona se queda con los clientes.";
+          big.textContent = tt("No hay ", "There are no ") + R[0] + tt(" cargados en el mapa a ", " on the map within ") + km + tt(" km de ", " km of ") + label + ".";
+          q.textContent = tt("Oportunidad: el primero que aparece online en tu zona se queda con los clientes.", "Opportunity: whoever shows up online first in your area wins the customers.");
         }
         out.appendChild(big); out.appendChild(q);
         if (names.length) {
@@ -925,50 +928,50 @@
         var want = document.createElement("button");
         want.type = "button"; want.className = "cmp-want"; want.textContent = "Quiero destacarme →";
         want.addEventListener("click", function () {
-          openWa("¡Hola, nowmad agency! Busqué mi competencia en su página: hay " + els.length + " " + R[0] + " a " + km + " km de " + label + ". Quiero destacarme.");
+          openWa(tt("¡Hola, nowmad method! Busqué mi competencia en su página: hay ", "Hi nowmad method! I looked up my competition on your page: there are ") + els.length + " " + R[0] + tt(" a ", " within ") + km + tt(" km de ", " km of ") + label + tt(". Quiero destacarme.", ". I want to stand out."));
         });
         out.appendChild(want);
         unlock("mapa");
       }).catch(function (err) {
-        console.warn("[nowmad agency] competencia", err);
-        say("El mapa no respondió. Probá de nuevo en un ratito.", "cmp-err");
-      }).then(function () { go.disabled = false; go.textContent = "Buscar mi competencia"; });
+        console.warn("[nowmad method] competencia", err);
+        say(tt("El mapa no respondió. Probá de nuevo en un ratito.", "The map didn't respond. Try again in a moment."), "cmp-err");
+      }).then(function () { go.disabled = false; go.textContent = tt("Buscar mi competencia", "Find my competition"); });
     }
     form.addEventListener("submit", function (e) {
       e.preventDefault();
       var q = form.elements.lugar.value.trim();
-      if (!q) { say("Escribí tu ciudad o barrio, o tocá “Usar mi ubicación”.", "cmp-err"); form.elements.lugar.focus(); return; }
+      if (!q) { say(tt("Escribí tu ciudad o barrio, o tocá “Usar mi ubicación”.", "Type your city or neighborhood, or tap “Use my location”."), "cmp-err"); form.elements.lugar.focus(); return; }
       go.disabled = true;
       geocode(q).then(function (g) { search(g.lat, g.lon, g.label); }).catch(function () {
         go.disabled = false;
-        say("No encontramos “" + q + "”. Probá con ciudad y provincia.", "cmp-err");
+        say(tt("No encontramos “", "We couldn't find “") + q + tt("”. Probá con ciudad y provincia.", "”. Try city and state or country."), "cmp-err");
       });
     });
     geo.addEventListener("click", function () {
-      if (!navigator.geolocation) { say("Tu navegador no comparte la ubicación. Escribí tu ciudad.", "cmp-err"); return; }
-      say("Pidiendo tu ubicación…");
+      if (!navigator.geolocation) { say(tt("Tu navegador no comparte la ubicación. Escribí tu ciudad.", "Your browser doesn't share location. Type your city."), "cmp-err"); return; }
+      say(tt("Pidiendo tu ubicación…", "Requesting your location…"));
       navigator.geolocation.getCurrentPosition(function (pos) {
-        search(pos.coords.latitude, pos.coords.longitude, "tu ubicación");
-      }, function () { say("No pudimos usar tu ubicación. Escribí tu ciudad.", "cmp-err"); }, { timeout: 10000 });
+        search(pos.coords.latitude, pos.coords.longitude, tt("tu ubicación", "your location"));
+      }, function () { say(tt("No pudimos usar tu ubicación. Escribí tu ciudad.", "We couldn't use your location. Type your city."), "cmp-err"); }, { timeout: 10000 });
     });
   }
 
   // ---------- Tu propuesta: analiza qué necesitás, qué tenés y tu presupuesto ----------
   var ITEMS = {
-    web: { t: "Tu web", d: "Rápida, pensada para el celular y para vender o recibir consultas.", s: "una web" },
-    rediseno: { t: "Rediseño de tu web", d: "La rehacemos para que cargue rápido y convierta.", s: "una web" },
-    tienda: { t: "Tienda online", d: "Catálogo, carrito y pagos con Mercado Pago.", s: "una web" },
-    google: { t: "Google Ads", d: "Aparecer cuando te están buscando.", s: "campañas en Google Ads" },
-    meta: { t: "Meta Ads", d: "Instagram y Facebook, a la gente indicada.", s: "campañas en Meta Ads" },
-    sistema: { t: "Sistema a medida", d: "Pedidos, turnos o stock hechos para tu negocio.", s: "un sistema a medida" },
-    auto: { t: "Automatización a medida", d: "Web, pagos, stock, facturas y WhatsApp conectados; lo manejás desde el celular. Sin IA si no hace falta.", s: "automatizar mi negocio" },
-    ia: { t: "Asistente con IA", d: "Responde consultas y agenda sin que estés encima.", s: "algo con inteligencia artificial" },
-    medicion: { t: "Medición", d: "Saber qué funciona y dónde conviene invertir.", s: "medir mis resultados" }
+    web: { t: tt("Tu web", "Your website"), d: tt("Rápida, pensada para el celular y para vender o recibir consultas.", "Fast, built for mobile, made to sell or bring in inquiries."), s: tt("una web", "a website") },
+    rediseno: { t: tt("Rediseño de tu web", "Website redesign"), d: tt("La rehacemos para que cargue rápido y convierta.", "We rebuild it to load fast and convert."), s: tt("una web", "a website") },
+    tienda: { t: tt("Tienda online", "Online store"), d: tt("Catálogo, carrito y pagos con Mercado Pago.", "Catalog, cart and online payments."), s: tt("una web", "a website") },
+    google: { t: "Google Ads", d: tt("Aparecer cuando te están buscando.", "Show up when people are searching for you."), s: tt("campañas en Google Ads", "Google Ads campaigns") },
+    meta: { t: "Meta Ads", d: tt("Instagram y Facebook, a la gente indicada.", "Instagram and Facebook, to the right people."), s: tt("campañas en Meta Ads", "Meta Ads campaigns") },
+    sistema: { t: tt("Sistema a medida", "Custom system"), d: tt("Pedidos, turnos o stock hechos para tu negocio.", "Orders, bookings or inventory built for your business."), s: tt("un sistema a medida", "a custom system") },
+    auto: { t: tt("Automatización a medida", "Custom automation"), d: tt("Web, pagos, stock, facturas y WhatsApp conectados; lo manejás desde el celular. Sin IA si no hace falta.", "Website, payments, inventory, invoices and WhatsApp connected; run it from your phone. No AI unless it's needed."), s: tt("automatizar mi negocio", "to automate my business") },
+    ia: { t: tt("Asistente con IA", "AI assistant"), d: tt("Responde consultas y agenda sin que estés encima.", "Answers questions and books appointments without you hovering."), s: tt("algo con inteligencia artificial", "something with AI") },
+    medicion: { t: tt("Medición", "Analytics"), d: tt("Saber qué funciona y dónde conviene invertir.", "Know what works and where to invest."), s: tt("medir mis resultados", "to measure my results") }
   };
   var GOALS = { vender: ["tienda", "meta"], consultas: ["google", "meta"], google: ["google"], procesos: ["auto"], ia: ["ia"] };
-  var GOAL_TXT = { vender: "vender online", consultas: "conseguir más consultas", google: "aparecer en Google", procesos: "automatizar y conectar todo", ia: "automatizar con IA" };
-  var NOW_TXT = { nada: "todavía no tengo nada", redes: "hoy solo tengo redes", vieja: "tengo una web que no me convence", web: "tengo una web que funciona" };
-  var BUDGET_TXT = { ajustado: "ajustado", medio: "intermedio", amplio: "amplio", nose: "a definir, quiero que me asesoren" };
+  var GOAL_TXT = { vender: tt("vender online", "sell online"), consultas: tt("conseguir más consultas", "get more inquiries"), google: tt("aparecer en Google", "show up on Google"), procesos: tt("automatizar y conectar todo", "automate and connect everything"), ia: tt("automatizar con IA", "automate with AI") };
+  var NOW_TXT = { nada: tt("todavía no tengo nada", "I don't have anything yet"), redes: tt("hoy solo tengo redes", "I only have social media"), vieja: tt("tengo una web que no me convence", "I have a website I'm not happy with"), web: tt("tengo una web que funciona", "I have a website that works") };
+  var BUDGET_TXT = EN ? { ajustado: "tight", medio: "mid-range", amplio: "generous", nose: "to be defined, I'd like advice" } : { ajustado: "ajustado", medio: "intermedio", amplio: "amplio", nose: "a definir, quiero que me asesoren" };
 
   function planFor(goals, now, budget) {
     var keys = [];
@@ -1011,14 +1014,14 @@
       side.forEach(function (li, n) { li.classList.toggle("is-on", n === i); li.classList.toggle("is-done", n < i); });
       back.hidden = i === 0;
       next.hidden = i === 3;
-      next.textContent = i === 2 ? "Ver mi propuesta" : "Siguiente";
-      count.textContent = i < 3 ? "Paso " + (i + 1) + " de 3" : "Listo";
+      next.textContent = i === 2 ? tt("Ver mi propuesta", "See my proposal") : tt("Siguiente", "Next");
+      count.textContent = i < 3 ? tt("Paso ", "Step ") + (i + 1) + tt(" de 3", " of 3") : tt("Listo", "Done");
       if (i === 3) { render(); unlock("propuesta"); }
     }
     function render() {
       var v = values();
       last = planFor(v.goals, v.now, v.budget);
-      var LABEL = { now: "Ahora", later: "Más adelante", talk: "Lo vemos juntos" };
+      var LABEL = { now: tt("Ahora", "Now"), later: tt("Más adelante", "Later"), talk: tt("Lo vemos juntos", "Let's discuss it") };
       planEl.innerHTML = "";
       last.forEach(function (p, n) {
         var li = document.createElement("li");
@@ -1033,11 +1036,11 @@
       });
       var parts = [];
       var g = v.goals.map(function (k) { return GOAL_TXT[k]; });
-      if (g.length) parts.push("Para " + (g.length < 2 ? g[0] : g.slice(0, -1).join(", ") + " y " + g[g.length - 1]));
-      if (v.budget === "ajustado") parts.push("con un presupuesto ajustado: arrancamos por lo que más impacto tiene y sumamos el resto por etapas.");
-      else if (v.budget === "medio") parts.push("con un presupuesto intermedio: lo principal ahora y el resto después.");
-      else if (v.budget === "amplio") parts.push("con un presupuesto amplio: lo hacemos completo de una.");
-      else parts.push("y te asesoramos sobre cuánto conviene invertir.");
+      if (g.length) parts.push(tt("Para ", "To ") + (g.length < 2 ? g[0] : g.slice(0, -1).join(", ") + tt(" y ", " and ") + g[g.length - 1]));
+      if (v.budget === "ajustado") parts.push(tt("con un presupuesto ajustado: arrancamos por lo que más impacto tiene y sumamos el resto por etapas.", "on a tight budget: we start with what has the most impact and add the rest in stages."));
+      else if (v.budget === "medio") parts.push(tt("con un presupuesto intermedio: lo principal ahora y el resto después.", "on a mid-range budget: the essentials now and the rest later."));
+      else if (v.budget === "amplio") parts.push(tt("con un presupuesto amplio: lo hacemos completo de una.", "on a generous budget: we do it all in one go."));
+      else parts.push(tt("y te asesoramos sobre cuánto conviene invertir.", "and we'll advise you on how much to invest."));
       summary.textContent = parts.join(", ").replace(/^,\s*/, "");
     }
     next.addEventListener("click", function () { show(Math.min(3, cur + 1)); });
@@ -1057,7 +1060,7 @@
       b.elements.amount.value = v.amount;
       var idea = [];
       var gs = v.goals.map(function (k) { return GOAL_TXT[k]; });
-      if (gs.length) idea.push("una propuesta para " + (gs.length < 2 ? gs[0] : gs.slice(0, -1).join(", ") + " y " + gs[gs.length - 1]));
+      if (gs.length) idea.push(tt("una propuesta para ", "a proposal to ") + (gs.length < 2 ? gs[0] : gs.slice(0, -1).join(", ") + tt(" y ", " and ") + gs[gs.length - 1]));
       if (v.now) idea.push(NOW_TXT[v.now]);
       b.elements.idea.value = idea.join("; ");
       b.dispatchEvent(new Event("change", { bubbles: true }));
@@ -1068,13 +1071,13 @@
 
   // ---------- Servicios: el celular. Arrastrás una app adentro (o la tocás) y funciona ----------
   var APP_DESC = {
-    web: ["Sitios rápidos que venden", "Tu web, rápida y pensada para el celular, hecha para vender o recibir consultas."],
-    sys: ["Hecho para tu negocio", "Paneles, pedidos, turnos o stock a medida de cómo trabajás."],
-    auto: ["Todo conectado, sin IA", "Web, pagos, stock, facturas y WhatsApp conectados. Lo manejás desde el celular."],
-    ia: ["Responde y agenda solo", "Asistentes con tus datos, solo cuando suman de verdad."],
-    google: ["Aparecer cuando te buscan", "Campañas de búsqueda, display y YouTube."],
-    meta: ["Llegar a la gente indicada", "Anuncios en Instagram y Facebook."],
-    data: ["Saber qué funciona", "Píxeles, conversiones y analítica para invertir mejor."]
+    web: [tt("Sitios rápidos que venden", "Fast sites that sell"), tt("Tu web, rápida y pensada para el celular, hecha para vender o recibir consultas.", "Your website, fast and mobile-first, made to sell or bring in inquiries.")],
+    sys: [tt("Hecho para tu negocio", "Built for your business"), tt("Paneles, pedidos, turnos o stock a medida de cómo trabajás.", "Dashboards, orders, bookings or inventory shaped to how you work.")],
+    auto: [tt("Todo conectado, sin IA", "All connected, no AI"), tt("Web, pagos, stock, facturas y WhatsApp conectados. Lo manejás desde el celular.", "Website, payments, inventory, invoices and WhatsApp connected. Run it from your phone.")],
+    ia: [tt("Responde y agenda solo", "Answers and books on its own"), tt("Asistentes con tus datos, solo cuando suman de verdad.", "Assistants built on your data, only when they truly help.")],
+    google: [tt("Aparecer cuando te buscan", "Show up when they search"), tt("Campañas de búsqueda, display y YouTube.", "Search, display and YouTube campaigns.")],
+    meta: [tt("Llegar a la gente indicada", "Reach the right people"), tt("Anuncios en Instagram y Facebook.", "Instagram and Facebook ads.")],
+    data: [tt("Saber qué funciona", "Know what works"), tt("Píxeles, conversiones y analítica para invertir mejor.", "Pixels, conversions and analytics to invest smarter.")]
   };
   function initPhone() {
     var list = $("[data-apps]"), phone = $("[data-phone]");
@@ -1099,11 +1102,11 @@
       info.innerHTML = "";
       var b = document.createElement("b"), d = document.createElement("p"), want = document.createElement("button");
       b.textContent = NAMES[key]; d.className = "ph-info-d"; d.textContent = APP_DESC[key][1];
-      want.type = "button"; want.className = "ph-want"; want.textContent = "Lo quiero en mi pedido";
+      want.type = "button"; want.className = "ph-want"; want.textContent = tt("Lo quiero en mi pedido", "Add it to my request");
       want.addEventListener("click", function () {
         var box = $('[data-builder] input[name="s"][value="' + SERVICE[key] + '"]');
         if (box && !box.checked) { box.checked = true; box.dispatchEvent(new Event("change", { bubbles: true })); }
-        want.textContent = "Anotado en tu pedido ✓"; want.classList.add("is-done");
+        want.textContent = tt("Anotado en tu pedido ✓", "Added to your request ✓"); want.classList.add("is-done");
       });
       info.appendChild(b); info.appendChild(d); info.appendChild(want);
     }
@@ -1176,12 +1179,12 @@
     var QA = $$("[data-faq] details").map(function (d) {
       return { q: d.querySelector("summary").textContent, a: d.querySelector("p").textContent };
     });
-    var STOP = " que los las del con por para una uno unos como cual puedo tengo hace hacen esto eso necesito quiero sale ";
+    var STOP = " que los las del con por para una uno unos como cual puedo tengo hace hacen esto eso necesito quiero sale the and for you your are can does how what with this that need want have our ";
     function words(t) {
       return t.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "").replace(/[^a-z0-9 ]/g, " ").split(/\s+/)
         .filter(function (w) { return w.length > 2 && STOP.indexOf(" " + w + " ") < 0; });
     }
-    var EXTRA = { precio: 0, cuesta: 0, cuanto: 0, presupuesto: 0, plata: 0, celular: 3, telefono: 3, movil: 3, app: 3, ia: 2, inteligencia: 2, chatbot: 4, automatizar: 2, automatizacion: 2, anuncios: 1, ads: 1, google: 1, meta: 1, instagram: 1, avances: 5, proyecto: 5, ver: 5 };
+    var EXTRA = { precio: 0, cuesta: 0, cuanto: 0, presupuesto: 0, plata: 0, celular: 3, telefono: 3, movil: 3, app: 3, ia: 2, inteligencia: 2, chatbot: 4, automatizar: 2, automatizacion: 2, anuncios: 1, ads: 1, google: 1, meta: 1, instagram: 1, avances: 5, proyecto: 5, ver: 5, price: 0, cost: 0, costs: 0, much: 0, budget: 0, phone: 3, mobile: 3, ai: 2, artificial: 2, automate: 2, automation: 2, facebook: 1, progress: 5, project: 5, track: 5 };
     function answer(text) {
       var w = words(text), best = -1, score = 0;
       QA.forEach(function (qa, i) {
@@ -1205,8 +1208,8 @@
         var a = fixed || answer(q);
         if (a) bubble("b-in", a);
         else {
-          var p = bubble("b-in", "Eso no lo sé todavía, pero una persona sí. ");
-          var link = document.createElement("a"); link.href = "#contacto"; link.textContent = "Escribinos por WhatsApp →";
+          var p = bubble("b-in", tt("Eso no lo sé todavía, pero una persona sí. ", "I don't know that yet, but a person does. "));
+          var link = document.createElement("a"); link.href = "#contacto"; link.textContent = tt("Escribinos por WhatsApp →", "Message us on WhatsApp →");
           p.appendChild(link);
         }
         busy = false;
@@ -1236,7 +1239,7 @@
         i = 0;
         document.documentElement.classList.add("is-party");
         setTimeout(function () { document.documentElement.classList.remove("is-party"); }, 12000);
-        toast("Modo fiesta", "Encontraste el secreto. Mirá el fondo.");
+        toast(tt("Modo fiesta", "Party mode"), tt("Encontraste el secreto. Mirá el fondo.", "You found the secret. Look at the background."));
         confetti(innerWidth / 2, innerHeight / 2, 160);
       }
     });
@@ -1267,20 +1270,20 @@
     var msgEl = $("[data-msg]", form), bubble = msgEl.closest(".wa-out"), nowEl = $("[data-now]", form);
     var send = $("[data-send]", form), label = $("[data-send-label]", form);
     var wa = (form.getAttribute("data-wa") || "").replace(/\D/g, ""), mail = form.getAttribute("data-mail") || "";
-    function list(items) { return items.length < 2 ? items.join("") : items.slice(0, -1).join(", ") + " y " + items[items.length - 1]; }
+    function list(items) { return items.length < 2 ? items.join("") : items.slice(0, -1).join(", ") + tt(" y ", " and ") + items[items.length - 1]; }
     function build() {
       var idea = form.elements.idea.value.trim().replace(/[.\s]+$/, "");
       var services = $$('input[name="s"]:checked', form).map(function (i) { return i.value; });
       var plazoEl = $('input[name="plazo"]:checked', form), plazo = plazoEl ? plazoEl.value : "";
       var budgetEl = $('input[name="budget"]:checked', form), budget = budgetEl ? budgetEl.value : "";
       var amount = form.elements.amount ? form.elements.amount.value.trim() : "";
-      var text = "¡Hola, nowmad agency!";
-      if (idea) text += " Quiero " + idea.charAt(0).toLowerCase() + idea.slice(1) + ".";
-      if (services.length) text += " Necesito " + list(services) + ".";
-      if (!idea && !services.length) text += " Quiero contarles un proyecto.";
-      if (budget) text += " Mi presupuesto es " + BUDGET_TXT[budget] + (amount ? " (aprox. " + amount + ")" : "") + ".";
-      else if (amount) text += " Cuento con aprox. " + amount + ".";
-      if (plazo) text += " Lo necesito " + plazo + ".";
+      var text = tt("¡Hola, nowmad method!", "Hi nowmad method!");
+      if (idea) text += tt(" Quiero ", " I want ") + idea.charAt(0).toLowerCase() + idea.slice(1) + ".";
+      if (services.length) text += tt(" Necesito ", " I need ") + list(services) + ".";
+      if (!idea && !services.length) text += tt(" Quiero contarles un proyecto.", " I'd like to tell you about a project.");
+      if (budget) text += tt(" Mi presupuesto es ", " My budget is ") + BUDGET_TXT[budget] + (amount ? tt(" (aprox. ", " (approx. ") + amount + ")" : "") + ".";
+      else if (amount) text += tt(" Cuento con aprox. ", " I have approx. ") + amount + ".";
+      if (plazo) text += tt(" Lo necesito ", " I need it ") + plazo + ".";
       return text;
     }
     function update() {
@@ -1290,9 +1293,9 @@
       var d = new Date();
       if (nowEl) nowEl.textContent = ("0" + d.getHours()).slice(-2) + ":" + ("0" + d.getMinutes()).slice(-2);
       if (wa) { send.href = "https://wa.me/" + wa + "?text=" + encodeURIComponent(text); send.target = "_blank"; send.rel = "noopener"; }
-      else send.href = "mailto:" + mail + "?subject=" + encodeURIComponent("Consulta nowmad agency") + "&body=" + encodeURIComponent(text);
+      else send.href = "mailto:" + mail + "?subject=" + encodeURIComponent(tt("Consulta nowmad method", "nowmad method inquiry")) + "&body=" + encodeURIComponent(text);
     }
-    if (wa) label.textContent = "Enviar por WhatsApp";
+    if (wa) label.textContent = tt("Enviar por WhatsApp", "Send via WhatsApp");
     form.addEventListener("input", update);
     form.addEventListener("change", update);
     form.addEventListener("submit", function (e) { e.preventDefault(); send.click(); });
@@ -1313,7 +1316,7 @@
     var els = $$("[data-clock]");
     if (!els.length) return;
     var fmt;
-    try { fmt = new Intl.DateTimeFormat("es-AR", { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Argentina/Buenos_Aires" }); } catch (e) { return; }
+    try { fmt = new Intl.DateTimeFormat(tt("es-AR", "en-US"), { hour: "2-digit", minute: "2-digit", hour12: false, timeZone: "America/Argentina/Buenos_Aires" }); } catch (e) { return; }
     function tick() { var s = fmt.format(new Date()); els.forEach(function (el) { el.textContent = s; }); }
     tick(); setInterval(tick, 15000);
   }
@@ -1337,7 +1340,7 @@
 
     // Fondos de pantalla: el mismo diseño en cinco tonos, o según la hora de Buenos Aires
     var wall = $("[data-wall]"), tone = "bronce";
-    var TONES = [["bronce", "Bronce", "#8A6A3F"], ["sepia", "Sepia", "#4A3524"], ["oliva", "Oliva", "#6B7A3A"], ["atardecer", "Atardecer", "#D97757"], ["noche", "Noche", "#1A120B"], ["auto", "Según la hora", "conic-gradient(#B08A4F 0 33%, #D97757 0 66%, #1A120B 0)"]];
+    var TONES = [["bronce", tt("Bronce", "Bronze"), "#8A6A3F"], ["sepia", "Sepia", "#4A3524"], ["oliva", tt("Oliva", "Olive"), "#6B7A3A"], ["atardecer", tt("Atardecer", "Sunset"), "#D97757"], ["noche", tt("Noche", "Night"), "#1A120B"], ["auto", tt("Según la hora", "By time of day"), "conic-gradient(#B08A4F 0 33%, #D97757 0 66%, #1A120B 0)"]];
     function autoTone() {
       var h = +new Intl.DateTimeFormat("en-US", { hour: "numeric", hourCycle: "h23", timeZone: "America/Argentina/Buenos_Aires" }).format(new Date());
       return h >= 20 || h < 6 ? "noche" : h >= 17 ? "atardecer" : "bronce";
@@ -1348,7 +1351,7 @@
       if (wall) wall.setAttribute("data-tone", t === "auto" ? autoTone() : t);
       if (!save) return;
       try { localStorage.setItem("nowmad-fondo", t); } catch (e) {}
-      toast("Fondo de pantalla", toneName(t) + ".");
+      toast(tt("Fondo de pantalla", "Wallpaper"), toneName(t) + ".");
       unlock("fondo");
     }
     try { tone = localStorage.getItem("nowmad-fondo") || "bronce"; } catch (e) {}
@@ -1367,7 +1370,7 @@
         bat.parentNode.style.setProperty("--bat", Math.max(10, b.level * 100) + "%");
         bat.parentNode.classList.toggle("is-low", b.level < 0.2 && !b.charging);
         var dd = $("[data-about-bat]");
-        if (dd) dd.textContent = Math.round(b.level * 100) + "%" + (b.charging ? ", cargando" : "") + ". Nosotros, para rato.";
+        if (dd) dd.textContent = Math.round(b.level * 100) + "%" + (b.charging ? tt(", cargando", ", charging") : "") + tt(". Nosotros, para rato.", ". As for us, we're in it for the long run.");
       }
       upd(); b.addEventListener("levelchange", upd); b.addEventListener("chargingchange", upd);
     }).catch(function () {});
@@ -1382,7 +1385,7 @@
     function tidy() {
       $$("main .win").forEach(function (w) { w.dispatchEvent(new Event("win:home")); });
       $$(".desk [data-win]").forEach(function (w) { w.style.removeProperty("--x"); w.style.removeProperty("--y"); });
-      toast("Ventanas ordenadas", "Todo volvió a su lugar.");
+      toast(tt("Ventanas ordenadas", "Windows tidied"), tt("Todo volvió a su lugar.", "Everything's back in place."));
     }
     function openAbout() { if (!about) return; about.hidden = false; $("[data-about-close]", about).focus(); }
     var ACTS = {
@@ -1391,7 +1394,7 @@
       wall: nextTone,
       tidy: tidy,
       logros: function () { var t = $("[data-trophy]"); if (t) t.click(); },
-      wa: function () { openWa("¡Hola, nowmad agency! Quiero contarles un proyecto."); }
+      wa: function () { openWa(tt("¡Hola, nowmad method! Quiero contarles un proyecto.", "Hi nowmad method! I'd like to tell you about a project.")); }
     };
     document.addEventListener("click", function (e) {
       var b = e.target.closest("[data-act]");
@@ -1405,7 +1408,7 @@
       $$(".lights i", about).forEach(function (i) { i.addEventListener("click", function () { about.classList.remove("is-nope"); void about.offsetWidth; }); });
     }
 
-    // Menú de la app ("nowmad agency" en la barra)
+    // Menú de la app ("nowmad method" en la barra)
     if (amBtn && amList) amBtn.addEventListener("click", function (e) {
       e.stopPropagation();
       var open = amList.hidden;
@@ -1416,13 +1419,13 @@
 
     // Clic derecho en el escritorio: el menú de siempre, con los fondos
     function ctxHtml() {
-      return '<button type="button" data-act="spot">Buscar… <kbd>⌘K</kbd></button>' +
-        '<button type="button" data-act="about">Acerca de nowmad agency</button><hr />' +
-        '<p class="ctx-h">Fondo de pantalla</p><div class="ctx-tones">' +
-        TONES.map(function (t) { return '<button type="button" data-tone-set="' + t[0] + '" title="' + t[1] + '" aria-label="Fondo ' + t[1] + '" style="--c:' + t[2] + ';background:' + t[2] + '"' + (t[0] === tone ? ' class="is-on"' : "") + "></button>"; }).join("") +
-        '</div><hr /><button type="button" data-act="tidy">Ordenar ventanas</button>' +
-        '<button type="button" data-act="logros">Ver logros</button><hr />' +
-        '<button type="button" data-act="wa">Escribinos por WhatsApp</button>';
+      return '<button type="button" data-act="spot">' + tt("Buscar…", "Search…") + ' <kbd>⌘K</kbd></button>' +
+        '<button type="button" data-act="about">' + tt("Acerca de nowmad method", "About nowmad method") + '</button><hr />' +
+        '<p class="ctx-h">' + tt("Fondo de pantalla", "Wallpaper") + '</p><div class="ctx-tones">' +
+        TONES.map(function (t) { return '<button type="button" data-tone-set="' + t[0] + '" title="' + t[1] + '" aria-label="' + tt("Fondo ", "Wallpaper ") + t[1] + '" style="--c:' + t[2] + ';background:' + t[2] + '"' + (t[0] === tone ? ' class="is-on"' : "") + "></button>"; }).join("") +
+        '</div><hr /><button type="button" data-act="tidy">' + tt("Ordenar ventanas", "Tidy windows") + '</button>' +
+        '<button type="button" data-act="logros">' + tt("Ver logros", "View achievements") + '</button><hr />' +
+        '<button type="button" data-act="wa">' + tt("Escribinos por WhatsApp", "Message us on WhatsApp") + '</button>';
     }
     if (ctx) document.addEventListener("contextmenu", function (e) {
       if (!DESKTOP.matches || e.target.closest(".win, input, textarea, select, a, button, .dock, .menubar, .spot, .ctx, .leaflet-container")) return;
@@ -1448,25 +1451,25 @@
     };
     function go(hash) { var el = $(hash); if (el) el.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" }); }
     var BASE = [
-      { t: "Nosotros", d: "Quiénes somos", k: "nosotros agencia equipo quienes", i: I.doc, run: function () { go("#nosotros"); } },
-      { t: "Cómo trabajamos", d: "El proceso, del brief a estar online", k: "proceso pasos tablero brief trabajo", i: I.folder, run: function () { go("#como"); } },
-      { t: "Tu competencia", d: "Mapa con los negocios reales que tenés cerca", k: "competencia mapa rivales negocios cerca zona", i: I.o, run: function () { go("#competencia"); } },
-      { t: "Tu propuesta", d: "Armá tu propuesta según tu presupuesto", k: "propuesta presupuesto precio costo cuanto sale cotizar plan", i: I.o, run: function () { go("#propuesta"); } },
-      { t: "Servicios", d: "Webs, sistemas, automatización, IA y anuncios", k: "servicios webs sistemas apps automatizacion ia anuncios", i: I.folder, run: function () { go("#servicios"); } },
-      { t: "Preguntas frecuentes", d: "El asistente responde tus dudas", k: "preguntas ayuda faq dudas asistente", i: I.chat, run: function () { go("#preguntas"); } },
-      { t: "Contacto", d: "WhatsApp y mail", k: "contacto whatsapp mail email telefono escribir", i: I.chat, run: function () { go("#contacto"); } },
-      { t: "Escribinos por WhatsApp", d: "Te respondemos en el día", k: "whatsapp hablar escribir contacto mensaje", i: I.chat, run: ACTS.wa },
-      { t: "Cambiar fondo de pantalla", d: "Bronce, sepia, oliva, atardecer o noche", k: "fondo pantalla wallpaper color tema", i: "◐", run: nextTone },
-      { t: "Ordenar ventanas", d: "Todas vuelven a su lugar", k: "ordenar ventanas acomodar reset", i: "▦", run: tidy },
-      { t: "Acerca de nowmad agency", d: "Las especificaciones de la casa", k: "acerca about version info", i: I.o, run: openAbout },
-      { t: "Ver logros", d: "Lo que descubriste en la página", k: "logros trofeos achievements", i: "★", run: ACTS.logros },
-      { t: "nowmad explorers", d: "La rama de viajes del grupo", k: "explorers viajes turismo grupo", i: "↗", run: function () { location.href = "explorers-glass.html"; } }
+      { t: tt("Nosotros", "About us"), d: tt("Quiénes somos", "Who we are"), k: "nosotros agencia equipo quienes about agency team who us", i: I.doc, run: function () { go("#nosotros"); } },
+      { t: tt("Cómo trabajamos", "How we work"), d: tt("El proceso, del brief a estar online", "The process, from brief to launch"), k: "proceso pasos tablero brief trabajo process steps board brief work how", i: I.folder, run: function () { go("#como"); } },
+      { t: tt("Tu competencia", "Your competition"), d: tt("Mapa con los negocios reales que tenés cerca", "Map of the real businesses near you"), k: "competencia mapa rivales negocios cerca zona competition map rivals businesses near area", i: I.o, run: function () { go("#competencia"); } },
+      { t: tt("Tu propuesta", "Your proposal"), d: tt("Armá tu propuesta según tu presupuesto", "Build a proposal for your budget"), k: "propuesta presupuesto precio costo cuanto sale cotizar plan proposal budget price cost quote plan", i: I.o, run: function () { go("#propuesta"); } },
+      { t: tt("Servicios", "Services"), d: tt("Webs, sistemas, automatización, IA y anuncios", "Websites, systems, automation, AI and ads"), k: "servicios webs sistemas apps automatizacion ia anuncios services websites systems apps automation ai ads", i: I.folder, run: function () { go("#servicios"); } },
+      { t: tt("Preguntas frecuentes", "FAQ"), d: tt("El asistente responde tus dudas", "The assistant answers your questions"), k: "preguntas ayuda faq dudas asistente questions help faq assistant", i: I.chat, run: function () { go("#preguntas"); } },
+      { t: tt("Contacto", "Contact"), d: tt("WhatsApp y mail", "WhatsApp and email"), k: "contacto whatsapp mail email telefono escribir contact whatsapp email phone write", i: I.chat, run: function () { go("#contacto"); } },
+      { t: tt("Escribinos por WhatsApp", "Message us on WhatsApp"), d: tt("Te respondemos en el día", "We reply the same day"), k: "whatsapp hablar escribir contacto mensaje whatsapp talk write contact message", i: I.chat, run: ACTS.wa },
+      { t: tt("Cambiar fondo de pantalla", "Change wallpaper"), d: tt("Bronce, sepia, oliva, atardecer o noche", "Bronze, sepia, olive, sunset or night"), k: "fondo pantalla wallpaper color tema wallpaper background color theme", i: "◐", run: nextTone },
+      { t: tt("Ordenar ventanas", "Tidy windows"), d: tt("Todas vuelven a su lugar", "All back in place"), k: "ordenar ventanas acomodar reset tidy windows arrange reset", i: "▦", run: tidy },
+      { t: tt("Acerca de nowmad method", "About nowmad method"), d: tt("Las especificaciones de la casa", "The house specs"), k: "acerca about version info", i: I.o, run: openAbout },
+      { t: tt("Ver logros", "View achievements"), d: tt("Lo que descubriste en la página", "What you've discovered on the page"), k: "logros trofeos achievements achievements trophies", i: "★", run: ACTS.logros },
+      { t: "nowmad explorers", d: tt("La rama de viajes del grupo", "The group's travel branch"), k: "explorers viajes turismo grupo explorers travel tourism group", i: "↗", run: function () { location.href = tt("explorers-glass.html", "explorers-en.html"); } }
     ];
     $$(".dock-app[data-open]").forEach(function (b) {
       var l = $(".dock-l", b).textContent;
-      BASE.push({ t: l, d: "Demo en vivo de " + l.toLowerCase(), k: "demo app " + l.toLowerCase(), i: $(".ic", b).innerHTML.replace(/<i[^>]*>.*?<\/i>/, ""), app: b.className.replace(/.*\b(ic-\w+).*/, "$1"), run: function () { b.click(); } });
+      BASE.push({ t: l, d: tt("Demo en vivo de ", "Live demo of ") + l.toLowerCase(), k: "demo app " + l.toLowerCase(), i: $(".ic", b).innerHTML.replace(/<i[^>]*>.*?<\/i>/, ""), app: b.className.replace(/.*\b(ic-\w+).*/, "$1"), run: function () { b.click(); } });
     });
-    var SUGGEST = ["Tu competencia", "Tu propuesta", "Escribinos por WhatsApp", "Cambiar fondo de pantalla", "Webs"];
+    var SUGGEST = [tt("Tu competencia", "Your competition"), tt("Tu propuesta", "Your proposal"), tt("Escribinos por WhatsApp", "Message us on WhatsApp"), tt("Cambiar fondo de pantalla", "Change wallpaper"), tt("Webs", "Websites")];
     function norm(t) { return t.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, ""); }
     function calc(q) {
       var s = q.replace(/\s/g, "").replace(/[x×]/gi, "*").replace(/÷/g, "/").replace(/\^/g, "**");
@@ -1480,11 +1483,11 @@
       var v = calc(q);
       if (v != null) {
         var txt = v.toLocaleString("es-AR", { maximumFractionDigits: 6 });
-        out.push({ t: "= " + txt, d: "Calculadora · Enter para copiar", i: "=", calc: true, run: function () { try { navigator.clipboard.writeText(String(v)); } catch (e) {} toast("Copiado", txt); } });
+        out.push({ t: "= " + txt, d: tt("Calculadora · Enter para copiar", "Calculator · Enter to copy"), i: "=", calc: true, run: function () { try { navigator.clipboard.writeText(String(v)); } catch (e) {} toast(tt("Copiado", "Copied"), txt); } });
       }
       if (looksLikeUrl(q.trim())) {
         var host = hostOf(normUrl(q.trim()));
-        out.push({ t: "Escanear " + host, d: "Velocidad, SEO y cómo quedaría rehecha", i: I.search, run: function () {
+        out.push({ t: tt("Escanear ", "Scan ") + host, d: tt("Velocidad, SEO y cómo quedaría rehecha", "Speed, SEO and how it would look rebuilt"), i: I.search, run: function () {
           var form = $("[data-hero-form]"), inp = $("[data-mock-input]");
           if (!form || !inp) return;
           scrollTo({ top: 0, behavior: REDUCED ? "auto" : "smooth" });
@@ -1499,12 +1502,12 @@
       }).filter(function (h) { return h.s; }).sort(function (a, b) { return b.s - a.s; }).map(function (h) { return h.x; });
       out = out.concat(hits.slice(0, 7));
       if (v == null) {
-        out.push({ t: "Preguntarle al asistente: «" + q.trim() + "»", d: "Te responde en la sección de ayuda", i: I.chat, run: function () {
+        out.push({ t: tt("Preguntarle al asistente: «", "Ask the assistant: «") + q.trim() + "»", d: tt("Te responde en la sección de ayuda", "Answers in the help section"), i: I.chat, run: function () {
           var f = $("[data-bot-form]");
           go("#preguntas");
           if (f) setTimeout(function () { var x = f.querySelector("input"); x.value = q.trim(); f.dispatchEvent(new Event("submit", { cancelable: true })); }, REDUCED ? 0 : 650);
         } });
-        out.push({ t: "Mandarnos «" + q.trim() + "» por WhatsApp", d: "Directo a nuestro número", i: I.chat, run: function () { openWa("¡Hola, nowmad agency! " + q.trim()); } });
+        out.push({ t: tt("Mandarnos «", "Send us «") + q.trim() + tt("» por WhatsApp", "» on WhatsApp"), d: tt("Directo a nuestro número", "Straight to our number"), i: I.chat, run: function () { openWa(tt("¡Hola, nowmad method! ", "Hi nowmad method! ") + q.trim()); } });
       }
       return out;
     }
@@ -1580,7 +1583,7 @@
           box.remove(); root.classList.remove("is-marquee");
           removeEventListener("pointermove", move); removeEventListener("pointerup", up);
           var n = icons.filter(function (a) { return a.classList.contains("is-sel"); }).length;
-          if (moved && n > 1) toast(n + " ítems seleccionados", "Doble clic en uno para abrirlo.");
+          if (moved && n > 1) toast(n + tt(" ítems seleccionados", " items selected"), tt("Doble clic en uno para abrirlo.", "Double-click one to open it."));
         }
         addEventListener("pointermove", move); addEventListener("pointerup", up);
       });

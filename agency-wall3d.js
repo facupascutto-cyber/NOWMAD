@@ -1,4 +1,4 @@
-/* nowmad agency: fondo de pantalla en 3D.
+/* nowmad method: fondo de pantalla en 3D.
    La brújula vintage del logo de nowmad, hecha objeto: caja de bronce oscuro con las cuatro asas
    cuadradas, bisel estriado, esfera de pergamino con grados y números, tarjeta con la rosa de ocho
    puntas en relieve (caras crema y bronce, como el logo), domo de vidrio y dos anillos de astrolabio

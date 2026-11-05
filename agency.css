@@ -46,6 +46,21 @@ button { font: inherit; color: inherit; }
 .wall3d.is-on { opacity: 1; }
 /* Viñeta: los bordes se oscurecen como en una foto de estudio */
 .wall::after { content: ""; position: absolute; inset: 0; pointer-events: none; background: radial-gradient(120% 90% at 55% 50%, transparent 55%, rgba(10, 6, 3, .55) 100%); }
+/* El nómade: video en loop en la portada y canvas con la secuencia que mueve el scroll (agency-nomade.js) */
+.nm-wall { position: absolute; inset: 0; }
+.nm-hero, .nm-seq { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.nm-hero { object-fit: cover; object-position: 45% 50%; transform-origin: 0 0; will-change: transform, opacity; }
+.nm-seq { opacity: 0; will-change: opacity; }
+.nm-fog { position: absolute; inset: -15%; opacity: 0; pointer-events: none; }
+.nm-fog i { position: absolute; inset: 0; filter: blur(30px); background: radial-gradient(ellipse 60% 45% at 35% 55%, rgba(176, 188, 202, .95), rgba(176, 188, 202, 0) 70%), radial-gradient(ellipse 55% 40% at 70% 45%, rgba(150, 162, 178, .9), rgba(150, 162, 178, 0) 70%), linear-gradient(180deg, #5d6773, #3c444e); animation: nm-fog 18s ease-in-out infinite alternate; }
+@keyframes nm-fog { from { transform: translateX(-4%) scale(1); } to { transform: translateX(4%) scale(1.08); } }
+.nm-dark { position: absolute; inset: 0; background: #07090b; opacity: 0; }
+/* Lleva el azul frío del video hacia el bronce de agency */
+.nm-grade { position: absolute; inset: 0; background: #8A6A3F; mix-blend-mode: soft-light; opacity: .55; pointer-events: none; }
+/* Oscurece detrás del titular de la portada para que se lea */
+.nm-read { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(18, 12, 7, .7) 0%, rgba(18, 12, 7, .25) 42%, rgba(18, 12, 7, .15) 100%), linear-gradient(180deg, rgba(18, 12, 7, .35) 0%, rgba(18, 12, 7, 0) 18%); pointer-events: none; }
+@media (prefers-reduced-motion: reduce) { .nm-fog i { animation: none; } }
+
 
 /* ---------- Barra de menú ---------- */
 .menubar { position: fixed; z-index: 70; inset: 0 0 auto; display: flex; align-items: center; gap: 22px; height: 34px; padding: 0 16px; background: rgba(46, 33, 22, .72); -webkit-backdrop-filter: blur(20px) saturate(160%); backdrop-filter: blur(20px) saturate(160%); box-shadow: 0 1px 0 rgba(255, 255, 255, .08); font: 500 13px/1 var(--sans); }
@@ -306,7 +321,7 @@ button { font: inherit; color: inherit; }
 .dock-app:focus-visible { outline: none; }
 .dock-app:focus-visible .ic { outline: 3px solid var(--celeste); outline-offset: 3px; }
 .dock-sep { align-self: stretch; width: 1px; margin: 6px 6px 20px; background: linear-gradient(transparent, rgba(255, 236, 205, .28), transparent); }
-@media (min-width: 601px) and (max-width: 760px) { .dock-h { display: none; } .dock { gap: 2px; } .dock-app { width: 58px; } }
+@media (min-width: 601px) and (max-width: 760px) { .dock-h { display: none; } .dock { gap: 2px; } .dock-app { width: 60px; } .dock-l { font-size: 9.5px; } }
 .dock-badge { position: absolute; top: -5px; right: -5px; display: grid; place-items: center; min-width: 19px; height: 19px; padding: 0 5px; border-radius: 999px; background: #FF3B30; color: var(--white); font: 700 11px/1 var(--sans); font-style: normal; box-shadow: 0 0 0 2px rgba(46, 33, 22, .6); }
 
 /* ---------- Aparición y títulos palabra por palabra ---------- */
@@ -1216,3 +1231,11 @@ main .win-bar:hover .win-hint { opacity: .8; }
 .ph-demo .xd-chart { height: 80px; }
 .ph-demo .xd-dot { right: 0; }
 .ph-demo .xg-rest { --gshift: -122px; }
+
+/* Selector de idioma en la barra, como el "ES" del teclado en la Mac */
+.mb-lang { display: inline-flex; align-items: center; gap: 2px; padding: 2px; border-radius: 6px; box-shadow: inset 0 0 0 1px rgba(255, 255, 255, .3); color: var(--white); text-decoration: none; font: 600 10px/1 var(--mono); letter-spacing: .04em; transition: box-shadow .2s; }
+.mb-lang span { padding: 3px 5px; border-radius: 4px; color: rgba(255, 255, 255, .65); transition: color .2s; }
+.mb-lang .is-current { background: rgba(255, 246, 230, .92); color: var(--ink); }
+@media (hover: hover) and (pointer: fine) { .mb-lang:hover { box-shadow: inset 0 0 0 1px var(--celeste); } .mb-lang:hover span:not(.is-current) { color: var(--celeste); } }
+.mb-lang:focus-visible { outline: 2px solid var(--celeste); outline-offset: 2px; }
+@media (max-width: 600px) { .menubar { gap: 10px; } .mb-trophy-w { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; } }

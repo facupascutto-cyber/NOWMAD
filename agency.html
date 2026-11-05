@@ -3,22 +3,37 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>nowmad agency · Desarrollo y growth</title>
-  <meta name="description" content="nowmad agency es la agencia de desarrollo y growth de nowmad group: webs, sistemas a medida, inteligencia artificial, Google Ads y Meta Ads desde Buenos Aires." />
+  <title>nowmad method · Crecer tiene método</title>
+  <meta name="description" content="nowmad method es la rama de desarrollo y growth de nowmad group. Crecer tiene método: webs, sistemas a medida, inteligencia artificial, Google Ads y Meta Ads desde Buenos Aires." />
   <meta name="theme-color" content="#4A3524" />
-  <meta property="og:title" content="nowmad agency" />
+  <meta property="og:title" content="nowmad method · Crecer tiene método" />
   <meta property="og:description" content="Lo construimos y lo hacemos crecer. Desarrollo web, IA y publicidad digital desde Buenos Aires." />
   <meta property="og:type" content="website" />
+  <link rel="alternate" hreflang="es" href="agency.html" />
+  <link rel="alternate" hreflang="en" href="agency-en.html" />
+  <link rel="alternate" hreflang="x-default" href="agency.html" />
+  <script>
+    // Idioma: si el navegador no está en español, va a la versión en inglés.
+    // Si la persona eligió un idioma con el selector ES/EN, se respeta esa elección.
+    (function () {
+      try {
+        var pick = localStorage.getItem("nm-lang");
+        if (pick === "es") return;
+        if (/bot|crawl|spider|slurp|preview|facebookexternalhit|whatsapp|telegram/i.test(navigator.userAgent)) return;
+        var first = (navigator.languages && navigator.languages[0]) || navigator.language || "es";
+        if (pick === "en" || !/^es\b/i.test(first)) location.replace("agency-en.html" + location.hash);
+      } catch (e) {}
+    })();
+  </script>
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261103m" />
   <link rel="preload" href="assets/fonts/unbounded-be36af.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="agency.css?v=20261108b" />
+  <link rel="stylesheet" href="agency.css?v=20261109e" />
   <script>document.documentElement.classList.add("js");try{if(!sessionStorage.getItem("nowmad-boot")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("is-booting");}catch(e){}</script>
-  <script defer src="agency.js?v=20261108a"></script>
-  <script type="importmap">{ "imports": { "three": "https://unpkg.com/three@0.160.0/build/three.module.js", "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/" } }</script>
-  <script type="module" src="agency-wall3d.js?v=20261108b"></script>
+  <script defer src="agency.js?v=20261109a"></script>
+  <script defer src="agency-nomade.js?v=20261105d"></script>
 </head>
 <body>
-  <!-- agency como un sistema operativo: fondo de pantalla vivo (la brújula del logo en píxeles),
+  <!-- nowmad method como un sistema operativo: fondo de pantalla vivo (la brújula del logo en píxeles),
        barra de menú, ventanas que se arrastran, dock fijo y cada sección es una aplicación. -->
   <svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
     <defs>
@@ -32,15 +47,26 @@
     </defs>
   </svg>
 
-  <!-- Fondo de pantalla del escritorio: el logo de nowmad como escultura de metal, en 3D (agency-wall3d.js) -->
-  <div class="wall" data-wall aria-hidden="true"><canvas class="wall3d" data-wall3d></canvas></div>
+  <!-- Fondo de pantalla del escritorio: el nómade caminando. En la portada camina en loop (video); al bajar,
+       el scroll mueve la secuencia cuadro a cuadro en un canvas (gira, niebla, se aleja, plano final).
+       Lo maneja agency-nomade.js. La escultura 3D anterior sigue en agency-wall3d.js por si se quiere volver. -->
+  <div class="wall" data-wall aria-hidden="true">
+    <div class="nm-wall" data-nm>
+      <video class="nm-hero" data-nm-hero src="assets/video/nomade/loop.mp4" poster="assets/video/nomade/poster.webp" autoplay muted loop playsinline preload="auto"></video>
+      <canvas class="nm-seq" data-nm-seq></canvas>
+      <div class="nm-fog" data-nm-fog><i></i></div>
+      <div class="nm-dark" data-nm-dark></div>
+      <div class="nm-grade"></div>
+      <div class="nm-read"></div>
+    </div>
+  </div>
 
   <header class="menubar">
     <a class="mb-logo" href="index.html" aria-label="nowmad group, inicio"><svg aria-hidden="true"><use href="#o" /></svg></a>
     <div class="mb-am">
-      <button type="button" class="mb-app" data-appmenu aria-haspopup="menu" aria-expanded="false"><span class="mb-word">nowmad</span> <span class="mb-word-b">agency</span></button>
+      <button type="button" class="mb-app" data-appmenu aria-haspopup="menu" aria-expanded="false"><span class="mb-word">nowmad</span> <span class="mb-word-b">method</span></button>
       <div class="mb-drop" data-appmenu-list role="menu" hidden>
-        <button type="button" role="menuitem" data-act="about">Acerca de nowmad agency</button>
+        <button type="button" role="menuitem" data-act="about">Acerca de nowmad method</button>
         <hr />
         <button type="button" role="menuitem" data-act="spot">Buscar… <kbd>⌘K</kbd></button>
         <button type="button" role="menuitem" data-act="wall">Cambiar fondo de pantalla</button>
@@ -61,20 +87,21 @@
     </nav>
     <span class="mb-sp"></span>
     <a class="mb-other" href="explorers-glass.html">nowmad explorers ↗</a>
+    <a class="mb-lang" href="agency-en.html" hreflang="en" lang="en" onclick="try{localStorage.setItem('nm-lang','en')}catch(e){}" aria-label="View this page in English" title="English"><span class="is-current" aria-hidden="true">ES</span><span aria-hidden="true">EN</span></a>
     <span class="mb-status"><i aria-hidden="true"></i>En línea</span>
     <span class="mb-sys" aria-hidden="true">
       <svg viewBox="0 0 20 14"><path d="M10 12.6 12.3 10a3.2 3.2 0 0 0-4.6 0Z M5.4 7.7a6.6 6.6 0 0 1 9.2 0l1.6-1.8a9 9 0 0 0-12.4 0Z M1.6 3.6a12 12 0 0 1 16.8 0L20 1.8a14.5 14.5 0 0 0-20 0Z" fill="currentColor" /></svg>
       <span class="mb-bat"><i data-bat></i></span>
     </span>
     <button type="button" class="mb-spot" data-spot-open aria-label="Buscar (Ctrl+K)"><svg aria-hidden="true"><use href="#search" /></svg></button>
-    <button type="button" class="mb-trophy" data-trophy aria-expanded="false" aria-controls="logros">Logros <b data-trophy-n>0</b>/<span data-trophy-t>8</span></button>
+    <button type="button" class="mb-trophy" data-trophy aria-expanded="false" aria-controls="logros"><span class="mb-trophy-w">Logros </span><b data-trophy-n>0</b>/<span data-trophy-t>8</span></button>
     <span class="mb-clock">BUE <b data-clock>--:--</b></span>
   </header>
 
   <!-- Escritorio (portada) -->
   <section class="desk" data-desk data-phase="0">
     <div class="desk-copy">
-      <p class="desk-kicker">Desarrollo y growth · Buenos Aires</p>
+      <p class="desk-kicker">Crecer tiene método · Buenos Aires</p>
       <h1 class="desk-title" data-words>Lo construimos. <em>Lo hacemos crecer.</em></h1>
       <p class="desk-sub"><b>Pegá tu web en el navegador</b> y la escaneamos en vivo: qué le pasa y cómo quedaría rehecha. ¿No tenés? Escribí qué querés construir.</p>
       <p class="desk-try">Probá con: <button type="button" data-try="mercadolibre.com.ar">mercadolibre.com.ar</button> <button type="button" data-try="tu web">la tuya</button></p>
@@ -368,11 +395,11 @@
         <div class="wa">
           <aside class="wa-side">
             <p class="wa-side-h">Chats</p>
-            <span class="wa-row is-on"><span class="wa-av"><svg aria-hidden="true"><use href="#o" /></svg></span><span><b>nowmad agency</b><small>en línea</small></span></span>
+            <span class="wa-row is-on"><span class="wa-av"><svg aria-hidden="true"><use href="#o" /></svg></span><span><b>nowmad method</b><small>en línea</small></span></span>
             <a class="wa-row" href="explorers-glass.html"><span class="wa-av wa-av-ex"><svg aria-hidden="true"><use href="#o" /></svg></span><span><b>nowmad explorers</b><small>Viajes a medida ↗</small></span></a>
           </aside>
           <div class="wa-main">
-            <div class="wa-head"><span class="wa-av"><svg aria-hidden="true"><use href="#o" /></svg></span><span><b>nowmad agency</b><small>en línea</small></span><p class="app-label">(07) Contacto</p></div>
+            <div class="wa-head"><span class="wa-av"><svg aria-hidden="true"><use href="#o" /></svg></span><span><b>nowmad method</b><small>en línea</small></span><p class="app-label">(07) Contacto</p></div>
             <div class="wa-body">
               <p class="wa-day">Hoy</p>
               <p class="wa-in">¡Hola! Contanos qué necesitás. Tocá lo que corresponda y armamos el mensaje.</p>
@@ -400,7 +427,7 @@
                 <label class="chip"><input type="radio" name="plazo" value="para este mes" /><span>Este mes</span></label>
                 <label class="chip"><input type="radio" name="plazo" value="sin apuro" /><span>Sin apuro</span></label>
               </fieldset>
-              <p class="wa-out"><span class="msg" data-msg aria-live="polite">¡Hola, nowmad agency! Quiero contarles un proyecto.</span><small><span data-now>12:00</span> ✓✓</small></p>
+              <p class="wa-out"><span class="msg" data-msg aria-live="polite">¡Hola, nowmad method! Quiero contarles un proyecto.</span><small><span data-now>12:00</span> ✓✓</small></p>
             </div>
             <div class="wa-compose">
               <label class="sr" for="idea2">¿Qué querés construir?</label>
@@ -434,13 +461,13 @@
   <!-- Clic derecho en el escritorio -->
   <div class="ctx" data-ctx role="menu" hidden></div>
 
-  <!-- Acerca de nowmad agency (como "Acerca de esta Mac") -->
-  <div class="win about" data-about role="dialog" aria-label="Acerca de nowmad agency" hidden>
+  <!-- Acerca de nowmad method (como "Acerca de esta Mac") -->
+  <div class="win about" data-about role="dialog" aria-label="Acerca de nowmad method" hidden>
     <div class="win-bar"><span class="lights"><button type="button" class="ql-close" data-about-close aria-label="Cerrar"></button><i></i><i></i></span></div>
     <div class="about-body">
       <span class="about-logo"><svg aria-hidden="true"><use href="#o" /></svg></span>
-      <h2>nowmad agency</h2>
-      <p class="about-v">Versión 2026 · Buenos Aires</p>
+      <h2>nowmad method</h2>
+      <p class="about-v">Crecer tiene método · Versión 2026</p>
       <dl>
         <dt>Procesador</dt><dd>Mate amargo, 8 núcleos</dd>
         <dt>Memoria</dt><dd>Cada proyecto, a medida</dd>
