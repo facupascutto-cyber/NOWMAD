@@ -261,7 +261,7 @@
     var ZONES = {
       base: { t: "Escribinos", m: "Hola nowmad! Quiero hacer una consulta.", c: "" },
       ex: { t: "Quiero viajar", m: "Hola nowmad explorers! Quiero armar un viaje.", c: "is-ex" },
-      ag: { t: "Necesito una web", m: "Hola nowmad agency! Necesito una web.", c: "", n: WA_AGENCY },
+      ag: { t: "Necesito una web", m: "Hola nowmad method! Necesito una web.", c: "", n: WA_AGENCY },
       light: { t: "Escribinos", m: "Hola nowmad! Quiero hacer una consulta.", c: "is-light" },
       blue: { t: "Hablemos ahora", m: "Hola nowmad! Quiero hacer una consulta.", c: "is-blue" }
     };
