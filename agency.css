@@ -1303,15 +1303,15 @@ em { font-weight: 600; }
 .trophies li.is-on i, .toast-ico { background: linear-gradient(180deg, var(--a2), var(--a)); }
 
 /* =====================================================================
-   Escenas del nómade y hojas claras. El video solo se ve en sus escenas (Nosotros, El camino + Servicios,
-   el cierre); las secciones con ventanas van en hojas claras redondeadas que pasan por encima del fondo.
+   Escenas del nómade. El video es el fondo de pantalla de toda la página: las ventanas flotan encima y el scroll
+   lo hace avanzar sin cortes (agency-nomade.js). .sheet solo agrupa las secciones con ventanas.
    ===================================================================== */
 .wall::after { background: radial-gradient(120% 90% at 55% 50%, transparent 60%, rgba(0, 0, 0, .3) 100%); }
 .nm-grade { display: none; }
 .nm-read { background: linear-gradient(90deg, rgba(0, 0, 0, .42) 0%, rgba(0, 0, 0, .1) 45%, rgba(0, 0, 0, .04) 100%), linear-gradient(180deg, rgba(0, 0, 0, .25) 0%, rgba(0, 0, 0, 0) 16%); }
-.sheet { position: relative; z-index: 1; margin-inline: clamp(0px, 1vw, 14px); border-radius: clamp(24px, 3vw, 44px); background: #F5F5F7; box-shadow: 0 -40px 90px -50px rgba(0, 0, 0, .6), 0 40px 90px -50px rgba(0, 0, 0, .6); }
+.sheet { position: relative; z-index: 1; }
 .sheet .app { padding-block: clamp(48px, 7vw, 100px); }
-.sheet .win { box-shadow: 0 24px 60px -28px rgba(0, 0, 0, .28), 0 0 0 .5px rgba(0, 0, 0, .08); }
+.sheet .win { box-shadow: 0 40px 90px -30px rgba(0, 0, 0, .65), 0 0 0 .5px rgba(255, 255, 255, .25); }
 .scene { position: relative; }
 .scene-say, .scene-end { min-height: 130vh; display: grid; place-items: center; padding: 20vh var(--gutter); text-align: center; }
 .say { display: grid; justify-items: center; gap: 18px; max-width: 860px; }
@@ -1325,19 +1325,8 @@ em { font-weight: 600; }
 .say-cta:active { transform: scale(.97); }
 .foot { background: transparent; color: rgba(255, 255, 255, .85); text-shadow: 0 1px 8px rgba(0, 0, 0, .5); }
 .dock { background: rgba(30, 30, 32, .42); }
-@media (max-width: 760px) { .sheet { margin-inline: 0; border-radius: 26px; } .scene-say, .scene-end { min-height: 110vh; } }
-/* Hojas: arena cálida con brillos miel y las curvas de nivel del mapa (assets/topo.svg, el mismo de explorers
-   y group) como textura muy suave. El svg se usa de máscara para poder teñirlo con el color de acento. */
-.sheet { isolation: isolate; background: radial-gradient(70% 45% at 12% 0%, rgba(255, 208, 138, .38), transparent 70%), radial-gradient(55% 40% at 92% 55%, rgba(237, 176, 90, .2), transparent 70%), radial-gradient(60% 40% at 20% 100%, rgba(255, 226, 179, .35), transparent 70%), linear-gradient(180deg, #F4EDE3, #EDE3D4); }
-
-/* Fondo de escritorio de cada sección: como en una Mac, las ventanas flotan sobre un fondo de pantalla. Cada sección
-   usa un cuadro del video del nómade muy desenfocado y aclarado (assets/video/nomade/wall/), uno por momento del
-   atardecer, así no se repite. Los bordes se funden con el color de la hoja para que no se note el corte. */
-.sheet { overflow: clip; background: linear-gradient(180deg, #F0C590, #E6A974 50%, #E2A27A); }
-.sheet .app::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: var(--wall) center / cover no-repeat; -webkit-mask: linear-gradient(transparent, #000 14%, #000 86%, transparent); mask: linear-gradient(transparent, #000 14%, #000 86%, transparent); }
-.sheet #como { --wall: url("assets/video/nomade/wall/como.webp?v=1"); }
-.sheet #competencia { --wall: url("assets/video/nomade/wall/competencia.webp?v=1"); }
-.sheet #propuesta { --wall: url("assets/video/nomade/wall/propuesta.webp?v=1"); }
-.sheet #preguntas { --wall: url("assets/video/nomade/wall/preguntas.webp?v=1"); }
-.sheet #contacto { --wall: url("assets/video/nomade/wall/contacto.webp?v=1"); }
-.sheet .win { box-shadow: 0 30px 70px -30px rgba(80, 40, 10, .45), 0 0 0 .5px rgba(0, 0, 0, .1); }
+@media (max-width: 760px) { .scene-say, .scene-end { min-height: 110vh; } }
+/* Botón de WhatsApp del cierre: verde de WhatsApp para que salte sobre el video dorado */
+.say-cta { display: inline-flex; align-items: center; gap: 10px; padding: 16px 30px; background: linear-gradient(180deg, #2BD46B, #14A54E); color: var(--white); font-size: 17px; font-weight: 700; box-shadow: 0 0 0 1px rgba(255, 255, 255, .25) inset, 0 18px 40px -14px rgba(10, 120, 50, .75), 0 0 50px -10px rgba(43, 212, 107, .55); text-shadow: 0 1px 2px rgba(0, 60, 20, .35); }
+.say-cta svg { width: 22px; height: 22px; flex: none; }
+.say-cta:hover { background: linear-gradient(180deg, #34E074, #16B055); transform: translateY(-2px); }

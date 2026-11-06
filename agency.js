@@ -1452,7 +1452,7 @@
     function go(hash) { var el = $(hash); if (el) el.scrollIntoView({ behavior: REDUCED ? "auto" : "smooth", block: "start" }); }
     var BASE = [
       { t: tt("Nosotros", "About us"), d: tt("Quiénes somos", "Who we are"), k: "nosotros agencia equipo quienes about agency team who us", i: I.doc, run: function () { go("#nosotros"); } },
-      { t: tt("Cómo trabajamos", "How we work"), d: tt("El proceso, del brief a estar online", "The process, from brief to launch"), k: "proceso pasos tablero brief trabajo process steps board brief work how", i: I.folder, run: function () { go("#como"); } },
+      { t: tt("Cómo trabajamos", "How we work"), d: tt("El proceso, de tu idea a estar online", "The process, from your idea to launch"), k: "proceso pasos tablero idea brief trabajo process steps board brief work how", i: I.folder, run: function () { go("#como"); } },
       { t: tt("Tu competencia", "Your competition"), d: tt("Mapa con los negocios reales que tenés cerca", "Map of the real businesses near you"), k: "competencia mapa rivales negocios cerca zona competition map rivals businesses near area", i: I.o, run: function () { go("#competencia"); } },
       { t: tt("Tu propuesta", "Your proposal"), d: tt("Armá tu propuesta según tu presupuesto", "Build a proposal for your budget"), k: "propuesta presupuesto precio costo cuanto sale cotizar plan proposal budget price cost quote plan", i: I.o, run: function () { go("#propuesta"); } },
       { t: tt("Servicios", "Services"), d: tt("Webs, sistemas, automatización, IA y anuncios", "Websites, systems, automation, AI and ads"), k: "servicios webs sistemas apps automatizacion ia anuncios services websites systems apps automation ai ads", i: I.folder, run: function () { go("#servicios"); } },

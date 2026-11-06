@@ -27,10 +27,10 @@
   </script>
   <link rel="icon" type="image/svg+xml" href="assets/favicon.svg?v=20261103m" />
   <link rel="preload" href="assets/fonts/unbounded-be36af.woff2" as="font" type="font/woff2" crossorigin />
-  <link rel="stylesheet" href="agency.css?v=20261106x" />
+  <link rel="stylesheet" href="agency.css?v=20261106z" />
   <script>document.documentElement.classList.add("js");try{if(!sessionStorage.getItem("nowmad-boot")&&!matchMedia("(prefers-reduced-motion: reduce)").matches)document.documentElement.classList.add("is-booting");}catch(e){}</script>
-  <script defer src="agency.js?v=20261106t"></script>
-  <script defer src="agency-nomade.js?v=20261106u"></script>
+  <script defer src="agency.js?v=20261106z"></script>
+  <script defer src="agency-nomade.js?v=20261106z"></script>
 </head>
 <body>
   <!-- nowmad method como un sistema operativo: fondo de pantalla vivo (la brújula del logo en píxeles),
@@ -228,12 +228,12 @@
 
     <div class="sheet">
     <!-- Cómo trabajamos: vos arrastrás tu proyecto por el tablero hasta que queda online -->
-    <section class="app app-plan" id="como" data-board>
+    <section class="app app-plan" id="como" data-board data-nm-scene="giro">
       <div class="win win-board reveal">
         <div class="win-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="win-title">Tablero — Tu proyecto</span></div>
         <div class="board-head">
           <p class="app-label">(02) Cómo trabajamos</p>
-          <h2>Del brief <em>a estar online</em>.</h2>
+          <h2>De tu idea <em>a estar online</em>.</h2>
           <p class="board-hint">Arrastrá tu proyecto de columna en columna (o tocá “Avanzar”) y mirá cómo sigue.</p>
         </div>
         <ol class="board" data-cols>
@@ -252,7 +252,7 @@
     </section>
 
     <!-- Tu competencia: negocios reales cerca, con datos de OpenStreetMap (Nominatim + Overpass) en un mapa de Leaflet -->
-    <section class="app" id="competencia">
+    <section class="app" id="competencia" data-nm-scene="giro">
       <div class="win win-map reveal">
         <div class="win-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="win-title">Mapas — Tu competencia</span></div>
         <div class="cmp">
@@ -273,7 +273,7 @@
 
     <!-- Tu propuesta: asistente tipo instalador. Analiza qué necesitás, qué tenés y tu presupuesto,
          y arma una propuesta inicial. "Pedir esta propuesta" la carga en el WhatsApp de contacto. -->
-    <section class="app" id="propuesta">
+    <section class="app" id="propuesta" data-nm-scene="aleja">
       <form class="win win-wiz reveal" data-wiz novalidate>
         <div class="win-bar"><span class="lights" aria-hidden="true"><i></i><i></i><i></i></span><span class="win-title">Asistente de propuesta</span></div>
         <div class="wiz">
@@ -367,7 +367,7 @@
       </div>
     </section>
 
-    <div class="sheet">
+    <div class="sheet" data-nm-scene="aleja">
     <!-- Preguntas: un asistente que responde. Las preguntas y respuestas de abajo son la fuente
          (quedan para lectores de pantalla); revisar respuestas. -->
     <section class="app app-lilac" id="preguntas">
@@ -457,7 +457,7 @@
         <p class="app-label">Tu próximo paso</p>
         <h2>¿Arrancamos <em>juntos?</em></h2>
         <p>Contanos tu idea y armamos juntos una propuesta a tu medida.</p>
-        <a class="say-cta" href="https://wa.me/5493795054206" target="_blank" rel="noopener">Escribinos por WhatsApp</a>
+        <a class="say-cta" href="https://wa.me/5493795054206" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#chat" /></svg>Escribinos por WhatsApp</a>
       </div>
     </section>
   </main>

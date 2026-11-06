@@ -1,8 +1,8 @@
 /* Fondo de agency: el nómade (clips de Kling con luz dorada, en assets/video/nomade/).
    - Portada: <video> en loop (loop.mp4, corte sin salto).
-   - El resto de la página se arma con "escenas": secciones transparentes marcadas con data-nm-scene="giro|aleja|final".
-     Mientras una escena cruza la pantalla, el scroll mueve su clip cuadro a cuadro. Las secciones con ventanas
-     van sobre una hoja clara (.sheet) que tapa el fondo, así el video solo se ve en sus momentos.
+   - El resto de la página es un solo recorrido: cada clip cubre las secciones marcadas con data-nm-scene="giro|aleja|final"
+     (pueden ser varias seguidas, también las que tienen ventanas). Mientras ese tramo cruza la pantalla, el scroll
+     mueve su clip cuadro a cuadro, así el video sigue avanzando detrás de las ventanas sin cortes.
    - Los clips NO son videos: son secuencias de cuadros .webp dibujadas en un <canvas>. Buscar un cuadro de video con
      currentTime obliga a decodificar desde el último keyframe y se traba; dibujar una imagen ya decodificada no.
    - Los cuadros se bajan después del evento load: primero salteados (1 de cada 8) y después el resto. Si falta un
@@ -26,8 +26,9 @@
   play();
 
   // fx/fy: dónde está la figura en el cuadro. z0 → z1: leve acercamiento mientras dura la escena.
+  // end: hasta qué parte del clip se usa (el giro termina con varios segundos quieto mirando a cámara).
   var CLIPS = [
-    { name: "giro", fx: 0.42, fy: 0.45, z0: 1.12, z1: 1 },
+    { name: "giro", fx: 0.42, fy: 0.45, z0: 1.12, z1: 1, end: 0.8 },
     { name: "aleja", fx: 0.47, fy: 0.5, z0: 1.04, z1: 1 },
     { name: "final", fx: 0.48, fy: 0.5, z0: 1.06, z1: 1 }
   ];
@@ -115,7 +116,7 @@
   }
   function draw(c, t) {
     if (!c.n) return;
-    var want = Math.round(t * (c.n - 1)), i = nearest(c, want);
+    var want = Math.round(t * (c.end || 1) * (c.n - 1)), i = nearest(c, want);
     if (i < 0) return;
     var z = c.z0 + (c.z1 - c.z0) * ease(t);
     var key = c.name + i + "|" + z.toFixed(3) + "|" + cw + "x" + ch;
@@ -155,7 +156,7 @@
     var f = 0, d = 0;
     if (best) {
       draw(best, bestT);
-      if (best.name === "aleja") f = 0.85 * (1 - seg(bestT, 0.08, 0.32));
+      if (best.name === "aleja") f = 0.85 * (1 - seg(bestT, 0.03, 0.13));
       if (best.name === "final") d = 0.35 * seg(bestT, 0.75, 1);
     }
     fog.style.opacity = f; fog.style.visibility = f > 0 ? "visible" : "hidden";
