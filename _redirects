@@ -1,0 +1,4 @@
+# Netlify: POR AHORA la raíz (nowmadgroup.com/) lleva directo a nowmad method.
+# 302 = temporal. El "!" fuerza la regla aunque exista index.html. La portada del grupo sigue en /index.html.
+# Para volver a mostrar la portada: borrar esta línea (y el script marcado "POR AHORA" en index.html).
+/    /agency    302!
