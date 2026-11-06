@@ -19,7 +19,12 @@
   var ctx = cv && cv.getContext("2d");
   var reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
   var wideMq = matchMedia("(min-width: 900px)");
-  var BASE = "assets/video/nomade/seq/", V = "?v=2"; // V: subir cuando se regeneran los cuadros
+  // Calidad de los cuadros: en pantallas grandes (y sin ahorro de datos ni conexión lenta) van en 1080p (seq-hd,
+  // ~11 MB en total); en el resto, 720p (seq, ~5 MB). Se decide una vez al cargar.
+  var net = navigator.connection || {};
+  // (screen.width puede venir en 0 en navegadores embebidos: se usa el mayor entre pantalla y ventana)
+  var hd = Math.max(screen.width || 0, innerWidth) * (devicePixelRatio || 1) >= 1400 && !net.saveData && !/(^|-)(2g|3g)$/.test(net.effectiveType || "");
+  var BASE = "assets/video/nomade/" + (hd ? "seq-hd/" : "seq/"), V = "?v=3"; // V: subir cuando se regeneran los cuadros
 
   function play() { var p = hero.play && hero.play(); if (p && p.catch) p.catch(function () {}); }
   if (reduce || !ctx) { try { hero.pause(); } catch (e) {} return; }
@@ -127,6 +132,11 @@
     var x = Math.min(0, Math.max(cw - w, cw * c.fx - w * c.fx));
     var y = Math.min(0, Math.max(ch - h, ch * c.fy - h * c.fy));
     ctx.drawImage(c.img[i], x, y, w, h);
+    // Deja decodificados los cuadros vecinos: si el navegador los descartó de memoria, el próximo dibujo no se traba
+    for (var k = -3; k <= 3; k++) {
+      var im = c.ok[i + k] && c.img[i + k];
+      if (k && im && im.decode) im.decode().catch(function () {});
+    }
   }
 
   var heroOn = true;
