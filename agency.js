@@ -46,7 +46,7 @@
   function confetti(x, y, n) {
     var box = $("[data-confetti]");
     if (!box || REDUCED || !box.animate) return;
-    var colors = ["#8A6A3F", "#B08A4F", "#E8DCC5", "#D97757", "#4A3524", "#FFFFFF"];
+    var colors = ["#D4861C", "#EDB05A", "#E8E8ED", "#D97757", "#1D1D1F", "#FFFFFF"];
     for (var i = 0; i < (n || 60); i++) {
       var c = document.createElement("i");
       c.style.background = colors[i % colors.length];
@@ -263,7 +263,7 @@
     for (var i = 0; i < PRESETS.length; i++) if (PRESETS[i].k.test(t)) return PRESETS[i];
     var m = t.match(/(?:para (?:mi|mis|un|una|el|la|los|las|nuestro|nuestra)\s+)(.+)$/i);
     var thing = (m ? m[1] : t).replace(/[.!?]+$/, "").slice(0, 32), name = cap(thing);
-    return { name: name, kicker: tt("Hecho a medida", "Made to measure"), title: name + tt(", en línea", ", online"), cta: tt("Empezar", "Get started"), slug: slugify(thing), acc: "#8A6A3F", n: 57 };
+    return { name: name, kicker: tt("Hecho a medida", "Made to measure"), title: name + tt(", en línea", ", online"), cta: tt("Empezar", "Get started"), slug: slugify(thing), acc: "#D4861C", n: 57 };
   }
 
   function initMock() {
@@ -658,7 +658,7 @@
           nwName.textContent = report.name;
           nwTitle.textContent = makeTitle(d.description, report.name);
           if (d.logo && d.logo.url && /^https:\/\//.test(d.logo.url)) nwLogo.src = d.logo.url; else nwLogo.removeAttribute("src");
-          var a1 = pickAccent(pal) || "#8A6A3F", a2 = pickAccent(pal.filter(function (h) { return h !== a1; })) || "#D8BF8E";
+          var a1 = pickAccent(pal) || "#D4861C", a2 = pickAccent(pal.filter(function (h) { return h !== a1; })) || "#EDB05A";
           nw.style.setProperty("--acc", a1); nw.style.setProperty("--acc2", a2);
           log(dots(tt("captura", "screenshot"), "ok"));
           log(dots(tt("marca", "brand"), esc(report.name)));
@@ -891,7 +891,7 @@
         }
         if (layer) layer.remove();
         layer = L.layerGroup().addTo(map);
-        L.circle([lat, lon], { radius: radius, color: "#8A6A3F", weight: 1.5, fillOpacity: 0.06 }).addTo(layer);
+        L.circle([lat, lon], { radius: radius, color: "#D4861C", weight: 1.5, fillOpacity: 0.06 }).addTo(layer);
         L.marker([lat, lon], { icon: L.divIcon({ className: "", html: '<span class="pin-me"></span>', iconSize: [22, 22], iconAnchor: [11, 11] }) }).bindPopup(tt("Vos", "You")).addTo(layer);
         map.invalidateSize();
         map.fitBounds(L.latLng(lat, lon).toBounds(radius * 2), { padding: [20, 20] });
@@ -902,7 +902,7 @@
           var n = e.tags && e.tags.name;
           if (n && names.indexOf(n) < 0) names.push(n);
           setTimeout(function () {
-            var m = L.circleMarker([la, lo], { radius: 7, color: "#fff", weight: 2, fillColor: "#4A3524", fillOpacity: 1 });
+            var m = L.circleMarker([la, lo], { radius: 7, color: "#fff", weight: 2, fillColor: "#1D1D1F", fillOpacity: 1 });
             m.bindPopup(document.createTextNode(n || tt("Sin nombre en el mapa", "Unnamed on the map")));
             m.addTo(layer);
           }, REDUCED ? 0 : Math.min(i, 120) * 22);
@@ -1340,7 +1340,7 @@
 
     // Fondos de pantalla: el mismo diseño en cinco tonos, o según la hora de Buenos Aires
     var wall = $("[data-wall]"), tone = "bronce";
-    var TONES = [["bronce", tt("Bronce", "Bronze"), "#8A6A3F"], ["sepia", "Sepia", "#4A3524"], ["oliva", tt("Oliva", "Olive"), "#6B7A3A"], ["atardecer", tt("Atardecer", "Sunset"), "#D97757"], ["noche", tt("Noche", "Night"), "#1A120B"], ["auto", tt("Según la hora", "By time of day"), "conic-gradient(#B08A4F 0 33%, #D97757 0 66%, #1A120B 0)"]];
+    var TONES = [["bronce", tt("Natural", "Natural"), "#D4861C"], ["sepia", "Sepia", "#1D1D1F"], ["oliva", tt("Oliva", "Olive"), "#6B7A3A"], ["atardecer", tt("Atardecer", "Sunset"), "#D97757"], ["noche", tt("Noche", "Night"), "#0B0B0D"], ["auto", tt("Según la hora", "By time of day"), "conic-gradient(#EDB05A 0 33%, #D97757 0 66%, #0B0B0D 0)"]];
     function autoTone() {
       var h = +new Intl.DateTimeFormat("en-US", { hour: "numeric", hourCycle: "h23", timeZone: "America/Argentina/Buenos_Aires" }).format(new Date());
       return h >= 20 || h < 6 ? "noche" : h >= 17 ? "atardecer" : "bronce";
