@@ -12,6 +12,14 @@
 #
 # Doesn't work on Nginx VPS — those need server-level config.
 
+# ----- Por ahora: la raíz del sitio (nowmadgroup.com) lleva directo a nowmad method -----
+# 302 = temporal (Google no lo toma como definitivo). Para volver a mostrar la portada del grupo, borrar este bloque
+# y la línea marcada en index.html. La portada sigue disponible en /index.html.
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteRule ^$ /agency.html [R=302,L]
+</IfModule>
+
 # ----- Cache duration -----
 <IfModule mod_expires.c>
   ExpiresActive On
