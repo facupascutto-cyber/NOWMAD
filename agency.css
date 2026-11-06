@@ -1330,3 +1330,8 @@ em { font-weight: 600; }
 .say-cta { display: inline-flex; align-items: center; gap: 10px; padding: 16px 30px; background: linear-gradient(180deg, #2BD46B, #14A54E); color: var(--white); font-size: 17px; font-weight: 700; box-shadow: 0 0 0 1px rgba(255, 255, 255, .25) inset, 0 18px 40px -14px rgba(10, 120, 50, .75), 0 0 50px -10px rgba(43, 212, 107, .55); text-shadow: 0 1px 2px rgba(0, 60, 20, .35); }
 .say-cta svg { width: 22px; height: 22px; flex: none; }
 .say-cta:hover { background: linear-gradient(180deg, #34E074, #16B055); transform: translateY(-2px); }
+/* Tipografía de marca: Unbounded en títulos, Hanken Grotesk en textos. Pisa la pila de sistema (estilo Apple)
+   definida más arriba; borrando este bloque vuelve esa. */
+:root { --display: "Unbounded", "Arial Black", sans-serif; --sans: "Hanken Grotesk", system-ui, sans-serif; }
+h1, h2, h3 { font-weight: 800; letter-spacing: -.035em; }
+em { font-weight: 200; }
